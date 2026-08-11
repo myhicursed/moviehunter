@@ -4,7 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}МУВИХАНТЕР{% endblock %}</title>
+
+    <!-- SEO: Заголовок и описание -->
+    <title>{% block title %}МУВИХАНТЕР — Угадай фильм за 10 секунд{% endblock %}</title>
+    <meta name="description"
+        content="{% block description %}Угадай фильм по 10-секундному отрывку. Играй в киноквизы по жанрам, ежедневные челленджи. Бесплатно, без рекламы.{% endblock %}">
+    <meta name="keywords"
+        content="угадай фильм, киноквиз, фильм по отрывку, quiz movie, moviehunter, мувихантер, кино игра, угадай кино">
+    <meta name="author" content="МУВИХАНТЕР">
+    <link rel="canonical" href="{% block canonical %}https://moviehunter.ru{% endblock %}">
+
+    <!-- Open Graph (для соцсетей: VK, Telegram, Facebook) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="МУВИХАНТЕР">
+    <meta property="og:title" content="{% block og_title %}МУВИХАНТЕР — Угадай фильм за 10 секунд{% endblock %}">
+    <meta property="og:description"
+        content="{% block og_description %}Угадай фильм по короткому видеоотрывку. Проверь, насколько хорошо ты знаешь кино!{% endblock %}">
+    <meta property="og:image" content="https://moviehunter.ru/static/img/og-image.png">
+    <meta property="og:url" content="{% block og_url %}https://moviehunter.ru{% endblock %}">
+    <meta property="og:locale" content="ru_RU">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="МУВИХАНТЕР — Угадай фильм">
+    <meta name="twitter:description" content="Угадай фильм по короткому отрывку!">
+    <meta name="twitter:image" content="https://moviehunter.ru/static/img/og-image.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/static/img/favicon.png">
+    <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
+
+    <!-- Тема для мобильных браузеров -->
+    <meta name="theme-color" content="#e50914">
 
     <!-- Мгновенная проверка авторизации (антимигание) -->
     <script>
@@ -17,7 +48,6 @@
 
     <!-- Стили для показа/скрытия элементов авторизации -->
     <style>
-        /* Авторизация в шапке */
         #loginBtn {
             display: block;
         }
@@ -34,7 +64,6 @@
             display: flex;
         }
 
-        /* Главная страница: гость vs авторизованный */
         .guest-only {
             display: block;
         }
@@ -55,13 +84,8 @@
     <!-- Tailwind CSS через CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Наши доп. стили -->
     <link rel="stylesheet" href="/static/css/custom.css">
-
-    <!-- Иконки Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Шрифт -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">

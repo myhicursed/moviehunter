@@ -1,7 +1,8 @@
+from datetime import datetime
 from pathlib import Path
 
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from fastapi.templating import Jinja2Templates
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,3 +89,68 @@ async def about_page(request: Request):
         request=request,
         name="about.html",
     )
+
+
+@router.get("/sitemap.xml", response_class=Response)
+async def sitemap():
+    """Карта сайта для поисковиков."""
+    urls = [
+        {"loc": "https://moviehunter.ru/", "priority": "1.0", "changefreq": "daily"},
+        {
+            "loc": "https://moviehunter.ru/quiz",
+            "priority": "0.9",
+            "changefreq": "daily",
+        },
+        {
+            "loc": "https://moviehunter.ru/quiz?mode=daily",
+            "priority": "0.9",
+            "changefreq": "daily",
+        },
+        {
+            "loc": "https://moviehunter.ru/quiz?mode=letters",
+            "priority": "0.8",
+            "changefreq": "weekly",
+        },
+        {
+            "loc": "https://moviehunter.ru/about",
+            "priority": "0.5",
+            "changefreq": "monthly",
+        },
+        {
+            "loc": "https://moviehunter.ru/support",
+            "priority": "0.4",
+            "changefreq": "monthly",
+        },
+        {
+            "loc": "https://moviehunter.ru/terms",
+            "priority": "0.3",
+            "changefreq": "yearly",
+        },
+        {
+            "loc": "https://moviehunter.ru/privacy",
+            "priority": "0.3",
+            "changefreq": "yearly",
+        },
+        {
+            "loc": "https://moviehunter.ru/copyright",
+            "priority": "0.3",
+            "changefreq": "yearly",
+        },
+    ]
+
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml_content += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+
+    for url in urls:
+        xml_content += "  <url>\n"
+        xml_content += f"    <loc>{url['loc']}</loc>\n"
+        xml_content += f"    <lastmod>{today}</lastmod>\n"
+        xml_content += f"    <changefreq>{url['changefreq']}</changefreq>\n"
+        xml_content += f"    <priority>{url['priority']}</priority>\n"
+        xml_content += "  </url>\n"
+
+    xml_content += "</urlset>"
+
+    return Response(content=xml_content, media_type="application/xml")
