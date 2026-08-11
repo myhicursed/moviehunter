@@ -4,6 +4,9 @@ from datetime import datetime
 
 from fastapi import Request
 from sqladmin import Admin, ModelView
+from sqladmin.authentication import AuthenticationBackend
+from starlette.requests import Request
+from starlette.responses import RedirectResponse
 from wtforms import FileField, Form, IntegerField, SelectField, StringField, validators
 
 from app.core.config import settings
@@ -13,6 +16,25 @@ from app.db.database import engine
 from app.models.daily_quiz import DailyQuiz, DailyQuizAttempt, DailyQuizMovie
 from app.models.donation import Donation
 from app.models.movie import Movie
+
+
+class AdminAuth(AuthenticationBackend):
+    async def login(self, request: Request) -> bool:
+        form = await request.form()
+        username = form.get("username")
+        password = form.get("password")
+
+        if username == settings.admin_username and password == settings.admin_password:
+            request.session.update({"admin": True})
+            return True
+        return False
+
+    async def logout(self, request: Request) -> bool:
+        request.session.clear()
+        return True
+
+    async def authenticate(self, request: Request) -> bool:
+        return request.session.get("admin", False)
 
 
 class MovieForm(Form):
@@ -276,10 +298,16 @@ class DonationAdmin(ModelView, model=Donation):
 
 
 def setup_admin(app):
-    admin = Admin(app, engine)
+    authentication_backend = AdminAuth(secret_key=settings.secret_key)
+
+    admin = Admin(
+        app,
+        engine,
+        authentication_backend=authentication_backend,
+    )
     admin.add_view(MovieAdmin)
-    admin.add_view(DailyQuizAdmin)  # ← новое
-    admin.add_view(DailyQuizMovieAdmin)  # ← новое
-    admin.add_view(DailyQuizAttemptAdmin)  # ← новое
+    admin.add_view(DailyQuizAdmin)
+    admin.add_view(DailyQuizMovieAdmin)
+    admin.add_view(DailyQuizAttemptAdmin)
     admin.add_view(DonationAdmin)
     return admin
