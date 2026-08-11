@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Поддержать проект — МУВИХАНТЕР{% endblock %}
+
+{% block content %}
+
+<div class="pt-24 pb-20 min-h-screen">
+    <div class="container mx-auto px-4 max-w-3xl">
+
+        <!-- Заголовок -->
+        <div class="text-center mb-10">
+            <div
+                class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-pink-500 to-red-500 mb-6 shadow-lg shadow-pink-500/50">
+                <i class="fa-solid fa-heart text-4xl text-white"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black mb-4">
+                Поддержать <span class="text-brand">проект</span>
+            </h1>
+            <p class="text-gray-400 text-lg">
+                МУВИХАНТЕР создан и поддерживается одним человеком — мной 💪
+            </p>
+        </div>
+
+        <!-- Про проект -->
+        <div class="bg-dark-800/50 border border-dark-600 rounded-2xl p-8 md:p-10 mb-6 backdrop-blur-sm">
+            <div class="prose prose-invert max-w-none">
+                <h2 class="text-2xl font-black mb-4 text-white">Привет! 👋</h2>
+                <p class="text-gray-300 mb-4 leading-relaxed">
+                    Меня зовут <span class="text-white font-bold">Иван</span>, и я разработчик этого проекта.
+                    МУВИХАНТЕР — это pet-проект, который я делаю в свободное от работы время:
+                    придумываю фичи, пишу код, обрабатываю видео из фильмов, наполняю базу.
+                </p>
+                <p class="text-gray-300 mb-4 leading-relaxed">
+                    Сайт полностью <span class="text-brand font-bold">бесплатный</span> — без рекламы,
+                    без платных функций, без ограничений. Все режимы, весь функционал, все квизы доступны каждому.
+                </p>
+                <p class="text-gray-300 leading-relaxed">
+                    Но чтобы проект жил и развивался — нужны деньги на:
+                </p>
+            </div>
+
+            <!-- На что идут донаты -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                <div class="bg-dark-700/50 border border-dark-600 rounded-xl p-5 text-center">
+                    <div class="text-4xl mb-2">🖥️</div>
+                    <div class="font-bold mb-1">Сервер</div>
+                    <div class="text-sm text-gray-400">Хостинг, домен, база данных</div>
+                </div>
+                <div class="bg-dark-700/50 border border-dark-600 rounded-xl p-5 text-center">
+                    <div class="text-4xl mb-2">🎬</div>
+                    <div class="font-bold mb-1">Новые фильмы</div>
+                    <div class="text-sm text-gray-400">Больше контента, больше режимов</div>
+                </div>
+                <div class="bg-dark-700/50 border border-dark-600 rounded-xl p-5 text-center">
+                    <div class="text-4xl mb-2">🍕</div>
+                    <div class="font-bold mb-1">Еда для разработчика</div>
+                    <div class="text-sm text-gray-400">Кофе, пицца, силы кодить</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопка доната -->
+        <div
+            class="bg-gradient-to-br from-pink-500/10 to-red-500/10 border border-pink-500/30 rounded-2xl p-8 md:p-10 mb-6">
+            <h2 class="text-2xl font-black mb-4 text-center">
+                💝 Задонатить
+            </h2>
+            <p class="text-gray-300 text-center mb-6 text-sm">
+                Любая сумма приятна и помогает проекту жить
+            </p>
+
+            <div class="space-y-3">
+                <!-- DonationAlerts (ЗАМЕНИ на свою ссылку!) -->
+                <a href="https://www.donationalerts.com/r/myhicursed_" target="_blank" rel="noopener noreferrer"
+                    class="flex items-center gap-4 p-4 bg-dark-800 hover:bg-dark-700 transition rounded-xl border border-dark-600 hover:border-pink-500 group">
+                    <div
+                        class="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-pink-500 to-red-500 rounded-lg">
+                        <i class="fa-solid fa-heart text-xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-bold">DonationAlerts</div>
+                        <div class="text-sm text-gray-400">Карта, СБП, ЮMoney — любым способом</div>
+                    </div>
+                    <i
+                        class="fa-solid fa-arrow-right text-gray-400 group-hover:text-pink-500 group-hover:translate-x-1 transition"></i>
+                </a>
+
+                <!-- Telegram (для связи) -->
+                <a href="https://t.me/myhicursed" target="_blank" rel="noopener noreferrer"
+                    class="flex items-center gap-4 p-4 bg-dark-800 hover:bg-dark-700 transition rounded-xl border border-dark-600 hover:border-pink-500 group">
+                    <div class="w-12 h-12 flex items-center justify-center bg-blue-500 rounded-lg">
+                        <i class="fa-brands fa-telegram text-xl text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-bold">Написать в Telegram</div>
+                        <div class="text-sm text-gray-400">@myhicursed — договоримся индивидуально</div>
+                    </div>
+                    <i
+                        class="fa-solid fa-arrow-right text-gray-400 group-hover:text-pink-500 group-hover:translate-x-1 transition"></i>
+                </a>
+            </div>
+
+            <p class="text-center text-gray-500 text-xs mt-6">
+                💡 При донате укажи ник — покажем тебя в списке ниже!
+            </p>
+        </div>
+
+        <!-- Топ донатеров -->
+        <div class="bg-dark-800/50 border border-dark-600 rounded-2xl p-8 md:p-10 mb-6">
+            <h2 class="text-2xl md:text-3xl font-black mb-2 text-center">
+                🌟 Спасибо этим людям
+            </h2>
+            <p class="text-gray-400 text-center mb-6 text-sm">
+                Они помогли проекту жить и развиваться
+            </p>
+
+            <div id="donatorsList" class="space-y-2">
+                <div class="text-center text-gray-500 py-6">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Спасибо -->
+        <div class="text-center py-8">
+            <div class="text-6xl mb-4">🙏</div>
+            <h3 class="text-2xl font-black mb-2">Спасибо, что ты здесь!</h3>
+            <p class="text-gray-400">
+                Даже если ты просто играешь и получаешь удовольствие — это уже классно.<br>
+                А если поддержишь монеткой — вообще круто ❤️
+            </p>
+        </div>
+
+        <!-- Кнопки навигации -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mt-8">
+            <a href="/"
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-semibold border border-dark-600">
+                <i class="fa-solid fa-home"></i>
+                На главную
+            </a>
+            <a href="/quiz"
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-semibold">
+                <i class="fa-solid fa-play"></i>
+                Играть
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/support.js"></script>
+{% endblock %}

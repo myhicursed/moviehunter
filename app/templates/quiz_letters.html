@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Угадай по буквам — МУВИХАНТЕР{% endblock %}
+
+{% block content %}
+
+<div class="pt-24 pb-20 min-h-screen">
+    <div class="container mx-auto px-4 max-w-4xl">
+
+        <!-- Загрузка -->
+        <div id="loadingScreen" class="text-center py-20">
+            <i class="fa-solid fa-spinner fa-spin text-5xl text-brand mb-4"></i>
+            <p class="text-xl text-gray-400">Готовим квиз...</p>
+        </div>
+
+        <!-- Ошибка -->
+        <div id="errorScreen" class="hidden text-center py-20">
+            <div class="text-6xl mb-4">😢</div>
+            <h2 class="text-2xl font-bold mb-2">Что-то пошло не так</h2>
+            <p id="errorMessage" class="text-gray-400 mb-6"></p>
+            <a href="/"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-semibold">
+                <i class="fa-solid fa-home"></i>
+                На главную
+            </a>
+        </div>
+
+        <!-- Игра -->
+        <div id="gameScreen" class="hidden">
+            <!-- Прогресс + счёт -->
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+                <div class="text-gray-400">
+                    Вопрос <span id="currentQuestion" class="text-white font-bold">1</span> из
+                    <span id="totalQuestions" class="text-white font-bold">10</span>
+                </div>
+
+                <div class="flex items-center gap-3 flex-wrap">
+                    <!-- Счётчик попыток -->
+                    <div class="flex items-center gap-2 px-4 py-2 bg-dark-800 rounded-lg border border-dark-600">
+                        <i class="fa-solid fa-heart text-red-500"></i>
+                        <span class="font-bold">
+                            <span id="attemptsUsed">0</span>/<span id="attemptsMax">3</span>
+                        </span>
+                    </div>
+
+                    <!-- Очки -->
+                    <div class="flex items-center gap-2 px-4 py-2 bg-dark-800 rounded-lg border border-dark-600">
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <span id="currentScore" class="font-bold">0</span>
+                    </div>
+
+                    <!-- Подсказка -->
+                    <button id="hintBtn"
+                        class="px-3 py-2 bg-yellow-600 hover:bg-yellow-700 transition rounded-lg text-sm font-bold"
+                        title="Открыть букву за 2 очка">
+                        <i class="fa-solid fa-lightbulb"></i> Подсказка (-2)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Прогресс-бар -->
+            <div class="w-full bg-dark-700 rounded-full h-2 mb-6 overflow-hidden">
+                <div id="progressBar"
+                    class="bg-gradient-to-r from-brand to-brand-dark h-full transition-all duration-500"
+                    style="width: 0%"></div>
+            </div>
+
+            <!-- Сложность -->
+            <div class="mb-4">
+                <span id="difficultyBadge"
+                    class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase"></span>
+            </div>
+
+            <!-- Видео -->
+            <div class="relative bg-black rounded-xl overflow-hidden mb-6 shadow-2xl">
+                <video id="videoPlayer" class="w-full aspect-video" controls autoplay playsinline></video>
+            </div>
+
+            <!-- Квадраты для букв (ответ) -->
+            <div class="mb-6">
+                <div id="answerSlots" class="flex flex-col gap-2 md:gap-3 items-center"></div>
+            </div>
+
+            <!-- Перемешанные буквы -->
+            <div class="mb-6">
+                <div id="lettersPool" class="flex flex-wrap justify-center gap-2"></div>
+            </div>
+
+            <!-- Сообщение о результате -->
+            <div id="resultMessage" class="hidden text-center mb-4">
+                <p class="text-2xl font-black" id="resultMessageText"></p>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="flex gap-3 justify-center flex-wrap mb-4">
+                <button id="shuffleBtn"
+                    class="px-4 py-3 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-semibold text-sm border border-dark-600">
+                    <i class="fa-solid fa-shuffle"></i> Перемешать
+                </button>
+                <button id="clearBtn"
+                    class="px-4 py-3 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-semibold text-sm border border-dark-600">
+                    <i class="fa-solid fa-eraser"></i> Очистить
+                </button>
+                <button id="surrenderBtn"
+                    class="px-4 py-3 bg-dark-700 hover:bg-red-900 transition rounded-lg font-semibold text-sm border border-dark-600 hover:border-red-500">
+                    <i class="fa-solid fa-flag"></i> Сдаться
+                </button>
+                <button id="checkBtn"
+                    class="px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-bold shadow-lg shadow-brand/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
+                    <i class="fa-solid fa-check"></i> Проверить
+                </button>
+            </div>
+
+            <!-- Кнопка "Далее" -->
+            <div id="nextButtonContainer" class="hidden mt-6 text-center">
+                <button id="nextButton"
+                    class="inline-flex items-center gap-2 px-8 py-4 bg-brand hover:bg-brand-dark transition rounded-lg font-bold text-lg shadow-lg shadow-brand/30">
+                    Дальше <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Результат -->
+        <div id="resultScreen" class="hidden text-center py-10">
+            <div id="resultEmoji" class="text-8xl mb-4"></div>
+            <h2 class="text-4xl font-black mb-2">
+                <span id="resultTitle"></span>
+            </h2>
+            <p class="text-gray-400 mb-8" id="resultSubtitle"></p>
+
+            <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mb-8">
+                <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
+                    <div class="text-3xl font-black text-brand mb-1" id="resultCorrect">0</div>
+                    <div class="text-sm text-gray-400">Правильных</div>
+                </div>
+                <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
+                    <div class="text-3xl font-black text-white mb-1" id="resultTotal">0</div>
+                    <div class="text-sm text-gray-400">Всего</div>
+                </div>
+                <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
+                    <div class="text-3xl font-black text-yellow-400 mb-1" id="resultPoints">0</div>
+                    <div class="text-sm text-gray-400">Очков</div>
+                </div>
+            </div>
+
+            <div id="guestMessage"
+                class="hidden max-w-md mx-auto mb-6 p-4 bg-brand/10 border border-brand/30 rounded-xl text-sm text-gray-300">
+                💡 Хочешь сохранять результаты и попасть в топ игроков?
+                <button id="guestLoginBtn" class="text-brand hover:underline font-semibold ml-1">
+                    Зарегистрируйся!
+                </button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button id="playAgainBtn"
+                    class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand hover:bg-brand-dark transition rounded-lg font-bold shadow-lg">
+                    <i class="fa-solid fa-rotate-right"></i> Играть снова
+                </button>
+                <a href="/"
+                    class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-bold border border-dark-600">
+                    <i class="fa-solid fa-home"></i> На главную
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="/static/js/quiz_letters.js"></script>
+{% endblock %}

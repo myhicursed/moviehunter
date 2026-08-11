@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+
+{% block title %}МУВИХАНТЕР — угадай фильм по отрывку{% endblock %}
+
+{% block content %}
+
+<!-- ============================================ -->
+<!-- ДЛЯ ГОСТЕЙ: HERO -->
+<!-- ============================================ -->
+<section class="guest-only relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div class="relative z-10 container mx-auto px-6 text-center">
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
+            Угадай фильм<br>
+            за <span class="text-brand">10 секунд</span>
+        </h1>
+
+        <p class="text-lg md:text-2xl text-gray-300 mb-10 max-w-2xl mx-auto">
+            Короткий отрывок, 4 варианта, миллион эмоций.<br>
+            Проверь, насколько хорошо ты знаешь кино.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/quiz"
+                class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand hover:bg-brand-dark transition rounded-lg text-lg font-bold shadow-lg shadow-brand/50">
+                <i class="fa-solid fa-play"></i>
+                Начать угадывать
+            </a>
+            <a href="#modes"
+                class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-dark-700 hover:bg-dark-600 transition rounded-lg text-lg font-bold border border-gray-700">
+                <i class="fa-solid fa-list"></i>
+                Выбрать режим
+            </a>
+        </div>
+    </div>
+
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+        <i class="fa-solid fa-chevron-down text-3xl text-gray-500"></i>
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- ДЛЯ АВТОРИЗОВАННЫХ: КОМПАКТНЫЙ ДАШБОРД -->
+<!-- ============================================ -->
+<section class="user-only pt-28 pb-10">
+    <div class="container mx-auto px-6">
+
+        <!-- Приветствие -->
+        <div class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-black mb-2">
+                С возвращением, <span id="welcomeName" class="text-brand">игрок</span>! 👋
+            </h1>
+            <p class="text-gray-400">Готов проверить свои знания?</p>
+        </div>
+
+        <!-- Стрик недели -->
+        <div class="mb-8 bg-gradient-to-r from-dark-800 to-dark-700 border border-dark-600 rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <div>
+                    <h3 class="text-lg font-black flex items-center gap-2">
+                        🔥 Твой стрик: <span id="streakDays" class="text-brand">0</span> дн.
+                    </h3>
+                    <p id="streakHint" class="text-gray-400 text-sm mt-1">
+                        Начни серию сегодня! За 7 дней подряд — <span class="text-yellow-400 font-bold">+50 очков</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Квадраты -->
+            <div id="streakDaysGrid" class="grid grid-cols-7 gap-2">
+                <!-- Заполняется через JS -->
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- ЛЕВАЯ КОЛОНКА: Режимы игры (2/3) -->
+            <div class="lg:col-span-2">
+                <h2 class="text-xl font-black mb-4 flex items-center gap-2">
+                    🎮 Режимы игры
+                </h2>
+
+                <!-- Большая карточка: рандом -->
+                <a href="/quiz"
+                    class="group relative block overflow-hidden rounded-xl bg-gradient-to-br from-purple-900 to-purple-600 p-6 mb-4 hover:scale-[1.02] transition-transform duration-300 shadow-lg">
+                    <div class="relative z-10 flex items-center justify-between">
+                        <div>
+                            <div class="text-3xl mb-2">🎲</div>
+                            <h3 class="text-2xl font-black mb-1">Случайный квиз</h3>
+                            <p class="text-purple-100 text-sm">10 случайных фильмов из всех жанров</p>
+                        </div>
+                        <i
+                            class="fa-solid fa-play text-4xl opacity-30 group-hover:opacity-100 group-hover:scale-125 transition"></i>
+                    </div>
+                    <div class="absolute -bottom-10 -right-10 text-[150px] opacity-10">🎲</div>
+                </a>
+
+                <!-- 3 карточки в ряд -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Ежедневный (умная карточка) -->
+                    <div id="dailyCard"
+                        class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-brand to-brand-dark p-6 hover:scale-[1.02] transition-transform duration-300 shadow-lg shadow-brand/30">
+                        <div
+                            class="absolute top-3 right-3 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full">
+                            NEW</div>
+                        <div class="relative z-10">
+                            <div class="text-3xl mb-2">📅</div>
+                            <h3 class="text-xl font-black mb-1">Ежедневный</h3>
+
+                            <!-- Состояние: загрузка -->
+                            <div id="dailyLoading" class="text-red-100 text-xs">
+                                <i class="fa-solid fa-spinner fa-spin"></i> Загрузка...
+                            </div>
+
+                            <!-- Состояние: можно играть -->
+                            <div id="dailyPlay" class="hidden">
+                                <p class="text-red-100 text-xs mb-2">+30 очков за прохождение</p>
+                                <a href="/quiz?mode=daily"
+                                    class="inline-flex items-center gap-1 px-4 py-2 bg-white/20 hover:bg-white/30 transition rounded-lg text-sm font-bold">
+                                    Играть <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+
+                            <!-- Состояние: уже прошёл -->
+                            <div id="dailyCompleted" class="hidden">
+                                <p class="text-green-300 text-sm font-bold mb-1">✅ Пройдено</p>
+                                <p class="text-red-100 text-xs mb-1">
+                                    Заработал: <span id="dailyEarned" class="font-bold text-white">0</span> очков
+                                </p>
+                            </div>
+
+                            <!-- Состояние: нет квиза -->
+                            <div id="dailyNoQuiz" class="hidden">
+                                <p class="text-red-100 text-xs">На сегодня квиза нет 😢</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Угадай по буквам -->
+                    <a href="/quiz?mode=letters"
+                        class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-600 to-red-700 p-6 hover:scale-[1.02] transition-transform duration-300 shadow-lg">
+                        <div
+                            class="absolute top-3 right-3 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full">
+                            ×2</div>
+                        <div class="relative z-10">
+                            <div class="text-3xl mb-2">🔤</div>
+                            <h3 class="text-xl font-black mb-1">Угадай по буквам</h3>
+                            <p class="text-orange-100 text-xs mb-2">Собери название из букв. Двойные очки!</p>
+                            <div class="inline-flex items-center gap-1 text-sm font-bold">
+                                Играть <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-8 -right-8 text-[120px] opacity-10">🔤</div>
+                    </a>
+
+                    <!-- По жанрам -->
+                    <button id="showGenresBtn"
+                        class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-900 to-cyan-600 p-6 hover:scale-[1.02] transition-transform duration-300 shadow-lg text-left">
+                        <div class="relative z-10">
+                            <div class="text-3xl mb-2">🎬</div>
+                            <h3 class="text-xl font-black mb-1">По жанрам</h3>
+                            <p class="text-blue-100 text-xs">Выбери свой любимый</p>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Скрытый блок жанров (появляется при клике) -->
+                <div id="genresBlock" class="hidden mt-6 bg-dark-800 rounded-xl border border-dark-600 p-6">
+                    <h3 class="text-lg font-bold mb-4">Выбери жанр</h3>
+                    <div id="genresGridUser" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <!-- Заполняется JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ПРАВАЯ КОЛОНКА: Топ игроков (1/3) -->
+            <div>
+                <h2 class="text-xl font-black mb-4 flex items-center gap-2">
+                    🏆 Топ игроков
+                </h2>
+                <div id="leaderboardUser" class="space-y-2">
+                    <div class="text-center text-gray-500 py-6">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- ДЛЯ ГОСТЕЙ: РЕЖИМЫ ИГРЫ -->
+<!-- ============================================ -->
+<section id="modes" class="guest-only py-20 bg-dark-800">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl md:text-5xl font-black text-center mb-4">
+            Выбери <span class="text-brand">режим</span>
+        </h2>
+        <p class="text-gray-400 text-center mb-12 text-lg">Как хочешь играть сегодня?</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Случайный -->
+            <a href="/quiz"
+                class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-900 to-purple-600 p-8 hover:scale-105 transition-transform duration-300 shadow-lg">
+                <div class="relative z-10">
+                    <div class="text-5xl mb-4">🎲</div>
+                    <h3 class="text-2xl font-black mb-2">Случайный</h3>
+                    <p class="text-purple-100 mb-4">10 случайных фильмов из всех жанров.</p>
+                    <div class="flex items-center gap-2 font-semibold">Играть <i
+                            class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i></div>
+                </div>
+                <div class="absolute -bottom-10 -right-10 text-[200px] opacity-10">🎲</div>
+            </a>
+
+            <!-- Угадай по буквам -->
+            <a href="/quiz?mode=letters"
+                class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-600 to-red-700 p-8 hover:scale-105 transition-transform duration-300 shadow-lg">
+                <div class="absolute top-4 right-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">×2
+                </div>
+                <div class="relative z-10">
+                    <div class="text-5xl mb-4">🔤</div>
+                    <h3 class="text-2xl font-black mb-2">Угадай по буквам</h3>
+                    <p class="text-orange-100 mb-4">Собери название из перемешанных букв. Двойные очки!</p>
+                    <div class="flex items-center gap-2 font-semibold">Играть <i
+                            class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i></div>
+                </div>
+                <div class="absolute -bottom-10 -right-10 text-[200px] opacity-10">🔤</div>
+            </a>
+
+            <!-- Ежедневный для гостей -->
+            <div onclick="openAuthModal('login')"
+                class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-brand to-brand-dark p-8 hover:scale-105 transition-transform duration-300 shadow-lg shadow-brand/30 cursor-pointer">
+                <div class="absolute top-4 right-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
+                    NEW</div>
+                <div class="relative z-10">
+                    <div class="text-5xl mb-4">📅</div>
+                    <h3 class="text-2xl font-black mb-2">Ежедневный</h3>
+                    <p class="text-red-100 mb-4">Войди, чтобы играть за +30 очков!</p>
+                    <div class="flex items-center gap-2 font-semibold">Войти <i
+                            class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i></div>
+                </div>
+                <div class="absolute -bottom-10 -right-10 text-[200px] opacity-10">📅</div>
+            </div>
+
+            <!-- По жанрам -->
+            <a href="#genres"
+                class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-900 to-cyan-600 p-8 hover:scale-105 transition-transform duration-300 shadow-lg">
+                <div class="relative z-10">
+                    <div class="text-5xl mb-4">🎬</div>
+                    <h3 class="text-2xl font-black mb-2">По жанрам</h3>
+                    <p class="text-blue-100 mb-4">Только боевики? Только комедии?</p>
+                    <div class="flex items-center gap-2 font-semibold">Выбрать <i
+                            class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i></div>
+                </div>
+                <div class="absolute -bottom-10 -right-10 text-[200px] opacity-10">🎬</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- ДЛЯ ГОСТЕЙ: ЖАНРЫ -->
+<!-- ============================================ -->
+<section id="genres" class="guest-only py-20">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl md:text-5xl font-black text-center mb-4">
+            <span class="text-brand">Жанры</span>
+        </h2>
+        <p class="text-gray-400 text-center mb-12 text-lg">Играй в свой любимый жанр</p>
+
+        <div id="genresGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="text-center text-gray-500 col-span-full py-10">
+                <i class="fa-solid fa-spinner fa-spin text-3xl"></i>
+                <p class="mt-2">Загружаем жанры...</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================ -->
+<!-- ДЛЯ ГОСТЕЙ: ТОП ИГРОКОВ (внизу) -->
+<!-- ============================================ -->
+<section class="guest-only py-20 bg-dark-800">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl md:text-5xl font-black text-center mb-4">
+            🏆 <span class="text-brand">Топ игроков</span>
+        </h2>
+        <p class="text-gray-400 text-center mb-12 text-lg">Лучшие охотники за фильмами</p>
+
+        <div id="leaderboard" class="max-w-3xl mx-auto space-y-3">
+            <div class="text-center text-gray-500 py-10">
+                <i class="fa-solid fa-spinner fa-spin text-3xl"></i>
+                <p class="mt-2">Загружаем рейтинг...</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="/static/js/index.js"></script>
+{% endblock %}

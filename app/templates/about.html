@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}О сайте — МУВИХАНТЕР{% endblock %}
+
+{% block content %}
+
+<div class="pt-24 pb-20 min-h-screen">
+    <div class="container mx-auto px-4 max-w-4xl">
+
+        <!-- Заголовок -->
+        <div class="text-center mb-10">
+            <div class="text-7xl mb-4">🎬</div>
+            <h1 class="text-4xl md:text-6xl font-black mb-4">
+                О <span class="text-brand">МУВИХАНТЕРЕ</span>
+            </h1>
+            <p class="text-xl text-gray-400">
+                История одного pet-проекта
+            </p>
+        </div>
+
+        <!-- История проекта -->
+        <div class="bg-dark-800/50 border border-dark-600 rounded-2xl p-8 md:p-10 mb-6 backdrop-blur-sm">
+            <h2 class="text-2xl md:text-3xl font-black mb-4 text-white">Привет! 👋</h2>
+            <div class="space-y-4 text-gray-300 leading-relaxed">
+                <p>
+                    Меня зовут <span class="text-white font-bold">Иван</span>, и я разработчик этого проекта.
+                    МУВИХАНТЕР появился как эксперимент: <span class="text-brand font-bold">"а что, если сделать
+                        квиз, где нужно угадывать фильм за 10 секунд?"</span>
+                </p>
+                <p>
+                    Есть куча сайтов, где угадывают музыку. А про кино — почти ничего интересного нет.
+                    Особенно на русском. Так родилась идея этого проекта.
+                </p>
+                <p>
+                    Я сам обрабатываю каждый видеофрагмент, наполняю базу фильмов, пишу код, придумываю новые режимы.
+                    Всё что ты видишь на сайте — сделано одним человеком в свободное от работы время. 🍕
+                </p>
+            </div>
+        </div>
+
+        <!-- Возможности -->
+        <div class="mb-6">
+            <h2 class="text-2xl md:text-3xl font-black mb-6 text-center">
+                Что <span class="text-brand">умеет</span> МУВИХАНТЕР
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-dark-800/50 border border-dark-600 rounded-xl p-6">
+                    <div class="text-4xl mb-3">🎲</div>
+                    <h3 class="text-lg font-black mb-2">Случайный квиз</h3>
+                    <p class="text-gray-400 text-sm">
+                        10 случайных фильмов из всех жанров. Классика для проверки эрудиции.
+                    </p>
+                </div>
+
+                <div class="bg-dark-800/50 border border-dark-600 rounded-xl p-6">
+                    <div class="text-4xl mb-3">📅</div>
+                    <h3 class="text-lg font-black mb-2">Ежедневный квиз</h3>
+                    <p class="text-gray-400 text-sm">
+                        Одна подборка на день, одинаковая для всех. Играй каждый день — набирай стрики и бонусы.
+                    </p>
+                </div>
+
+                <div class="bg-dark-800/50 border border-dark-600 rounded-xl p-6">
+                    <div class="text-4xl mb-3">🎬</div>
+                    <h3 class="text-lg font-black mb-2">Квиз по жанрам</h3>
+                    <p class="text-gray-400 text-sm">
+                        Только боевики? Только комедии? Только ужасы? Выбирай что душе угодно.
+                    </p>
+                </div>
+
+                <div class="bg-dark-800/50 border border-dark-600 rounded-xl p-6">
+                    <div class="text-4xl mb-3">🔤</div>
+                    <h3 class="text-lg font-black mb-2">Угадай по буквам</h3>
+                    <p class="text-gray-400 text-sm">
+                        Собери название фильма из перемешанных букв. Двойные очки за прохождение!
+                    </p>
+                </div>
+
+                <div class="bg-dark-800/50 border border-dark-600 rounded-xl p-6">
+                    <div class="text-4xl mb-3">🏆</div>
+                    <h3 class="text-lg font-black mb-2">Топ игроков</h3>
+                    <p class="text-gray-400 text-sm">
+                        Соревнуйся с другими киноманами. Попади в топ и покажи, кто здесь настоящий охотник за фильмами.
+                    </p>
+                </div>
+
+                <div class="bg-dark-800/50 border border-dark-600 rounded-xl p-6">
+                    <div class="text-4xl mb-3">📊</div>
+                    <h3 class="text-lg font-black mb-2">Статистика</h3>
+                    <p class="text-gray-400 text-sm">
+                        Отслеживай прогресс: правильных ответов, любимый жанр, накопленные очки и стрики.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ценности проекта -->
+        <div
+            class="bg-gradient-to-br from-brand/10 to-brand-dark/10 border border-brand/30 rounded-2xl p-8 md:p-10 mb-6">
+            <h2 class="text-2xl md:text-3xl font-black mb-6 text-center">
+                Наши <span class="text-brand">принципы</span>
+            </h2>
+
+            <div class="space-y-4">
+                <div class="flex gap-4 items-start">
+                    <div class="text-3xl flex-shrink-0">🆓</div>
+                    <div>
+                        <h3 class="text-lg font-black mb-1">Всё бесплатно</h3>
+                        <p class="text-gray-300 text-sm">
+                            Никаких платных функций, подписок или премиум-режимов. Все играют на равных.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 items-start">
+                    <div class="text-3xl flex-shrink-0">🚫</div>
+                    <div>
+                        <h3 class="text-lg font-black mb-1">Без рекламы</h3>
+                        <p class="text-gray-300 text-sm">
+                            Никаких баннеров, всплывающих окон и назойливых предложений. Просто квиз и ничего лишнего.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 items-start">
+                    <div class="text-3xl flex-shrink-0">🔒</div>
+                    <div>
+                        <h3 class="text-lg font-black mb-1">Приватность</h3>
+                        <p class="text-gray-300 text-sm">
+                            Только ник и пароль. Ни телефона, ни email, ни паспортных данных. Пароли храним
+                            в зашифрованном виде — даже я не знаю твой.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 items-start">
+                    <div class="text-3xl flex-shrink-0">👤</div>
+                    <div>
+                        <h3 class="text-lg font-black mb-1">Можно играть без регистрации</h3>
+                        <p class="text-gray-300 text-sm">
+                            Хочешь просто попробовать? Играй анонимно. Регистрация нужна только для сохранения
+                            результатов и попадания в топ.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 items-start">
+                    <div class="text-3xl flex-shrink-0">❤️</div>
+                    <div>
+                        <h3 class="text-lg font-black mb-1">Сделано с любовью</h3>
+                        <p class="text-gray-300 text-sm">
+                            Не корпоративный продукт, а pet-проект одного разработчика. Каждый фрагмент, каждый
+                            фильм добавлен вручную.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Технологии (для гиков) -->
+        <div class="bg-dark-800/50 border border-dark-600 rounded-2xl p-8 md:p-10 mb-6">
+            <h2 class="text-2xl md:text-3xl font-black mb-4 text-center">
+                🛠️ Что под <span class="text-brand">капотом</span>
+            </h2>
+            <p class="text-gray-400 text-center mb-6 text-sm">Для тех, кому интересна техническая сторона</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="bg-dark-700/50 border border-dark-600 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-1">🐍</div>
+                    <div class="font-bold text-sm">Python</div>
+                    <div class="text-xs text-gray-500">FastAPI</div>
+                </div>
+                <div class="bg-dark-700/50 border border-dark-600 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-1">🐘</div>
+                    <div class="font-bold text-sm">PostgreSQL</div>
+                    <div class="text-xs text-gray-500">База данных</div>
+                </div>
+                <div class="bg-dark-700/50 border border-dark-600 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-1">🎨</div>
+                    <div class="font-bold text-sm">Tailwind CSS</div>
+                    <div class="text-xs text-gray-500">Дизайн</div>
+                </div>
+                <div class="bg-dark-700/50 border border-dark-600 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-1">🎥</div>
+                    <div class="font-bold text-sm">FFmpeg</div>
+                    <div class="text-xs text-gray-500">Обработка видео</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Планы на будущее -->
+        <div class="bg-dark-800/50 border border-dark-600 rounded-2xl p-8 md:p-10 mb-6">
+            <h2 class="text-2xl md:text-3xl font-black mb-6 text-center">
+                🚀 Что <span class="text-brand">впереди</span>
+            </h2>
+            <p class="text-gray-400 text-center mb-6">
+                Проект развивается. Вот что планирую добавить:
+            </p>
+
+            <ul class="space-y-3 max-w-2xl mx-auto">
+                <li class="flex gap-3 items-start">
+                    <span class="text-brand mt-1">▸</span>
+                    <span class="text-gray-300">Больше фильмов в базе — регулярное пополнение</span>
+                </li>
+                <li class="flex gap-3 items-start">
+                    <span class="text-brand mt-1">▸</span>
+                    <span class="text-gray-300">Новые режимы игры (сериалы? мультфильмы? аниме?)</span>
+                </li>
+                <li class="flex gap-3 items-start">
+                    <span class="text-brand mt-1">▸</span>
+                    <span class="text-gray-300">Достижения и бейджи</span>
+                </li>
+                <li class="flex gap-3 items-start">
+                    <span class="text-brand mt-1">▸</span>
+                    <span class="text-gray-300">Мультиплеер — играть с друзьями в реальном времени</span>
+                </li>
+                <li class="flex gap-3 items-start">
+                    <span class="text-brand mt-1">▸</span>
+                    <span class="text-gray-300">Больше аватаров и кастомизация профиля</span>
+                </li>
+                <li class="flex gap-3 items-start">
+                    <span class="text-brand mt-1">▸</span>
+                    <span class="text-gray-300">Мобильное приложение</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Обратная связь -->
+        <div
+            class="bg-gradient-to-br from-pink-500/10 to-red-500/10 border border-pink-500/30 rounded-2xl p-8 md:p-10 text-center">
+            <div class="text-5xl mb-4">💬</div>
+            <h2 class="text-2xl md:text-3xl font-black mb-3">
+                Есть идеи, баги или предложения?
+            </h2>
+            <p class="text-gray-300 mb-6">
+                Напиши мне напрямую! Я читаю все сообщения и всегда рад обратной связи.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="https://t.me/myhicursed" target="_blank" rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 transition rounded-lg font-bold shadow-lg">
+                    <i class="fa-brands fa-telegram"></i>
+                    Написать в Telegram
+                </a>
+                <a href="mailto:csmain2@mail.ru"
+                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 border border-dark-600 transition rounded-lg font-bold">
+                    <i class="fa-solid fa-envelope"></i>
+                    csmain2@mail.ru
+                </a>
+            </div>
+        </div>
+
+        <!-- Кнопки внизу -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-center mt-8">
+            <a href="/"
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-semibold border border-dark-600">
+                <i class="fa-solid fa-home"></i>
+                На главную
+            </a>
+            <a href="/quiz"
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-semibold shadow-lg shadow-brand/30">
+                <i class="fa-solid fa-play"></i>
+                Начать играть
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

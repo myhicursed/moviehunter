@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}МУВИХАНТЕР{% endblock %}</title>
+
+    <!-- Мгновенная проверка авторизации (антимигание) -->
+    <script>
+        (function () {
+            if (localStorage.getItem('moviehunter_token')) {
+                document.documentElement.classList.add('auth-loaded');
+            }
+        })();
+    </script>
+
+    <!-- Стили для показа/скрытия элементов авторизации -->
+    <style>
+        /* Авторизация в шапке */
+        #loginBtn {
+            display: block;
+        }
+
+        #profileLink {
+            display: none;
+        }
+
+        html.auth-loaded #loginBtn {
+            display: none;
+        }
+
+        html.auth-loaded #profileLink {
+            display: flex;
+        }
+
+        /* Главная страница: гость vs авторизованный */
+        .guest-only {
+            display: block;
+        }
+
+        .user-only {
+            display: none;
+        }
+
+        html.auth-loaded .guest-only {
+            display: none;
+        }
+
+        html.auth-loaded .user-only {
+            display: block;
+        }
+    </style>
+
+    <!-- Tailwind CSS через CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Наши доп. стили -->
+    <link rel="stylesheet" href="/static/css/custom.css">
+
+    <!-- Иконки Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Шрифт -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            DEFAULT: '#e50914',
+                            dark: '#b20710',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#141414',
+                            700: '#1f1f1f',
+                            600: '#2d2d2d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-dark-900 text-white min-h-screen font-sans flex flex-col relative overflow-x-hidden">
+
+    <!-- Глобальный фон и декор -->
+    <div class="fixed inset-0 -z-10 pointer-events-none">
+        <!-- Градиент -->
+        <div class="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-800 to-brand/20"></div>
+
+        <!-- Декоративные эмодзи -->
+        <div class="absolute inset-0 opacity-[0.07]">
+            <div class="absolute top-20 left-10 text-9xl">🎬</div>
+            <div class="absolute bottom-40 right-10 text-9xl">🎞️</div>
+            <div class="absolute top-1/2 left-1/4 text-8xl">🍿</div>
+            <div class="absolute top-1/3 right-1/4 text-8xl">🎥</div>
+            <div class="absolute bottom-20 left-1/3 text-9xl">🎭</div>
+        </div>
+    </div>
+
+    {% include "partials/header.html" %}
+
+    <main class="flex-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/footer.html" %}
+
+    {% include "partials/auth_modal.html" %}
+
+    <!-- Общий JS для всех страниц -->
+    <script src="/static/js/auth.js"></script>
+
+    {% block scripts %}{% endblock %}
+
+</body>
+
+</html>

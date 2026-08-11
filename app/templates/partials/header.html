@@ -1,0 +1,35 @@
+<header class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-dark-900 to-transparent">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Логотип -->
+        <a href="/" class="flex items-center gap-3 group">
+            <span class="text-2xl font-black tracking-tight text-brand">
+                МУВИ<span class="text-white">ХАНТЕР</span>
+            </span>
+        </a>
+
+        <!-- Правая часть -->
+        <div class="flex items-center gap-3">
+
+            <!-- Кнопка "Поддержать" (всегда видна) -->
+            <a href="/support" target="_blank"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 transition rounded-lg font-bold text-sm shadow-lg shadow-pink-500/30"
+                title="Поддержать проект">
+                <i class="fa-solid fa-heart"></i>
+                <span class="hidden sm:inline">Поддержать</span>
+            </a>
+
+            <!-- Кнопка "Войти" (для гостей) -->
+            <button id="loginBtn"
+                class="hidden md:block px-6 py-2 bg-brand hover:bg-brand-dark transition rounded-md font-semibold">
+                Войти
+            </button>
+
+            <!-- Профиль (для авторизованных) -->
+            <a id="profileLink" href="/profile" class="hidden items-center gap-3 hover:opacity-80 transition">
+                <img id="userAvatar" src="/static/avatars/default.png" alt="Аватар"
+                    class="w-10 h-10 rounded-full border-2 border-brand object-cover">
+                <span id="userName" class="hidden md:block font-semibold"></span>
+            </a>
+        </div>
+    </nav>
+</header>
