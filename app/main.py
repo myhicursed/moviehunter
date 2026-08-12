@@ -11,7 +11,14 @@ from app.routers import auth, donations, leaderboard, pages, profile, quiz
 
 BASE_DIR = Path(__file__).resolve().parent
 
-app = FastAPI(title="Cinema Quiz")
+is_prod = settings.environment == "prod"
+
+app = FastAPI(
+    title="MovieHunter",
+    docs_url=None if is_prod else "/docs",
+    redoc_url=None if is_prod else "/redoc",
+    openapi_url=None if is_prod else "/openapi.json",
+)
 
 app.add_middleware(
     CORSMiddleware,

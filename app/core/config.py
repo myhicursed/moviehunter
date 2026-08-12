@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 1440
     admin_username: str
     admin_password: str
+    environment: str = "dev"
 
     class Config:
         env_file = ".env"
