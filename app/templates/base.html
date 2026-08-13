@@ -52,11 +52,16 @@
 
     <!-- Стили для показа/скрытия элементов авторизации -->
     <style>
+        /* Авторизация в шапке */
         #loginBtn {
             display: block;
         }
 
         #profileLink {
+            display: none;
+        }
+
+        #tgLink {
             display: none;
         }
 
@@ -68,6 +73,11 @@
             display: flex;
         }
 
+        html.auth-loaded #tgLink {
+            display: inline-flex;
+        }
+
+        /* Главная страница: гость vs авторизованный */
         .guest-only {
             display: block;
         }
