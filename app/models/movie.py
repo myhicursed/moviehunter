@@ -14,6 +14,8 @@ class Movie(Base):
     year: Mapped[int] = mapped_column(Integer)
     director: Mapped[str | None] = mapped_column(String(200), nullable=True)
     genre: Mapped[str] = mapped_column(String(50))
+    genre_2: Mapped[str | None] = mapped_column(String(50), nullable=True) 
+    genre_3: Mapped[str | None] = mapped_column(String(50), nullable=True) 
     difficulty: Mapped[str] = mapped_column(
         String(20), default="medium"
     )  # easy/medium/hard

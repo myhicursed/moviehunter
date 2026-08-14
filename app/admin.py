@@ -54,9 +54,19 @@ class MovieForm(Form):
         validators=[validators.Optional(), validators.Length(max=200)],
     )
     genre = SelectField(
-        "Жанр",
+        "Жанр (основной)",
         choices=list(GENRES.items()),
         validators=[validators.DataRequired()],
+    )
+    genre_2 = SelectField(
+        "Жанр 2 (опционально)",
+        choices=[("", "— нет —")] + list(GENRES.items()),
+        validators=[validators.Optional()],
+    )
+    genre_3 = SelectField(
+        "Жанр 3 (опционально)",
+        choices=[("", "— нет —")] + list(GENRES.items()),
+        validators=[validators.Optional()],
     )
     difficulty = SelectField(
         "Сложность",
@@ -87,6 +97,8 @@ class MovieAdmin(ModelView, model=Movie):
         Movie.title,
         Movie.year,
         Movie.genre,
+        Movie.genre_2,
+        Movie.genre_3,
         Movie.country,
         Movie.difficulty,
         Movie.director,
@@ -102,6 +114,8 @@ class MovieAdmin(ModelView, model=Movie):
         Movie.year: "Год",
         Movie.director: "Режиссёр",
         Movie.genre: "Жанр",
+        Movie.genre_2: "Жанр 2",
+        Movie.genre_3: "Жанр 3",
         Movie.country: "Страна",
         Movie.difficulty: "Сложность",
         Movie.filename: "Видео",
