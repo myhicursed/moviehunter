@@ -22,7 +22,14 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://moviehunter.ru",
+        "https://yandex.ru",
+        "https://games.yandex.ru",
+        "https://games.s3.yandex.net",
+        "https://yandex.com",
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
