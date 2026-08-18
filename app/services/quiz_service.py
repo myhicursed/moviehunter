@@ -88,7 +88,6 @@ async def save_answer(
         is_correct = correct_title == user_clean
         correct_answer_display = correct_title
 
-        # Если неправильно — считаем маску совпадений по позициям
         if not is_correct and user_answer != "__surrender__":
             letter_matches = []
             for i in range(len(correct_title)):
@@ -97,8 +96,13 @@ async def save_answer(
                 else:
                     letter_matches.append(False)
     else:
-        is_correct = movie.title == user_answer
-        correct_answer_display = movie.title
+        # Обработка таймаута
+        if user_answer == "__timeout__":
+            is_correct = False
+            correct_answer_display = movie.title
+        else:
+            is_correct = movie.title == user_answer
+            correct_answer_display = movie.title
 
     # 3. Посчитать очки
     points = DIFFICULTY_POINTS.get(movie.difficulty, 1) if is_correct else 0
@@ -107,8 +111,9 @@ async def save_answer(
     if mode == "letters" and is_correct:
         points *= 2
 
-    # 4. Сохранить, если авторизован
-    if current_user is not None:
+    # 4. Сохранить, если авторизован (но не при timeout)
+
+    if current_user is not None and user_answer != "__timeout__":
         await create_game_answer(
             session=session,
             user_id=current_user.id,

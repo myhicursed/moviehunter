@@ -56,6 +56,20 @@ endblock %}
                     class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase"></span>
             </div>
 
+            <!-- Статус: "смотри видео" или таймер -->
+            <div id="questionStatus" class="mb-4 text-center">
+                <div id="watchingStatus"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500 rounded-lg">
+                    <i class="fa-solid fa-eye"></i>
+                    <span class="font-semibold">Смотри внимательно...</span>
+                </div>
+                <div id="timerStatus"
+                    class="hidden inline-flex items-center gap-2 px-4 py-2 bg-brand/20 border border-brand rounded-lg">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Осталось: <span id="timerSeconds" class="font-black text-brand">10</span> сек</span>
+                </div>
+            </div>
+
             <!-- Видео -->
             <div class="relative bg-black rounded-xl overflow-hidden mb-6 shadow-2xl">
                 <video id="videoPlayer" class="w-full aspect-video" controls autoplay playsinline></video>
