@@ -13,7 +13,12 @@ const state = {
     lockedSlots: [],   // буквы, угаданные на правильных местах
     attemptsUsed: 0,
     maxAttempts: 3,
+    videoWatched: false,
+    timerInterval: null,
+    timerRemaining: 0,
+    lettersLocked: true,
 };
+const LETTERS_TIME_LIMIT = 30;
 
 
 // ============================================
@@ -23,8 +28,9 @@ const state = {
 function showScreen(id) {
     if (id !== 'gameScreen') stopVideo();
 
-    ['loadingScreen', 'errorScreen', 'gameScreen', 'resultScreen'].forEach(s => {
-        document.getElementById(s).classList.add('hidden');
+    ['loadingScreen', 'errorScreen', 'gameScreen', 'resultScreen', 'reloadScreen'].forEach(s => {
+        const el = document.getElementById(s);
+        if (el) el.classList.add('hidden');
     });
     document.getElementById(id).classList.remove('hidden');
 }
@@ -112,6 +118,20 @@ function showQuestion() {
     video.src = `/media/movies/${q.filename}`;
     video.load();
 
+    // Защита от паузы
+    video.onpause = () => {
+        if (!video.ended && !state.answered) {
+            video.play().catch(() => { });
+        }
+    };
+
+    // Когда видео закончится — разблокировать буквы и запустить таймер
+    video.onended = () => {
+        state.videoWatched = true;
+        enableLetters();
+        startLettersTimer();
+    };
+
     // Инициализация слотов, пула и локов
     state.answerSlots = new Array(q.answer_length).fill(null);
     state.lockedSlots = new Array(q.answer_length).fill(false);
@@ -131,9 +151,18 @@ function showQuestion() {
 
     // Сброс кнопок
     document.getElementById('checkBtn').disabled = true;
-    setActionButtons(false);
+    setActionButtons(true);   // 🆕 блокируем сразу
     document.getElementById('nextButtonContainer').classList.add('hidden');
     document.getElementById('resultMessage').classList.add('hidden');
+
+    // Статус
+    document.getElementById('lettersWatchingStatus').classList.remove('hidden');
+    document.getElementById('lettersTimerStatus').classList.add('hidden');
+
+    state.lettersLocked = true;
+    // Сброс таймера
+    state.videoWatched = false;
+    clearLettersTimer();
 }
 
 
@@ -228,7 +257,8 @@ function renderPool() {
     const container = document.getElementById('lettersPool');
 
     container.innerHTML = state.poolLetters.map(letter => {
-        const disabledClass = letter.used
+        const isDisabled = letter.used || state.lettersLocked;
+        const disabledClass = isDisabled
             ? 'opacity-30 cursor-not-allowed'
             : 'hover:bg-brand hover:border-brand cursor-pointer';
 
@@ -236,7 +266,7 @@ function renderPool() {
             <button 
                 class="letter-btn w-10 h-12 md:w-12 md:h-14 flex items-center justify-center rounded-lg font-black text-lg md:text-xl bg-dark-700 border-2 border-dark-500 transition ${disabledClass}"
                 data-letter-id="${letter.id}"
-                ${letter.used ? 'disabled' : ''}
+                ${isDisabled ? 'disabled' : ''}
             >
                 ${letter.char}
             </button>
@@ -258,6 +288,7 @@ function renderPool() {
 
 function placeLetterInSlot(letterId) {
     if (state.answered) return;
+    if (state.lettersLocked) return;
 
     // Найти первый пустой НЕзалоченный слот
     const q = state.questions[state.currentIndex];
@@ -403,8 +434,8 @@ async function checkAnswer() {
         if (result.correct) {
             // === ПРАВИЛЬНО ===
             state.answered = true;
+            clearLettersTimer();   // 🆕 остановить таймер
 
-            // Все слоты зелёные и залоченные
             state.lockedSlots = state.lockedSlots.map(() => true);
             renderSlots();
 
@@ -424,8 +455,6 @@ async function checkAnswer() {
             document.getElementById('attemptsUsed').textContent = state.attemptsUsed;
 
             const slots = document.querySelectorAll('.slot-btn');
-
-            // Тряска и подсветка
             slots.forEach(btn => btn.classList.add('shake'));
 
             if (result.letter_matches) {
@@ -439,24 +468,20 @@ async function checkAnswer() {
                 });
             }
 
-            // Проверяем — исчерпаны ли попытки
             if (state.attemptsUsed >= state.maxAttempts) {
                 // === ПОПЫТКИ ЗАКОНЧИЛИСЬ ===
                 state.answered = true;
+                clearLettersTimer();   // 🆕 остановить таймер
 
                 msgText.textContent = '💔 Ты не угадал';
                 msgText.className = 'text-2xl font-black text-red-400';
                 msgBlock.classList.remove('hidden');
 
-                // Показать правильный ответ через 1 сек
                 setTimeout(() => {
                     showCorrectAnswer(result.correct_answer);
-
-                    // Слоты — серые
                     document.querySelectorAll('.slot-btn').forEach(btn => {
                         btn.classList.remove('shake');
                     });
-
                     showNextButton();
                 }, 1000);
 
@@ -467,7 +492,6 @@ async function checkAnswer() {
                 msgText.className = 'text-2xl font-black text-red-400';
                 msgBlock.classList.remove('hidden');
 
-                // Через 1.2 сек — залочить правильные, неправильные вернуть в пул
                 setTimeout(() => {
                     if (result.letter_matches) {
                         result.letter_matches.forEach((isCorrect, idx) => {
@@ -533,6 +557,7 @@ async function surrender() {
     const q = state.questions[state.currentIndex];
 
     state.answered = true;
+    clearLettersTimer();   // 🆕 остановить таймер
     document.getElementById('checkBtn').disabled = true;
     setActionButtons(true);
 
@@ -574,6 +599,7 @@ async function surrender() {
 // ============================================
 
 function nextQuestion() {
+    clearLettersTimer();
     state.currentIndex++;
     if (state.currentIndex >= state.questions.length) {
         showResult();
@@ -588,6 +614,7 @@ function nextQuestion() {
 // ============================================
 
 function showResult() {
+    clearLettersTimer();
     stopVideo();
     const total = state.questions.length;
     const percent = Math.round((state.correctCount / total) * 100);
@@ -633,13 +660,155 @@ function stopVideo() {
     }
 }
 
+// ============================================
+// РАЗБЛОКИРОВКА БУКВ ПОСЛЕ ВИДЕО
+// ============================================
+
+function enableLetters() {
+    document.getElementById('lettersWatchingStatus').classList.add('hidden');
+    document.getElementById('lettersTimerStatus').classList.remove('hidden');
+
+    // 🆕 Разблокировать буквы
+    state.lettersLocked = false;
+
+    setActionButtons(false);
+    renderPool();
+}
+
+
+// ============================================
+// ТАЙМЕР ДЛЯ РЕЖИМА БУКВ
+// ============================================
+
+function startLettersTimer() {
+    state.timerRemaining = LETTERS_TIME_LIMIT;
+    updateLettersTimerDisplay();
+
+    state.timerInterval = setInterval(() => {
+        state.timerRemaining--;
+        updateLettersTimerDisplay();
+
+        if (state.timerRemaining <= 0) {
+            lettersTimeExpired();
+        }
+    }, 1000);
+}
+
+function updateLettersTimerDisplay() {
+    const el = document.getElementById('lettersTimerSeconds');
+    if (el) el.textContent = state.timerRemaining;
+
+    const timerBlock = document.getElementById('lettersTimerStatus');
+    if (state.timerRemaining <= 5) {
+        timerBlock?.classList.add('animate-pulse');
+    }
+}
+
+function clearLettersTimer() {
+    if (state.timerInterval) {
+        clearInterval(state.timerInterval);
+        state.timerInterval = null;
+    }
+    const timerBlock = document.getElementById('lettersTimerStatus');
+    if (timerBlock) timerBlock.classList.remove('animate-pulse');
+}
+
+
+// ============================================
+// ВРЕМЯ ИСТЕКЛО В РЕЖИМЕ БУКВ
+// ============================================
+
+async function lettersTimeExpired() {
+    if (state.answered) return;
+    state.answered = true;
+    clearLettersTimer();
+
+    const q = state.questions[state.currentIndex];
+
+    // Заблокировать всё
+    setActionButtons(true);
+    document.getElementById('checkBtn').disabled = true;
+
+    // Получить правильный ответ через сдачу
+    try {
+        const response = await apiRequest('/api/quiz/answer', {
+            method: 'POST',
+            body: JSON.stringify({
+                movie_id: q.movie_id,
+                user_answer: '__surrender__',
+                mode: 'letters',
+            }),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            showCorrectAnswer(result.correct_answer);
+        }
+    } catch (err) {
+        console.error('Ошибка при таймауте:', err);
+    }
+
+    // Сообщение
+    const msgBlock = document.getElementById('resultMessage');
+    const msgText = document.getElementById('resultMessageText');
+    msgText.textContent = '⏱ Время вышло!';
+    msgText.className = 'text-2xl font-black text-red-400';
+    msgBlock.classList.remove('hidden');
+
+    // Изменить стиль таймера
+    const timerBlock = document.getElementById('lettersTimerStatus');
+    timerBlock.innerHTML = `
+        <i class="fa-solid fa-triangle-exclamation text-red-400"></i>
+        <span class="text-red-400 font-bold">Время вышло!</span>
+    `;
+    timerBlock.classList.remove('animate-pulse', 'border-brand', 'bg-brand/20');
+    timerBlock.classList.add('border-red-500', 'bg-red-500/20');
+
+    showNextButton();
+}
+
+
+// ============================================
+// ПРОВЕРКА ОБНОВЛЕНИЯ СТРАНИЦЫ
+// ============================================
+
+function checkIfPageReloaded() {
+    try {
+        const navEntries = performance.getEntriesByType('navigation');
+        if (navEntries.length > 0) {
+            return navEntries[0].type === 'reload';
+        }
+    } catch (e) {
+        console.warn('Performance API недоступен:', e);
+    }
+    return false;
+}
 
 // ============================================
 // ИНИЦИАЛИЗАЦИЯ
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadQuiz();
+    // Проверка обновления страницы
+    const isReload = checkIfPageReloaded();
+
+    if (isReload) {
+        showScreen('reloadScreen');
+    } else {
+        loadQuiz();
+    }
+
+    // Кнопка "Начать заново"
+    const reloadBtn = document.getElementById('reloadStartBtn');
+    if (reloadBtn) {
+        reloadBtn.addEventListener('click', loadQuiz);
+    }
+
+    // Защита от правого клика на видео
+    const video = document.getElementById('lettersVideoPlayer');
+    if (video) {
+        video.addEventListener('contextmenu', e => e.preventDefault());
+    }
 
     document.getElementById('checkBtn').addEventListener('click', checkAnswer);
     document.getElementById('clearBtn').addEventListener('click', clearAnswer);

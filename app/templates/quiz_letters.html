@@ -26,6 +26,27 @@
             </a>
         </div>
 
+        <!-- ЭКРАН: Страница обновлена -->
+        <div id="reloadScreen" class="hidden text-center py-20">
+            <div class="text-6xl mb-4">🔄</div>
+            <h2 class="text-2xl md:text-3xl font-bold mb-3">Страница была обновлена</h2>
+            <p class="text-gray-400 mb-8 max-w-md mx-auto">
+                Твой прогресс сброшен. Хочешь начать квиз заново?
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button id="reloadStartBtn"
+                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-bold shadow-lg shadow-brand/30">
+                    <i class="fa-solid fa-play"></i>
+                    Начать заново
+                </button>
+                <a href="/"
+                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-bold border border-dark-600">
+                    <i class="fa-solid fa-home"></i>
+                    На главную
+                </a>
+            </div>
+        </div>
+
         <!-- Игра -->
         <div id="gameScreen" class="hidden">
             <!-- Прогресс + счёт -->
@@ -72,9 +93,24 @@
                     class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase"></span>
             </div>
 
+            <!-- Статус: "смотри" или таймер -->
+            <div id="lettersQuestionStatus" class="mb-4 text-center">
+                <div id="lettersWatchingStatus"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500 rounded-lg">
+                    <i class="fa-solid fa-eye"></i>
+                    <span class="font-semibold">Смотри внимательно...</span>
+                </div>
+                <div id="lettersTimerStatus"
+                    class="hidden inline-flex items-center gap-2 px-4 py-2 bg-brand/20 border border-brand rounded-lg">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Осталось: <span id="lettersTimerSeconds" class="font-black text-brand">30</span> сек</span>
+                </div>
+            </div>
+
             <!-- Видео -->
             <div class="relative bg-black rounded-xl overflow-hidden mb-6 shadow-2xl">
-                <video id="videoPlayer" class="w-full aspect-video" controls autoplay playsinline></video>
+                <video id="videoPlayer" class="w-full aspect-video pointer-events-none" autoplay playsinline
+                    disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback"></video>
             </div>
 
             <!-- Квадраты для букв (ответ) -->
