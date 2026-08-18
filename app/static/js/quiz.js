@@ -26,8 +26,9 @@ function showScreen(id) {
         stopVideo();
     }
 
-    ['loadingScreen', 'errorScreen', 'gameScreen', 'resultScreen'].forEach(s => {
-        document.getElementById(s).classList.add('hidden');
+    ['loadingScreen', 'errorScreen', 'gameScreen', 'resultScreen', 'reloadScreen'].forEach(s => {
+        const el = document.getElementById(s);
+        if (el) el.classList.add('hidden');
     });
     document.getElementById(id).classList.remove('hidden');
 }
@@ -481,7 +482,21 @@ function stopVideo() {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadQuiz();
+    const isReload = checkIfPageReloaded();
+
+    if (isReload) {
+        // Показываем экран "Начать заново"
+        showScreen('reloadScreen');
+    } else {
+        // Обычная загрузка → сразу квиз
+        loadQuiz();
+    }
+
+    // Кнопка "Начать заново" на экране перезагрузки
+    const reloadBtn = document.getElementById('reloadStartBtn');
+    if (reloadBtn) {
+        reloadBtn.addEventListener('click', loadQuiz);
+    }
 
     const video = document.getElementById('videoPlayer');
     if (video) {
@@ -493,3 +508,15 @@ document.addEventListener('DOMContentLoaded', () => {
         openAuthModal('register');
     });
 });
+
+function checkIfPageReloaded() {
+    try {
+        const navEntries = performance.getEntriesByType('navigation');
+        if (navEntries.length > 0) {
+            return navEntries[0].type === 'reload';
+        }
+    } catch (e) {
+        console.warn('Performance API недоступен:', e);
+    }
+    return false;
+}
