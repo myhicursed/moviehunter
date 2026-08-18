@@ -144,14 +144,18 @@ function showQuestion() {
     video.src = `/media/movies/${q.filename}`;
     video.load();
 
-    // Событие: видео закончилось → разблокируем ответы и запускаем таймер
+    video.onpause = () => {
+        if (!video.ended && !state.answered) {
+            video.play().catch(() => { });
+        }
+    };
+
     video.onended = () => {
         state.videoWatched = true;
         unlockOptions();
         startTimer();
     };
 
-    // Варианты ответа (заблокированы пока идёт видео)
     const container = document.getElementById('optionsContainer');
     container.innerHTML = q.options.map(option => `
         <button 
@@ -164,7 +168,6 @@ function showQuestion() {
         </button>
     `).join('');
 
-    // Скрыть кнопку "Далее"
     document.getElementById('nextButtonContainer').classList.add('hidden');
 }
 
@@ -180,12 +183,10 @@ function unlockOptions() {
         btn.classList.remove('locked', 'opacity-50', 'cursor-not-allowed');
         btn.classList.add('hover:bg-dark-700', 'hover:border-brand', 'transition', 'cursor-pointer');
 
-        // Убрать disabled стиль и добавить полноценный ховер
         const q = state.questions[state.currentIndex];
         btn.addEventListener('click', () => handleAnswer(btn, q));
     });
 
-    // Показать таймер
     document.getElementById('watchingStatus').classList.add('hidden');
     document.getElementById('timerStatus').classList.remove('hidden');
 }
@@ -482,6 +483,10 @@ function stopVideo() {
 document.addEventListener('DOMContentLoaded', () => {
     loadQuiz();
 
+    const video = document.getElementById('videoPlayer');
+    if (video) {
+        video.addEventListener('contextmenu', e => e.preventDefault());
+    }
     document.getElementById('nextButton').addEventListener('click', nextQuestion);
     document.getElementById('playAgainBtn').addEventListener('click', loadQuiz);
     document.getElementById('guestLoginBtn').addEventListener('click', () => {
