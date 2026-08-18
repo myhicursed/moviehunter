@@ -92,6 +92,9 @@ function showQuestion() {
     const q = state.questions[state.currentIndex];
     state.answered = false;
     state.attemptsUsed = 0;
+    state.videoWatched = false;
+    state.lettersLocked = true;   // 🆕 СРАЗУ блокируем (до renderPool)
+    clearLettersTimer();
 
     // Прогресс
     document.getElementById('currentQuestion').textContent = state.currentIndex + 1;
@@ -113,19 +116,30 @@ function showQuestion() {
     badge.textContent = diff.text;
     badge.className = `inline-block px-3 py-1 rounded-full text-xs font-bold uppercase ${diff.class}`;
 
+    // Статус
+    document.getElementById('lettersWatchingStatus').classList.remove('hidden');
+
+    // Сброс таймера в дефолтное состояние
+    const timerBlock = document.getElementById('lettersTimerStatus');
+    timerBlock.classList.add('hidden');
+    timerBlock.classList.remove('border-red-500', 'bg-red-500/20', 'animate-pulse');
+    timerBlock.classList.add('border-brand', 'bg-brand/20');
+    timerBlock.innerHTML = `
+        <i class="fa-solid fa-clock"></i>
+        <span>Осталось: <span id="lettersTimerSeconds" class="font-black text-brand">30</span> сек</span>
+    `;
+
     // Видео
     const video = document.getElementById('videoPlayer');
     video.src = `/media/movies/${q.filename}`;
     video.load();
 
-    // Защита от паузы
     video.onpause = () => {
         if (!video.ended && !state.answered) {
             video.play().catch(() => { });
         }
     };
 
-    // Когда видео закончится — разблокировать буквы и запустить таймер
     video.onended = () => {
         state.videoWatched = true;
         enableLetters();
@@ -146,23 +160,15 @@ function showQuestion() {
         used: false,
     }));
 
+    // Рендер (уже с lettersLocked = true → буквы будут серыми)
     renderSlots();
     renderPool();
 
-    // Сброс кнопок
+    // Сброс UI
     document.getElementById('checkBtn').disabled = true;
-    setActionButtons(true);   // 🆕 блокируем сразу
+    setActionButtons(true);
     document.getElementById('nextButtonContainer').classList.add('hidden');
     document.getElementById('resultMessage').classList.add('hidden');
-
-    // Статус
-    document.getElementById('lettersWatchingStatus').classList.remove('hidden');
-    document.getElementById('lettersTimerStatus').classList.add('hidden');
-
-    state.lettersLocked = true;
-    // Сброс таймера
-    state.videoWatched = false;
-    clearLettersTimer();
 }
 
 

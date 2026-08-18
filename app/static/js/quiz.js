@@ -137,8 +137,18 @@ function showQuestion() {
     badge.className = `inline-block px-3 py-1 rounded-full text-xs font-bold uppercase ${diff.class}`;
 
     // Статус: показать "смотри", скрыть таймер
+    // Статус: показать "смотри", скрыть таймер
     document.getElementById('watchingStatus').classList.remove('hidden');
-    document.getElementById('timerStatus').classList.add('hidden');
+
+    // Сброс таймера в дефолтное состояние
+    const timerBlock = document.getElementById('timerStatus');
+    timerBlock.classList.add('hidden');
+    timerBlock.classList.remove('border-red-500', 'bg-red-500/20', 'animate-pulse');
+    timerBlock.classList.add('border-brand', 'bg-brand/20');
+    timerBlock.innerHTML = `
+    <i class="fa-solid fa-clock"></i>
+    <span>Осталось: <span id="timerSeconds" class="font-black text-brand">10</span> сек</span>
+`;
 
     // Видео
     const video = document.getElementById('videoPlayer');
