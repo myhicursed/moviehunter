@@ -79,3 +79,50 @@ async def count_movies(session: AsyncSession, genre: str | None = None) -> int:
         )
     result = await session.execute(stmt)
     return result.scalar_one()
+
+
+async def get_catalog_movies(
+    session: AsyncSession,
+    page: int = 1,
+    limit: int = 24,
+    search: str | None = None,
+    genre: str | None = None,
+):
+    filters = []
+
+    if search:
+        clean_search = search.strip()
+
+        if clean_search:
+            filters.append(Movie.title.ilike(f"%{clean_search}%"))
+
+    if genre:
+        filters.append(
+            (Movie.genre == genre) | (Movie.genre_2 == genre) | (Movie.genre_3 == genre)
+        )
+
+    count_stmt = select(func.count(Movie.id))
+
+    if filters:
+        count_stmt = count_stmt.where(*filters)
+
+    count_result = await session.execute(count_stmt)
+
+    total = count_result.scalar_one()
+
+    stmt = (
+        select(Movie)
+        .order_by(
+            Movie.created_at.desc(),
+            Movie.id.desc(),
+        )
+        .offset((page - 1) * limit)
+        .limit(limit)
+    )
+
+    if filters:
+        stmt = stmt.where(*filters)
+
+    result = await session.execute(stmt)
+
+    return result.scalars().all(), total

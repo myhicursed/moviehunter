@@ -103,12 +103,61 @@ endblock %}
             </div>
 
             <!-- Кнопка "Далее" (появляется после ответа) -->
-            <div id="nextButtonContainer" class="hidden mt-6 text-center">
-                <button id="nextButton"
-                    class="inline-flex items-center gap-2 px-8 py-4 bg-brand hover:bg-brand-dark transition rounded-lg font-bold text-lg shadow-lg shadow-brand/30">
-                    Дальше
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
+            <div id="nextButtonContainer" class="hidden mt-6">
+
+                <div class="flex flex-col sm:flex-row
+               items-stretch sm:items-center
+               justify-center
+               gap-3">
+
+                    <!-- Хочу посмотреть -->
+                    <button id="libraryButton" type="button" class="inline-flex
+                   items-center justify-center
+                   gap-2
+                   min-h-[56px]
+                   px-6 py-3
+                   bg-white/5
+                   hover:bg-white/10
+                   border border-white/10
+                   hover:border-brand/40
+                   rounded-xl
+                   font-bold
+                   text-sm
+                   text-gray-200
+                   transition-all duration-300">
+
+                        <i id="libraryButtonIcon" class="fa-regular fa-bookmark text-brand">
+                        </i>
+
+                        <span id="libraryButtonText">
+                            Хочу посмотреть
+                        </span>
+
+                    </button>
+
+
+                    <!-- Далее -->
+                    <button id="nextButton" type="button" class="inline-flex
+                   items-center justify-center
+                   gap-2
+                   min-h-[56px]
+                   px-8 py-3
+                   bg-brand
+                   hover:bg-brand-dark
+                   transition
+                   rounded-xl
+                   font-bold
+                   text-base sm:text-lg
+                   shadow-lg shadow-brand/30">
+
+                        Дальше
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+                </div>
+
             </div>
         </div>
 
@@ -166,5 +215,5 @@ endblock %}
 
 
 {% block scripts %}
-<script src="/static/js/quiz.js?v=2"></script>
+<script src="/static/js/quiz.js?v=3"></script>
 {% endblock %}

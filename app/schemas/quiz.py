@@ -20,6 +20,9 @@ class QuizResult(BaseModel):
     points: int
     letter_matches: list[bool] | None = None
 
+    movie_id: int
+    in_library: bool | None = None
+
 
 class Genre(BaseModel):
     code: str

@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.text_utils import clean_title_for_letters
 from app.models.user import User
 from app.repositories.game_answer_repository import create_game_answer
+from app.repositories.library_repository import is_movie_in_library
 from app.repositories.movie_repository import (
     count_movies,
     get_movie_by_id,
@@ -13,6 +14,7 @@ from app.repositories.movie_repository import (
     get_random_movies,
     get_random_movies_except,
 )
+from app.repositories.movie_stats_repository import increment_movie_stats
 from app.schemas.quiz import LetterQuestion, QuizQuestion, QuizResult
 
 MIN_MOVIES = 4
@@ -122,12 +124,36 @@ async def save_answer(
             points=points,
         )
 
-    # 5. Вернуть результат
+    # ============================================
+    # ОБЩАЯ СТАТИСТИКА ФИЛЬМА
+    # ============================================
+
+    # Пока letters не смешиваем с обычным угадыванием.
+    if mode != "letters":
+        await increment_movie_stats(
+            session=session,
+            movie_id=movie.id,
+            is_correct=is_correct,
+        )
+
+        await session.commit()
+
+    in_library = None
+
+    if current_user is not None:
+        in_library = await is_movie_in_library(
+            session=session,
+            user_id=current_user.id,
+            movie_id=movie.id,
+        )
+
     return QuizResult(
         correct=is_correct,
         correct_answer=correct_answer_display,
         points=points,
         letter_matches=letter_matches,
+        movie_id=movie.id,
+        in_library=in_library,
     )
 
 

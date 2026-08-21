@@ -7,7 +7,16 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app.admin import setup_admin
 from app.core.config import settings
-from app.routers import auth, donations, leaderboard, pages, profile, quiz
+from app.routers import (
+    auth,
+    donations,
+    leaderboard,
+    library,
+    movies_catalog,
+    pages,
+    profile,
+    quiz,
+)
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -42,6 +51,8 @@ app.add_middleware(
 app.include_router(quiz.router)
 app.include_router(auth.router)
 app.include_router(profile.router)
+app.include_router(library.router)
+app.include_router(movies_catalog.router)
 app.include_router(leaderboard.router)
 app.include_router(pages.router)
 app.include_router(donations.router)

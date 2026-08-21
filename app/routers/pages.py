@@ -91,6 +91,44 @@ async def about_page(request: Request):
     )
 
 
+@router.get(
+    "/films",
+    response_class=HTMLResponse,
+)
+async def films_page(
+    request: Request,
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="films.html",
+    )
+
+
+@router.get(
+    "/film/{movie_id}",
+    response_class=HTMLResponse,
+)
+async def film_page(
+    request: Request,
+    movie_id: int,
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="film.html",
+        context={
+            "movie_id": movie_id,
+        },
+    )
+
+
+@router.get("/leaderboard", response_class=HTMLResponse)
+async def leaderboard_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="leaderboard.html",
+    )
+
+
 @router.get("/sitemap.xml", response_class=Response)
 async def sitemap():
     """Карта сайта для поисковиков."""
@@ -154,11 +192,3 @@ async def sitemap():
     xml_content += "</urlset>"
 
     return Response(content=xml_content, media_type="application/xml")
-
-
-@router.get("/leaderboard", response_class=HTMLResponse)
-async def leaderboard_page(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="leaderboard.html",
-    )

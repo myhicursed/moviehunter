@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Фильмотека | МУВИХАНТЕР{% endblock %}
+
+{% block content %}
+
+<div class="pt-20 sm:pt-24 pb-16 min-h-screen">
+
+    <div class="container mx-auto px-3 sm:px-6 max-w-7xl">
+
+
+        <!-- HEADER -->
+        <div class="text-center mb-6 sm:mb-10">
+
+            <div class="inline-flex items-center gap-2
+                       px-3 py-1
+                       rounded-full
+                       bg-brand/10
+                       border border-brand/20
+                       text-brand
+                       text-xs font-bold
+                       uppercase tracking-wider
+                       mb-3">
+
+                <i class="fa-solid fa-film"></i>
+
+                Кино МУВИХАНТЕРА
+
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl
+                       font-black
+                       mb-2">
+
+                Фильмотека
+
+            </h1>
+
+            <p class="text-sm sm:text-base text-gray-400">
+
+                Все фильмы, которые встречаются в игре
+
+            </p>
+
+        </div>
+
+
+        <!-- ПОИСК -->
+        <div class="max-w-2xl mx-auto mb-5">
+
+            <div class="relative">
+
+                <i class="fa-solid fa-magnifying-glass
+                           absolute left-4 top-1/2
+                           -translate-y-1/2
+                           text-gray-500">
+                </i>
+
+                <input id="filmsSearch" type="search" autocomplete="off" placeholder="Найти фильм..." class="w-full
+                           h-12
+                           pl-11 pr-4
+                           rounded-xl
+                           bg-white/5
+                           border border-white/10
+                           text-white
+                           placeholder:text-gray-600
+                           focus:outline-none
+                           focus:border-brand/50
+                           transition">
+
+            </div>
+
+        </div>
+
+
+        <!-- ЖАНРЫ -->
+        <div id="filmsGenres" class="flex
+                   gap-2
+                   overflow-x-auto
+                   pb-2
+                   mb-6
+                   custom-scrollbar">
+
+            <button data-genre="" class="genre-filter
+                       flex-shrink-0
+                       px-4 py-2
+                       rounded-full
+                       bg-brand
+                       border border-brand
+                       text-white
+                       text-xs sm:text-sm
+                       font-bold">
+
+                Все
+
+            </button>
+
+            <button data-genre="action" class="genre-filter">Боевики</button>
+            <button data-genre="comedy" class="genre-filter">Комедии</button>
+            <button data-genre="drama" class="genre-filter">Драмы</button>
+            <button data-genre="horror" class="genre-filter">Ужасы</button>
+            <button data-genre="scifi" class="genre-filter">Фантастика</button>
+            <button data-genre="thriller" class="genre-filter">Триллеры</button>
+            <button data-genre="romance" class="genre-filter">Мелодрамы</button>
+            <button data-genre="adventures" class="genre-filter">Приключения</button>
+            <button data-genre="sport" class="genre-filter">Спорт</button>
+            <button data-genre="war" class="genre-filter">Военные</button>
+
+        </div>
+
+
+        <!-- INFO -->
+        <div class="flex items-center
+                   justify-between
+                   gap-3
+                   mb-4">
+
+            <p id="filmsCount" class="text-sm text-gray-500">
+
+                Загружаем...
+
+            </p>
+
+        </div>
+
+
+        <!-- LOADING -->
+        <div id="filmsLoading" class="text-center py-20">
+
+            <i class="fa-solid fa-spinner
+                       fa-spin
+                       text-4xl
+                       text-brand">
+            </i>
+
+        </div>
+
+
+        <!-- EMPTY -->
+        <div id="filmsEmpty" class="hidden text-center py-20">
+
+            <div class="text-5xl mb-3">
+                🎬
+            </div>
+
+            <h2 class="text-xl font-bold mb-2">
+                Ничего не найдено
+            </h2>
+
+            <p class="text-gray-500 text-sm">
+                Попробуй другой запрос или жанр
+            </p>
+
+        </div>
+
+
+        <!-- GRID -->
+        <div id="filmsGrid" class="hidden
+                   grid
+                   grid-cols-2
+                   sm:grid-cols-3
+                   md:grid-cols-4
+                   lg:grid-cols-5
+                   xl:grid-cols-6
+                   gap-3 sm:gap-5">
+        </div>
+
+
+        <!-- PAGINATION -->
+        <div id="filmsPagination" class="hidden
+                   mt-8
+                   flex items-center
+                   justify-center
+                   gap-3">
+
+            <button id="filmsPrev" type="button" class="px-4 py-2.5
+                       rounded-xl
+                       bg-white/5
+                       hover:bg-white/10
+                       border border-white/10
+                       font-bold
+                       text-sm
+                       disabled:opacity-30
+                       disabled:cursor-not-allowed">
+
+                <i class="fa-solid fa-chevron-left"></i>
+
+            </button>
+
+            <span id="filmsPage" class="text-sm text-gray-400">
+            </span>
+
+            <button id="filmsNext" type="button" class="px-4 py-2.5
+                       rounded-xl
+                       bg-white/5
+                       hover:bg-white/10
+                       border border-white/10
+                       font-bold
+                       text-sm
+                       disabled:opacity-30
+                       disabled:cursor-not-allowed">
+
+                <i class="fa-solid fa-chevron-right"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+    .genre-filter {
+        flex-shrink: 0;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #9ca3af;
+        font-size: 0.75rem;
+        font-weight: 700;
+        transition: 0.2s;
+    }
+
+    .genre-filter:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .genre-filter.active {
+        color: white;
+        background: #e50914;
+        border-color: #e50914;
+    }
+</style>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="/static/js/films.js?v=2"></script>
+{% endblock %}

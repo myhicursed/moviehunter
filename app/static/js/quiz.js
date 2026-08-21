@@ -14,6 +14,8 @@ const state = {
     videoWatched: false,     // видео полностью просмотрено
     timerInterval: null,     // ID интервала таймера
     timerRemaining: 0,       // сколько секунд осталось
+    libraryMovieId: null,
+    libraryLoading: false,
 };
 
 
@@ -114,6 +116,8 @@ function showQuestion() {
     const q = state.questions[state.currentIndex];
     state.answered = false;
     state.videoWatched = false;
+    state.libraryMovieId = null;
+    state.libraryLoading = false;
 
     // Останавливаем предыдущий таймер если был
     clearTimer();
@@ -179,6 +183,19 @@ function showQuestion() {
         </button>
     `).join('');
 
+    const libraryButton =
+        document.getElementById('libraryButton');
+
+    if (libraryButton) {
+        libraryButton.dataset.inLibrary = 'false';
+        libraryButton.dataset.guest = 'false';
+        libraryButton.disabled = false;
+
+        libraryButton.classList.remove(
+            'border-brand/40',
+            'bg-brand/10'
+        );
+    }
     document.getElementById('nextButtonContainer').classList.add('hidden');
 }
 
@@ -271,6 +288,10 @@ async function timeExpired() {
 
         if (response.ok) {
             const result = await response.json();
+            prepareLibraryButton(
+                result.movie_id,
+                result.in_library
+            );
 
             // Подсветить правильный
             document.querySelectorAll('.option-btn').forEach(btn => {
@@ -333,6 +354,11 @@ async function handleAnswer(button, question) {
 
         const result = await response.json();
 
+        prepareLibraryButton(
+            result.movie_id,
+            result.in_library
+        );
+
         document.querySelectorAll('.option-btn').forEach(btn => {
             const answer = btn.dataset.answer;
             if (answer === result.correct_answer) {
@@ -361,6 +387,201 @@ async function handleAnswer(button, question) {
     }
 }
 
+// ============================================
+// ФИЛЬМОТЕКА / ХОЧУ ПОСМОТРЕТЬ
+// ============================================
+
+function updateLibraryButton(inLibrary) {
+    const button =
+        document.getElementById('libraryButton');
+
+    const icon =
+        document.getElementById('libraryButtonIcon');
+
+    const text =
+        document.getElementById('libraryButtonText');
+
+    if (!button || !icon || !text) {
+        return;
+    }
+
+
+    button.disabled = false;
+
+
+    if (inLibrary === true) {
+        button.dataset.inLibrary = 'true';
+
+        text.textContent = 'В моей фильмотеке';
+
+        icon.className =
+            'fa-solid fa-bookmark text-brand';
+
+        button.classList.add(
+            'border-brand/40',
+            'bg-brand/10'
+        );
+
+    } else {
+        button.dataset.inLibrary = 'false';
+
+        text.textContent = 'Хочу посмотреть';
+
+        icon.className =
+            'fa-regular fa-bookmark text-brand';
+
+        button.classList.remove(
+            'border-brand/40',
+            'bg-brand/10'
+        );
+    }
+}
+
+
+function prepareLibraryButton(movieId, inLibrary) {
+    state.libraryMovieId = movieId;
+    state.libraryLoading = false;
+
+    const button =
+        document.getElementById('libraryButton');
+
+    if (!button) return;
+
+
+    /*
+     * Гость.
+     *
+     * Показываем ту же кнопку, но по клику
+     * откроется регистрация.
+     */
+    if (!isAuthenticated()) {
+        button.dataset.guest = 'true';
+        button.dataset.inLibrary = 'false';
+
+        const text =
+            document.getElementById('libraryButtonText');
+
+        const icon =
+            document.getElementById('libraryButtonIcon');
+
+        if (text) {
+            text.textContent = 'Хочу посмотреть';
+        }
+
+        if (icon) {
+            icon.className =
+                'fa-regular fa-bookmark text-brand';
+        }
+
+        return;
+    }
+
+
+    button.dataset.guest = 'false';
+
+    updateLibraryButton(
+        inLibrary === true
+    );
+}
+
+
+async function toggleLibraryMovie() {
+    const button =
+        document.getElementById('libraryButton');
+
+    if (!button) return;
+
+
+    /*
+     * Для гостя — регистрация.
+     */
+    if (!isAuthenticated()) {
+        openAuthModal('register');
+        return;
+    }
+
+
+    if (
+        state.libraryLoading ||
+        !state.libraryMovieId
+    ) {
+        return;
+    }
+
+
+    state.libraryLoading = true;
+    button.disabled = true;
+
+
+    const text =
+        document.getElementById('libraryButtonText');
+
+    const oldText =
+        text ? text.textContent : '';
+
+
+    if (text) {
+        text.textContent = 'Подождите...';
+    }
+
+
+    try {
+        const currentlyInLibrary =
+            button.dataset.inLibrary === 'true';
+
+
+        const response = await apiRequest(
+            `/api/library/${state.libraryMovieId}`,
+            {
+                method: currentlyInLibrary
+                    ? 'DELETE'
+                    : 'POST',
+            }
+        );
+
+
+        if (!response.ok) {
+            let message =
+                'Не удалось изменить фильмотеку';
+
+            try {
+                const data =
+                    await response.json();
+
+                if (data.detail) {
+                    message = data.detail;
+                }
+            } catch (_) {
+                // ignore
+            }
+
+            throw new Error(message);
+        }
+
+
+        const result =
+            await response.json();
+
+
+        updateLibraryButton(
+            result.in_library
+        );
+
+    } catch (err) {
+        console.error(
+            'Ошибка фильмотеки:',
+            err
+        );
+
+        if (text) {
+            text.textContent = oldText;
+        }
+
+    } finally {
+        state.libraryLoading = false;
+        button.disabled = false;
+    }
+}
 
 // ============================================
 // СЛЕДУЮЩИЙ ВОПРОС
@@ -517,6 +738,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('guestLoginBtn').addEventListener('click', () => {
         openAuthModal('register');
     });
+
+    const libraryButton =
+        document.getElementById('libraryButton');
+
+    if (libraryButton) {
+        libraryButton.addEventListener(
+            'click',
+            toggleLibraryMovie
+        );
+    }
 });
 
 function checkIfPageReloaded() {

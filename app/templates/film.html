@@ -1,0 +1,508 @@
+{% extends "base.html" %}
+
+{% block title %}Фильм | МУВИХАНТЕР{% endblock %}
+
+{% block content %}
+
+<!-- ID фильма для JS -->
+<div id="filmConfig" data-movie-id="{{ movie_id }}" class="hidden">
+</div>
+
+
+<div class="pt-20 sm:pt-24 pb-16 min-h-screen">
+
+    <div class="container mx-auto px-3 sm:px-6 max-w-5xl">
+
+
+        <!-- ============================================ -->
+        <!-- НАЗАД                                        -->
+        <!-- ============================================ -->
+
+        <a href="/films" class="inline-flex items-center gap-2
+                   text-sm text-gray-500
+                   hover:text-white
+                   transition
+                   mb-5">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Фильмотека
+
+        </a>
+
+
+        <!-- ============================================ -->
+        <!-- ЗАГРУЗКА                                     -->
+        <!-- ============================================ -->
+
+        <div id="filmLoading" class="text-center py-24">
+
+            <i class="fa-solid fa-spinner
+                       fa-spin
+                       text-5xl
+                       text-brand">
+            </i>
+
+            <p class="text-gray-500 mt-4">
+                Загружаем фильм...
+            </p>
+
+        </div>
+
+
+        <!-- ============================================ -->
+        <!-- ОШИБКА                                       -->
+        <!-- ============================================ -->
+
+        <div id="filmError" class="hidden text-center py-24">
+
+            <div class="text-6xl mb-4">
+                😢
+            </div>
+
+            <h1 class="text-2xl font-black mb-2">
+                Фильм не найден
+            </h1>
+
+            <p class="text-gray-500 mb-5">
+                Возможно, фильм был удалён.
+            </p>
+
+            <a href="/films" class="inline-flex items-center gap-2
+                       px-5 py-3
+                       rounded-xl
+                       bg-brand
+                       hover:bg-brand-dark
+                       text-white
+                       font-bold
+                       transition">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Вернуться в фильмотеку
+
+            </a>
+
+        </div>
+
+
+        <!-- ============================================ -->
+        <!-- ФИЛЬМ                                        -->
+        <!-- ============================================ -->
+
+        <div id="filmContent" class="hidden">
+
+
+            <div class="glass-card
+                       rounded-2xl sm:rounded-3xl
+                       p-4 sm:p-6 md:p-8">
+
+
+                <div class="grid
+                           grid-cols-1
+                           sm:grid-cols-[220px_1fr]
+                           md:grid-cols-[280px_1fr]
+                           gap-6 sm:gap-8">
+
+
+                    <!-- ============================================ -->
+                    <!-- ПОСТЕР                                       -->
+                    <!-- ============================================ -->
+
+                    <div class="w-full max-w-[280px] mx-auto sm:mx-0">
+
+                        <div id="filmPoster" class="aspect-[2/3]
+                                   rounded-2xl
+                                   overflow-hidden
+                                   bg-[#15151b]
+                                   border border-white/5
+                                   shadow-2xl">
+                        </div>
+
+                    </div>
+
+
+                    <!-- ============================================ -->
+                    <!-- ИНФОРМАЦИЯ                                   -->
+                    <!-- ============================================ -->
+
+                    <div class="flex flex-col min-w-0">
+
+
+                        <!-- ГОД -->
+                        <div id="filmYear" class="text-sm
+                                   font-semibold
+                                   text-gray-500
+                                   mb-1">
+                        </div>
+
+
+                        <!-- НАЗВАНИЕ -->
+                        <h1 id="filmTitle" class="text-3xl
+                                   sm:text-4xl
+                                   md:text-5xl
+                                   font-black
+                                   leading-tight
+                                   tracking-tight
+                                   mb-3">
+                        </h1>
+
+
+                        <!-- ЖАНРЫ -->
+                        <div id="filmGenres" class="flex
+                                   flex-wrap
+                                   gap-2
+                                   mb-5">
+                        </div>
+
+
+                        <!-- РЕЖИССЁР -->
+                        <div class="mb-6">
+
+                            <div class="text-[10px] sm:text-xs
+                                       uppercase
+                                       tracking-wider
+                                       text-gray-600
+                                       font-bold
+                                       mb-1">
+
+                                Режиссёр
+
+                            </div>
+
+                            <div id="filmDirector" class="text-base
+                                       sm:text-lg
+                                       font-semibold
+                                       text-gray-300">
+
+                                —
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ============================================ -->
+                        <!-- СТАТИСТИКА СООБЩЕСТВА                        -->
+                        <!-- ============================================ -->
+
+                        <div class="grid grid-cols-2
+                                   gap-3
+                                   mb-5">
+
+
+                            <!-- УГАДЫВАЕМОСТЬ -->
+                            <div class="rounded-xl
+                                       bg-white/5
+                                       border border-white/10
+                                       p-3 sm:p-4">
+
+                                <div class="flex items-center gap-2
+                                           text-[10px] sm:text-xs
+                                           text-gray-500
+                                           mb-1">
+
+                                    <span>🎯</span>
+
+                                    Угадываемость
+
+                                </div>
+
+
+                                <div id="filmGuessedPercent" class="text-xl sm:text-2xl
+                                           font-black
+                                           text-white">
+
+                                    —
+
+                                </div>
+
+
+                                <div id="filmAttempts" class="text-[10px] sm:text-xs
+                                           text-gray-600
+                                           mt-1">
+
+                                    Пока нет попыток
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ХОТЯТ ПОСМОТРЕТЬ -->
+                            <div class="rounded-xl
+                                       bg-white/5
+                                       border border-white/10
+                                       p-3 sm:p-4">
+
+                                <div class="flex items-center gap-2
+                                           text-[10px] sm:text-xs
+                                           text-gray-500
+                                           mb-1">
+
+                                    <span>🔖</span>
+
+                                    Хотят посмотреть
+
+                                </div>
+
+
+                                <div id="filmWantToWatch" class="text-xl sm:text-2xl
+                                           font-black
+                                           text-white">
+
+                                    0
+
+                                </div>
+
+
+                                <div class="text-[10px] sm:text-xs
+                                           text-gray-600
+                                           mt-1">
+
+                                    игроков
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ============================================ -->
+                        <!-- ХОЧУ ПОСМОТРЕТЬ                              -->
+                        <!-- ============================================ -->
+
+                        <button id="filmLibraryBtn" type="button" class="w-full sm:w-fit
+                                   inline-flex
+                                   items-center justify-center
+                                   gap-2
+                                   px-5 py-3
+                                   rounded-xl
+                                   bg-white/5
+                                   hover:bg-white/10
+                                   border border-white/10
+                                   hover:border-brand/40
+                                   font-bold
+                                   text-sm
+                                   text-white
+                                   transition-all">
+
+                            <i id="filmLibraryIcon" class="fa-regular fa-bookmark text-brand">
+                            </i>
+
+                            <span id="filmLibraryText">
+                                Хочу посмотреть
+                            </span>
+
+                        </button>
+
+
+                        <!-- ============================================ -->
+                        <!-- РЕАКЦИИ                                      -->
+                        <!-- ============================================ -->
+
+                        <div class="mt-auto pt-7 sm:pt-8">
+
+                            <div class="flex items-center
+                                       justify-between
+                                       gap-3
+                                       mb-3">
+
+                                <h2 class="font-bold
+                                           text-sm
+                                           text-gray-400">
+
+                                    Как тебе этот фильм?
+
+                                </h2>
+
+                                <span class="text-[10px]
+                                           text-gray-600">
+
+                                    Выбери одну реакцию
+
+                                </span>
+
+                            </div>
+
+
+                            <div id="filmReactions" class="grid
+                                       grid-cols-5
+                                       gap-1.5 sm:gap-2">
+
+
+                                <!-- LOVE -->
+                                <button type="button" data-reaction="love" class="reaction-btn" title="Люблю">
+
+                                    <span class="text-xl sm:text-2xl">
+                                        ❤️
+                                    </span>
+
+                                    <span data-count="love">
+                                        0
+                                    </span>
+
+                                </button>
+
+
+                                <!-- FIRE -->
+                                <button type="button" data-reaction="fire" class="reaction-btn" title="Огонь">
+
+                                    <span class="text-xl sm:text-2xl">
+                                        🔥
+                                    </span>
+
+                                    <span data-count="fire">
+                                        0
+                                    </span>
+
+                                </button>
+
+
+                                <!-- FUNNY -->
+                                <button type="button" data-reaction="funny" class="reaction-btn" title="Смешно">
+
+                                    <span class="text-xl sm:text-2xl">
+                                        😂
+                                    </span>
+
+                                    <span data-count="funny">
+                                        0
+                                    </span>
+
+                                </button>
+
+
+                                <!-- SAD -->
+                                <button type="button" data-reaction="sad" class="reaction-btn" title="Грустно">
+
+                                    <span class="text-xl sm:text-2xl">
+                                        😭
+                                    </span>
+
+                                    <span data-count="sad">
+                                        0
+                                    </span>
+
+                                </button>
+
+
+                                <!-- WOW -->
+                                <button type="button" data-reaction="wow" class="reaction-btn" title="Вау">
+
+                                    <span class="text-xl sm:text-2xl">
+                                        🤯
+                                    </span>
+
+                                    <span data-count="wow">
+                                        0
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+
+                            <!-- Подсказка гостю -->
+                            <p id="filmGuestHint" class="hidden
+                                       text-[11px]
+                                       text-gray-600
+                                       mt-3">
+
+                                Войди, чтобы сохранять фильмы и оставлять реакции.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+    .reaction-btn {
+        min-width: 0;
+        padding: 0.65rem 0.25rem;
+
+        border-radius: 0.75rem;
+
+        background:
+            rgba(255, 255, 255, 0.04);
+
+        border:
+            1px solid rgba(255, 255, 255, 0.08);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        gap: 0.2rem;
+
+        color: #9ca3af;
+
+        font-size: 0.7rem;
+        font-weight: 700;
+
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+
+    .reaction-btn:hover {
+        background:
+            rgba(255, 255, 255, 0.09);
+
+        border-color:
+            rgba(255, 255, 255, 0.16);
+
+        transform:
+            translateY(-2px);
+    }
+
+
+    .reaction-btn.active {
+        background:
+            rgba(229, 9, 20, 0.12);
+
+        border-color:
+            rgba(229, 9, 20, 0.55);
+
+        color:
+            #ffffff;
+    }
+
+
+    .reaction-btn:disabled {
+        opacity: 0.6;
+        cursor: wait;
+        transform: none;
+    }
+
+
+    @media (max-width: 359px) {
+        .reaction-btn {
+            padding-left: 0.1rem;
+            padding-right: 0.1rem;
+        }
+    }
+</style>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="/static/js/film.js?v=2"></script>
+{% endblock %}
