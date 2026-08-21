@@ -192,12 +192,12 @@ let genresLoaded = false;
 
 
 async function openGenresModal() {
-    const modal =
-        document.getElementById('genresModal');
+    const modal = document.getElementById('genresModal');
 
     if (!modal) return;
 
     modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
 
     if (!genresLoaded) {
         await loadGenresInto('genresModalGrid');
@@ -207,12 +207,13 @@ async function openGenresModal() {
 
 
 function closeGenresModal() {
-    const modal =
-        document.getElementById('genresModal');
+    const modal = document.getElementById('genresModal');
 
     if (modal) {
         modal.classList.add('hidden');
     }
+
+    document.body.style.overflow = '';
 }
 
 

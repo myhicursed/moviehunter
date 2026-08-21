@@ -4,87 +4,185 @@
 
 {% block content %}
 
+
 <!-- ============================================ -->
-<!-- ДЛЯ ГОСТЕЙ                                   -->
+<!-- ГОСТЬ                                        -->
 <!-- ============================================ -->
-<section class="guest-only h-[100dvh] pt-16 flex flex-col overflow-hidden">
 
-    <div
-        class="flex-1 container mx-auto px-6 lg:px-8 max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16 min-h-0 my-auto">
+<section class="guest-only
+           min-h-[100dvh]
+           lg:h-[100dvh]
+           pt-20 sm:pt-24 lg:pt-16
+           flex flex-col
+           lg:overflow-hidden">
 
-        <!-- ЛЕВАЯ ЧАСТЬ -->
-        <div class="w-full lg:w-5/12 text-center lg:text-left flex flex-col items-center lg:items-start">
 
-            <div
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 border border-brand/20 text-brand text-xs font-bold uppercase tracking-wider mb-4 lg:mb-6">
-                <i class="fa-solid fa-film"></i>
-                Киноквиз №1
-            </div>
-
-            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-black mb-4 leading-tight tracking-tight">
-                Угадай фильм<br>
-
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand via-orange-500 to-yellow-500">
-                    за 10 секунд
-                </span>
-            </h1>
-
-            <p class="text-gray-400 text-sm sm:text-base lg:text-lg mb-6 max-w-md">
-                Короткий отрывок, 4 варианта ответа. Проверь свои знания,
-                соревнуйся с друзьями и попади в топ. Без рекламы.
-            </p>
-
-            <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
-
-                <button onclick="window.location.href='/leaderboard'"
-                    class="px-6 py-3 rounded-xl font-bold text-sm bg-white/5 hover:bg-white/10 border border-white/5 transition flex items-center gap-2">
-
-                    <i class="fa-solid fa-trophy text-yellow-500"></i>
-                    Топ игроков
-                </button>
-
-            </div>
-        </div>
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <div class="flex-1
+               container mx-auto
+               px-3 min-[360px]:px-4 sm:px-6 lg:px-8
+               max-w-7xl
+               flex flex-col lg:flex-row
+               items-center
+               justify-center lg:justify-between
+               gap-7 sm:gap-10 lg:gap-16
+               py-5 sm:py-8 lg:py-0
+               min-h-0">
 
 
         <!-- ============================================ -->
-        <!-- ПРАВАЯ ЧАСТЬ                                 -->
+        <!-- ЛЕВАЯ ЧАСТЬ                                  -->
+        <!-- ============================================ -->
+
+        <div class="w-full lg:w-5/12
+                   text-center lg:text-left
+                   flex flex-col
+                   items-center lg:items-start">
+
+
+            <div class="inline-flex items-center gap-2
+                       px-3 py-1
+                       rounded-full
+                       bg-brand/10
+                       border border-brand/20
+                       text-brand
+                       text-[10px] sm:text-xs
+                       font-bold uppercase tracking-wider
+                       mb-3 sm:mb-4 lg:mb-6">
+
+                <i class="fa-solid fa-film"></i>
+
+                Киноквиз №1
+            </div>
+
+
+            <h1 class="text-3xl min-[360px]:text-4xl sm:text-5xl lg:text-7xl
+                       font-black
+                       mb-3 sm:mb-4
+                       leading-[1.08]
+                       tracking-tight">
+
+                Угадай фильм<br>
+
+                <span class="text-transparent
+                           bg-clip-text
+                           bg-gradient-to-r
+                           from-brand via-orange-500 to-yellow-500">
+
+                    за 10 секунд
+                </span>
+
+            </h1>
+
+
+            <p class="text-gray-400
+                       text-xs min-[360px]:text-sm sm:text-base lg:text-lg
+                       mb-4 sm:mb-6
+                       max-w-md">
+
+                Короткий отрывок, 4 варианта ответа.
+                Проверь свои знания, соревнуйся с друзьями
+                и попади в топ. Без рекламы.
+
+            </p>
+
+
+            <div class="flex flex-wrap gap-3 justify-center lg:justify-start">
+
+                <button type="button" onclick="window.location.href='/leaderboard'" class="px-5 sm:px-6
+                           py-2.5 sm:py-3
+                           rounded-xl
+                           font-bold
+                           text-xs sm:text-sm
+                           bg-white/5 hover:bg-white/10
+                           border border-white/5
+                           transition
+                           flex items-center gap-2">
+
+                    <i class="fa-solid fa-trophy text-yellow-500"></i>
+
+                    Топ игроков
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ============================================ -->
+        <!-- РЕЖИМЫ ГОСТЯ                                 -->
         <!-- ============================================ -->
 
         <div class="w-full lg:w-6/12">
 
-            <div class="grid grid-cols-2 gap-3 sm:gap-4">
+            <div class="grid grid-cols-1 min-[360px]:grid-cols-2 gap-3 sm:gap-4">
 
-                <!-- Случайный квиз -->
-                <a href="/quiz"
-                    class="col-span-2 glass-card rounded-2xl p-6 relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_30px_rgba(147,51,234,0.3)] hover:-translate-y-1">
 
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                <!-- СЛУЧАЙНЫЙ -->
+                <a href="/quiz" class="col-span-1 min-[360px]:col-span-2
+                           glass-card
+                           rounded-2xl
+                           p-4 sm:p-6
+                           relative overflow-hidden
+                           group
+                           transition-all duration-300
+                           hover:shadow-[0_0_30px_rgba(147,51,234,0.3)]
+                           hover:-translate-y-1">
+
+
+                    <div class="absolute inset-0
+                               bg-gradient-to-br
+                               from-purple-600/20
+                               via-transparent
+                               to-transparent
+                               opacity-60
+                               group-hover:opacity-100
+                               transition-opacity duration-300">
                     </div>
 
-                    <div class="relative z-10 flex items-center justify-between">
 
-                        <div>
+                    <div class="relative z-10 flex items-center justify-between gap-3">
 
-                            <div class="w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center mb-3">
 
-                                <i class="fa-solid fa-dice text-purple-300 text-lg"></i>
+                        <div class="min-w-0">
+
+                            <div class="w-9 h-9 sm:w-10 sm:h-10
+                                       rounded-full
+                                       bg-purple-500/30
+                                       flex items-center justify-center
+                                       mb-2 sm:mb-3">
+
+                                <i class="fa-solid fa-dice text-purple-300"></i>
 
                             </div>
 
-                            <h3 class="text-xl font-bold text-white mb-1">
+
+                            <h3 class="text-lg sm:text-xl
+                                       font-bold text-white mb-1">
+
                                 Случайный квиз
+
                             </h3>
 
-                            <p class="text-xs text-gray-400">
+
+                            <p class="text-[11px] sm:text-xs text-gray-400">
+
                                 10 случайных фильмов
+
                             </p>
 
                         </div>
 
-                        <i
-                            class="fa-solid fa-play text-4xl text-purple-400/40 group-hover:text-purple-300 group-hover:scale-110 transition-all duration-300">
+
+                        <i class="fa-solid fa-play
+                                   flex-shrink-0
+                                   text-3xl sm:text-4xl
+                                   text-purple-400/40
+                                   group-hover:text-purple-300
+                                   group-hover:scale-110
+                                   transition-all duration-300">
                         </i>
 
                     </div>
@@ -92,36 +190,72 @@
                 </a>
 
 
-                <!-- По буквам -->
-                <a href="/quiz?mode=letters"
-                    class="glass-card rounded-2xl p-5 relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_20px_rgba(249,115,22,0.25)] hover:-translate-y-1">
 
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                <!-- ПО БУКВАМ -->
+                <a href="/quiz?mode=letters" class="glass-card
+                           rounded-2xl
+                           p-4 sm:p-5
+                           relative overflow-hidden
+                           group
+                           transition-all duration-300
+                           hover:shadow-[0_0_20px_rgba(249,115,22,0.25)]
+                           hover:-translate-y-1">
+
+
+                    <div class="absolute inset-0
+                               bg-gradient-to-br
+                               from-orange-500/20
+                               via-transparent
+                               to-transparent
+                               opacity-60
+                               group-hover:opacity-100
+                               transition-opacity duration-300">
                     </div>
+
 
                     <div class="relative z-10">
 
-                        <div class="flex justify-between items-start mb-3">
 
-                            <div class="w-10 h-10 rounded-full bg-orange-500/30 flex items-center justify-center">
+                        <div class="flex justify-between items-start gap-2 mb-3">
 
-                                <i class="fa-solid fa-spell-check text-orange-300 text-lg"></i>
+                            <div class="w-9 h-9 sm:w-10 sm:h-10
+                                       flex-shrink-0
+                                       rounded-full
+                                       bg-orange-500/30
+                                       flex items-center justify-center">
+
+                                <i class="fa-solid fa-spell-check text-orange-300"></i>
 
                             </div>
 
-                            <span class="text-[10px] font-bold bg-orange-500/30 text-orange-300 px-2 py-0.5 rounded">
+
+                            <span class="flex-shrink-0
+                                       text-[8px] min-[390px]:text-[10px]
+                                       font-bold
+                                       bg-orange-500/30
+                                       text-orange-300
+                                       px-1.5 min-[390px]:px-2
+                                       py-0.5
+                                       rounded">
+
                                 x2 ОЧКИ
+
                             </span>
 
                         </div>
 
-                        <h3 class="text-base font-bold text-white mb-1">
+
+                        <h3 class="text-sm sm:text-base font-bold text-white mb-1">
+
                             По буквам
+
                         </h3>
 
-                        <p class="text-[11px] text-gray-400 leading-tight">
+
+                        <p class="text-[10px] sm:text-[11px] text-gray-400">
+
                             Собери слово
+
                         </p>
 
                     </div>
@@ -129,25 +263,54 @@
                 </a>
 
 
-                <!-- Ежедневный -->
-                <div onclick="openAuthModal('login')"
-                    class="glass-card rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between cursor-pointer group hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:-translate-y-1 transition border-dashed border-white/10 hover:border-white/20">
 
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-blue-500/15 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                <!-- ЕЖЕДНЕВНЫЙ -->
+                <div onclick="openAuthModal('login')" class="glass-card
+                           rounded-2xl
+                           p-4 sm:p-5
+                           relative overflow-hidden
+                           cursor-pointer
+                           group
+                           hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]
+                           hover:-translate-y-1
+                           transition
+                           border-dashed border-white/10
+                           hover:border-white/20">
+
+
+                    <div class="absolute inset-0
+                               bg-gradient-to-br
+                               from-blue-500/15
+                               via-transparent
+                               to-transparent
+                               opacity-50
+                               group-hover:opacity-100
+                               transition-opacity duration-300">
                     </div>
+
 
                     <div class="relative z-10 flex flex-col h-full">
 
-                        <div class="flex justify-between items-start mb-3">
 
-                            <div
-                                class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center relative">
+                        <div class="flex justify-between items-start gap-2 mb-3">
 
-                                <i class="fa-solid fa-calendar-day text-blue-300 text-lg"></i>
 
-                                <div
-                                    class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10
+                                       flex-shrink-0
+                                       rounded-full
+                                       bg-blue-500/20
+                                       flex items-center justify-center
+                                       relative">
+
+                                <i class="fa-solid fa-calendar-day text-blue-300"></i>
+
+
+                                <div class="absolute -top-1 -right-1
+                                           w-4 h-4
+                                           rounded-full
+                                           bg-gray-800
+                                           border border-gray-700
+                                           flex items-center justify-center">
 
                                     <i class="fa-solid fa-lock text-[8px] text-gray-400"></i>
 
@@ -155,23 +318,53 @@
 
                             </div>
 
-                            <span class="text-[10px] font-bold bg-blue-500/30 text-blue-400 px-2 py-0.5 rounded">
+
+                            <span class="flex-shrink-0
+                                       text-[8px] min-[390px]:text-[10px]
+                                       font-bold
+                                       bg-blue-500/30
+                                       text-blue-400
+                                       px-1.5 min-[390px]:px-2
+                                       py-0.5
+                                       rounded">
+
                                 NEW
+
                             </span>
 
                         </div>
 
-                        <h3 class="text-base font-bold text-white mb-1">
+
+                        <h3 class="text-sm sm:text-base font-bold text-white mb-1">
+
                             Ежедневный
+
                         </h3>
 
-                        <p class="text-[10px] text-gray-400 leading-tight mb-3">
+
+                        <p class="text-[9px] min-[390px]:text-[10px]
+                                   text-gray-400
+                                   leading-tight
+                                   mb-3">
+
                             Авторизуйся, чтобы играть
+
                         </p>
 
-                        <button
-                            class="mt-auto px-3 py-1.5 rounded-lg bg-white/5 text-[11px] font-semibold text-white group-hover:bg-white/20 transition w-fit">
+
+                        <button type="button" class="mt-auto
+                                   max-w-full
+                                   px-3 py-1.5
+                                   rounded-lg
+                                   bg-white/5
+                                   text-[10px] sm:text-[11px]
+                                   font-semibold text-white
+                                   group-hover:bg-white/20
+                                   transition
+                                   whitespace-nowrap">
+
                             Войти
+
                         </button>
 
                     </div>
@@ -179,22 +372,53 @@
                 </div>
 
 
-                <!-- По жанрам -->
-                <div onclick="openAuthModal('login')"
-                    class="col-span-2 glass-card rounded-2xl p-5 relative overflow-hidden flex items-center justify-between cursor-pointer group hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] transition border-dashed border-white/10 hover:border-white/20">
 
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                <!-- ЖАНРЫ -->
+                <div onclick="openAuthModal('login')" class="col-span-1 min-[360px]:col-span-2
+                           glass-card
+                           rounded-2xl
+                           p-4 sm:p-5
+                           relative overflow-hidden
+                           flex items-center justify-between
+                           gap-3
+                           cursor-pointer
+                           group
+                           hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]
+                           transition
+                           border-dashed border-white/10
+                           hover:border-white/20">
+
+
+                    <div class="absolute inset-0
+                               bg-gradient-to-br
+                               from-white/5
+                               via-transparent
+                               to-transparent
+                               opacity-50
+                               group-hover:opacity-100
+                               transition-opacity duration-300">
                     </div>
 
-                    <div class="relative z-10 flex items-center gap-4">
 
-                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center relative">
+                    <div class="relative z-10 flex items-center gap-3 sm:gap-4 min-w-0">
 
-                            <i class="fa-solid fa-clapperboard text-white text-lg"></i>
 
-                            <div
-                                class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10
+                                   flex-shrink-0
+                                   rounded-full
+                                   bg-white/10
+                                   flex items-center justify-center
+                                   relative">
+
+                            <i class="fa-solid fa-clapperboard text-white"></i>
+
+
+                            <div class="absolute -top-1 -right-1
+                                       w-4 h-4
+                                       rounded-full
+                                       bg-gray-800
+                                       border border-gray-700
+                                       flex items-center justify-center">
 
                                 <i class="fa-solid fa-lock text-[8px] text-gray-400"></i>
 
@@ -202,23 +426,45 @@
 
                         </div>
 
-                        <div>
 
-                            <h3 class="text-base font-bold text-white">
+                        <div class="min-w-0">
+
+                            <h3 class="text-sm sm:text-base
+                                       font-bold text-white
+                                       truncate">
+
                                 Квиз по жанрам
+
                             </h3>
 
-                            <p class="text-[11px] text-gray-400">
+
+                            <p class="text-[9px] sm:text-[11px]
+                                       text-gray-400
+                                       truncate">
+
                                 Авторизуйся, чтобы выбрать
+
                             </p>
 
                         </div>
 
                     </div>
 
-                    <button
-                        class="relative z-10 px-4 py-1.5 rounded-lg bg-white/5 text-xs font-semibold text-white group-hover:bg-white/20 transition">
+
+                    <button type="button" class="relative z-10
+                               flex-shrink-0
+                               px-3 sm:px-4
+                               py-1.5
+                               rounded-lg
+                               bg-white/5
+                               text-[10px] sm:text-xs
+                               font-semibold text-white
+                               group-hover:bg-white/20
+                               transition
+                               whitespace-nowrap">
+
                         Войти
+
                     </button>
 
                 </div>
@@ -230,17 +476,30 @@
     </div>
 
 
+
     <!-- ============================================ -->
     <!-- ФУТЕР ГОСТЯ                                  -->
     <!-- ============================================ -->
 
-    <div class="w-full mt-auto py-4 px-6 bg-black/20 border-t border-white/5">
+    <div class="w-full
+               flex-shrink-0
+               mt-5 lg:mt-auto
+               py-4
+               px-3 sm:px-6
+               bg-black/20
+               border-t border-white/5">
 
-        <div
-            class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 text-[10px] text-gray-600">
 
-            <!-- Ссылки -->
-            <div class="flex items-center justify-center gap-4 flex-wrap">
+        <div class="max-w-7xl mx-auto
+                   flex flex-col sm:flex-row
+                   items-center justify-center
+                   gap-3 sm:gap-5
+                   text-[10px] text-gray-600">
+
+
+            <div class="flex items-center justify-center
+                       gap-x-4 gap-y-2
+                       flex-wrap">
 
                 <span>© 2026 МУВИХАНТЕР</span>
 
@@ -262,27 +521,41 @@
             <div class="hidden sm:block w-px h-5 bg-white/10"></div>
 
 
-            <!-- Контакты -->
             <div class="flex items-center gap-2">
 
                 <span class="mr-1">
                     Связаться со мной
                 </span>
 
-                <!-- VK -->
+
                 <a href="https://vk.ru/myhicursed" target="_blank" rel="noopener noreferrer" title="ВКонтакте"
-                    aria-label="ВКонтакте"
-                    class="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-gray-500 hover:text-white hover:bg-[#0077FF]/20 hover:border-[#0077FF]/30 hover:shadow-[0_0_15px_rgba(0,119,255,0.25)] transition-all duration-300">
+                    aria-label="ВКонтакте" class="w-8 h-8
+                           rounded-lg
+                           bg-white/5
+                           border border-white/5
+                           flex items-center justify-center
+                           text-gray-500
+                           hover:text-white
+                           hover:bg-[#0077FF]/20
+                           hover:border-[#0077FF]/30
+                           transition-all duration-300">
 
                     <i class="fa-brands fa-vk text-sm"></i>
 
                 </a>
 
 
-                <!-- Telegram -->
                 <a href="https://t.me/myhicursed" target="_blank" rel="noopener noreferrer" title="Telegram"
-                    aria-label="Telegram"
-                    class="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-gray-500 hover:text-white hover:bg-[#229ED9]/20 hover:border-[#229ED9]/30 hover:shadow-[0_0_15px_rgba(34,158,217,0.25)] transition-all duration-300">
+                    aria-label="Telegram" class="w-8 h-8
+                           rounded-lg
+                           bg-white/5
+                           border border-white/5
+                           flex items-center justify-center
+                           text-gray-500
+                           hover:text-white
+                           hover:bg-[#229ED9]/20
+                           hover:border-[#229ED9]/30
+                           transition-all duration-300">
 
                     <i class="fa-brands fa-telegram text-sm"></i>
 
@@ -294,9 +567,10 @@
             <div class="hidden sm:block w-px h-5 bg-white/10"></div>
 
 
-            <!-- Эффекты -->
-            <button id="toggleFxBtnGuest" type="button"
-                class="toggle-fx-btn hover:text-white transition flex items-center gap-1.5">
+            <button id="toggleFxBtnGuest" type="button" class="toggle-fx-btn
+                       hover:text-white
+                       transition
+                       flex items-center gap-1.5">
 
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
 
@@ -314,160 +588,347 @@
 
 
 
+
+
 <!-- ============================================ -->
-<!-- ДЛЯ АВТОРИЗОВАННЫХ                           -->
+<!-- АВТОРИЗОВАННЫЙ                               -->
 <!-- ============================================ -->
 
-<section class="user-only flex-1 flex flex-col pt-24 pb-6">
+<section class="user-only
+           flex-1
+           flex flex-col
+           pt-20 sm:pt-24
+           pb-0 sm:pb-6">
 
-    <div class="container mx-auto px-4 md:px-8 max-w-7xl w-full flex-1 flex flex-col">
+
+    <div class="container mx-auto
+               px-3 min-[360px]:px-4 md:px-8
+               max-w-7xl
+               w-full
+               flex-1
+               flex flex-col">
 
 
-        <!-- Приветствие -->
-        <div class="text-center mb-12">
+        <!-- ============================================ -->
+        <!-- ПРИВЕТСТВИЕ                                  -->
+        <!-- ============================================ -->
 
-            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+        <div class="text-center mb-6 sm:mb-8 lg:mb-12">
+
+            <h1 class="text-3xl min-[390px]:text-4xl md:text-6xl
+                       font-black
+                       mb-2 sm:mb-4
+                       tracking-tight
+                       leading-tight">
 
                 С возвращением,
 
-                <span id="welcomeName"
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-500 drop-shadow-lg">
+                <span id="welcomeName" class="text-transparent
+                           bg-clip-text
+                           bg-gradient-to-r
+                           from-brand to-orange-500
+                           drop-shadow-lg
+                           break-words">
+
                     Игрок
+
                 </span>!
 
             </h1>
 
-            <p class="text-lg md:text-xl text-gray-400">
+
+            <p class="text-sm sm:text-lg md:text-xl
+                       text-gray-400">
+
                 Выбирай режим игры. Время побить рекорды.
+
             </p>
 
         </div>
 
 
-        <!-- Основная сетка -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 flex-1">
+
+        <!-- ============================================ -->
+        <!-- ОСНОВНАЯ СЕТКА                               -->
+        <!-- ============================================ -->
+
+        <div class="grid grid-cols-1 lg:grid-cols-12
+                   gap-4 sm:gap-6 lg:gap-8
+                   flex-1">
 
 
             <!-- ============================================ -->
-            <!-- ЛЕВАЯ ЧАСТЬ                                  -->
+            <!-- РЕЖИМЫ                                       -->
             <!-- ============================================ -->
 
-            <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 content-start">
+            <div class="lg:col-span-8
+                       grid grid-cols-1 sm:grid-cols-2
+                       gap-4 sm:gap-6
+                       content-start">
 
 
-                <!-- Случайный -->
-                <a href="/quiz"
-                    class="glass-card rounded-3xl p-8 flex flex-col justify-center items-center text-center group hover:bg-white/5 hover:shadow-[0_0_35px_rgba(147,51,234,0.30)] hover:-translate-y-1 transition-all duration-300">
+                <!-- СЛУЧАЙНЫЙ -->
+                <a href="/quiz" class="glass-card
+                           rounded-2xl sm:rounded-3xl
+                           p-5 sm:p-8
+                           flex flex-col
+                           justify-center items-center
+                           text-center
+                           group
+                           hover:bg-white/5
+                           hover:shadow-[0_0_35px_rgba(147,51,234,0.30)]
+                           hover:-translate-y-1
+                           transition-all duration-300">
 
-                    <div
-                        class="w-20 h-20 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-[0_0_20px_rgba(147,51,234,0.3)]">
 
-                        <i class="fa-solid fa-dice text-purple-400 text-4xl"></i>
+                    <div class="w-14 h-14 sm:w-20 sm:h-20
+                               rounded-2xl
+                               bg-purple-500/20
+                               flex items-center justify-center
+                               mb-4 sm:mb-6
+                               group-hover:scale-110
+                               transition-transform duration-500
+                               shadow-[0_0_20px_rgba(147,51,234,0.3)]">
+
+                        <i class="fa-solid fa-dice text-purple-400 text-2xl sm:text-4xl"></i>
 
                     </div>
 
-                    <h3 class="text-3xl font-black text-white mb-3">
+
+                    <h3 class="text-2xl sm:text-3xl
+                               font-black text-white
+                               mb-2 sm:mb-3">
+
                         Случайный
+
                     </h3>
 
-                    <p class="text-gray-400 mb-6 px-4">
-                        10 случайных фильмов. Идеально для разминки.
+
+                    <p class="text-sm sm:text-base
+                               text-gray-400
+                               mb-4 sm:mb-6
+                               px-2 sm:px-4">
+
+                        10 случайных фильмов.
+                        Идеально для разминки.
+
                     </p>
 
-                    <div
-                        class="mt-auto px-6 py-2 rounded-full bg-white/10 text-white font-bold text-sm group-hover:bg-brand transition-colors">
+
+                    <div class="mt-auto
+                               px-6 py-2
+                               rounded-full
+                               bg-white/10
+                               text-white
+                               font-bold text-xs sm:text-sm
+                               group-hover:bg-brand
+                               transition-colors">
+
                         ИГРАТЬ
+
                     </div>
 
                 </a>
 
 
-                <!-- По буквам -->
-                <a href="/quiz?mode=letters"
-                    class="relative glass-card rounded-3xl p-8 flex flex-col justify-center items-center text-center group hover:bg-white/5 hover:shadow-[0_0_35px_rgba(249,115,22,0.30)] hover:-translate-y-1 transition-all duration-300">
 
-                    <div
-                        class="absolute top-6 right-6 bg-orange-500/20 text-orange-400 text-xs font-black px-3 py-1.5 rounded-full border border-orange-500/30">
+                <!-- ПО БУКВАМ -->
+                <a href="/quiz?mode=letters" class="relative
+                           glass-card
+                           rounded-2xl sm:rounded-3xl
+                           p-5 sm:p-8
+                           flex flex-col
+                           justify-center items-center
+                           text-center
+                           group
+                           hover:bg-white/5
+                           hover:shadow-[0_0_35px_rgba(249,115,22,0.30)]
+                           hover:-translate-y-1
+                           transition-all duration-300">
+
+
+                    <div class="absolute
+                               top-4 right-4 sm:top-6 sm:right-6
+                               bg-orange-500/20
+                               text-orange-400
+                               text-[10px] sm:text-xs
+                               font-black
+                               px-2 sm:px-3
+                               py-1 sm:py-1.5
+                               rounded-full
+                               border border-orange-500/30">
+
                         x2 ОЧКИ
-                    </div>
-
-                    <div
-                        class="w-20 h-20 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-
-                        <i class="fa-solid fa-spell-check text-orange-400 text-4xl"></i>
 
                     </div>
 
-                    <h3 class="text-3xl font-black text-white mb-3">
+
+                    <div class="w-14 h-14 sm:w-20 sm:h-20
+                               rounded-2xl
+                               bg-orange-500/20
+                               flex items-center justify-center
+                               mb-4 sm:mb-6
+                               group-hover:scale-110
+                               transition-transform duration-500
+                               shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+
+                        <i class="fa-solid fa-spell-check text-orange-400 text-2xl sm:text-4xl"></i>
+
+                    </div>
+
+
+                    <h3 class="text-2xl sm:text-3xl
+                               font-black text-white
+                               mb-2 sm:mb-3">
+
                         По буквам
+
                     </h3>
 
-                    <p class="text-gray-400 mb-6 px-4">
+
+                    <p class="text-sm sm:text-base
+                               text-gray-400
+                               mb-4 sm:mb-6
+                               px-2 sm:px-4">
+
                         Собери точное название фильма из букв.
+
                     </p>
 
-                    <div
-                        class="mt-auto px-6 py-2 rounded-full bg-white/10 text-white font-bold text-sm group-hover:bg-orange-600 transition-colors">
+
+                    <div class="mt-auto
+                               px-6 py-2
+                               rounded-full
+                               bg-white/10
+                               text-white
+                               font-bold text-xs sm:text-sm
+                               group-hover:bg-orange-600
+                               transition-colors">
+
                         ИГРАТЬ
+
                     </div>
 
                 </a>
 
 
-                <!-- Ежедневный -->
-                <div id="dailyCard"
-                    class="col-span-1 sm:col-span-2 glass-card rounded-3xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 group hover:bg-blue-900/10 hover:shadow-[0_0_35px_rgba(59,130,246,0.25)] hover:-translate-y-1 transition-all duration-300">
 
-                    <div class="flex items-center gap-6 text-center sm:text-left w-full">
+                <!-- ЕЖЕДНЕВНЫЙ -->
+                <div id="dailyCard" class="col-span-1 sm:col-span-2
+                           glass-card
+                           rounded-2xl sm:rounded-3xl
+                           p-4 sm:p-8
+                           flex flex-col sm:flex-row
+                           items-stretch sm:items-center
+                           justify-between
+                           gap-4 sm:gap-6
+                           group
+                           hover:bg-blue-900/10
+                           hover:shadow-[0_0_35px_rgba(59,130,246,0.25)]
+                           hover:-translate-y-1
+                           transition-all duration-300">
 
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center flex-shrink-0 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
 
-                            <i class="fa-solid fa-calendar-day text-blue-400 text-3xl"></i>
+                    <div class="flex
+                               items-start sm:items-center
+                               gap-4 sm:gap-6
+                               text-left
+                               w-full
+                               min-w-0">
+
+
+                        <div class="w-12 h-12 sm:w-16 sm:h-16
+                                   rounded-2xl
+                                   bg-blue-500/20
+                                   flex items-center justify-center
+                                   flex-shrink-0
+                                   shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+
+                            <i class="fa-solid fa-calendar-day text-blue-400 text-xl sm:text-3xl"></i>
 
                         </div>
 
-                        <div class="flex-1">
 
-                            <div class="flex items-center justify-center sm:justify-start gap-3 mb-1">
+                        <div class="flex-1 min-w-0">
 
-                                <h3 class="text-2xl font-black text-white">
+
+                            <!-- NEW больше не выталкивается -->
+                            <div class="flex flex-wrap
+                                       items-center
+                                       gap-x-2 gap-y-1
+                                       mb-1">
+
+                                <h3 class="text-lg min-[360px]:text-xl sm:text-2xl
+                                           font-black text-white
+                                           leading-tight">
+
                                     Ежедневный квиз
+
                                 </h3>
 
-                                <span
-                                    class="bg-blue-500/20 text-blue-400 text-[10px] font-black px-2 py-0.5 rounded-full">
+
+                                <span class="flex-shrink-0
+                                           bg-blue-500/20
+                                           text-blue-400
+                                           text-[9px] sm:text-[10px]
+                                           font-black
+                                           px-2 py-0.5
+                                           rounded-full">
+
                                     NEW
+
                                 </span>
 
                             </div>
 
-                            <div id="dailyLoading" class="text-gray-400 text-sm">
+
+                            <div id="dailyLoading" class="text-gray-400 text-xs sm:text-sm">
 
                                 <i class="fa-solid fa-spinner fa-spin"></i>
                                 Загрузка...
 
                             </div>
 
-                            <div id="dailyPlay" class="hidden text-gray-400 text-sm">
+
+                            <div id="dailyPlay" class="hidden text-gray-400 text-xs sm:text-sm">
+
                                 +30 бонусных очков за прохождение
+
                             </div>
 
-                            <div id="dailyCompleted" class="hidden text-green-400 text-sm font-bold">
+
+                            <div id="dailyCompleted" class="hidden text-green-400 text-xs sm:text-sm font-bold">
+
                                 ✅ Пройдено (Очки:
                                 <span id="dailyEarned" class="text-white">0</span>)
+
                             </div>
 
-                            <div id="dailyNoQuiz" class="hidden text-gray-400 text-sm">
+
+                            <div id="dailyNoQuiz" class="hidden text-gray-400 text-xs sm:text-sm">
+
                                 На сегодня квиза нет 😢
+
                             </div>
 
                         </div>
 
                     </div>
 
-                    <a href="/quiz?mode=daily" id="dailyPlayBtn"
-                        class="hidden w-full sm:w-auto px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-center transition-colors shadow-[0_0_15px_rgba(37,99,235,0.4)] whitespace-nowrap">
+
+                    <a href="/quiz?mode=daily" id="dailyPlayBtn" class="hidden
+                               w-full sm:w-auto
+                               justify-center
+                               px-6 sm:px-8
+                               py-3 sm:py-4
+                               rounded-xl
+                               bg-blue-600 hover:bg-blue-500
+                               text-white
+                               text-sm sm:text-base
+                               font-bold text-center
+                               transition-colors
+                               shadow-[0_0_15px_rgba(37,99,235,0.4)]
+                               whitespace-nowrap">
 
                         Начать
 
@@ -476,34 +937,65 @@
                 </div>
 
 
-                <!-- Жанры -->
-                <button onclick="openGenresModal()"
-                    class="col-span-1 sm:col-span-2 glass-card rounded-3xl p-6 flex items-center justify-between group hover:bg-white/5 hover:shadow-[0_0_30px_rgba(255,255,255,0.10)] hover:-translate-y-1 transition-all duration-300">
 
-                    <div class="flex items-center gap-5">
+                <!-- ЖАНРЫ -->
+                <button type="button" onclick="openGenresModal()" class="col-span-1 sm:col-span-2
+                           glass-card
+                           rounded-2xl sm:rounded-3xl
+                           p-4 sm:p-6
+                           flex items-center justify-between
+                           gap-3
+                           group
+                           hover:bg-white/5
+                           hover:shadow-[0_0_30px_rgba(255,255,255,0.10)]
+                           hover:-translate-y-1
+                           transition-all duration-300">
 
-                        <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
 
-                            <i class="fa-solid fa-clapperboard text-white text-2xl"></i>
+                    <div class="flex items-center gap-3 sm:gap-5 min-w-0">
+
+
+                        <div class="w-12 h-12 sm:w-14 sm:h-14
+                                   flex-shrink-0
+                                   rounded-2xl
+                                   bg-white/10
+                                   flex items-center justify-center">
+
+                            <i class="fa-solid fa-clapperboard text-white text-xl sm:text-2xl"></i>
 
                         </div>
 
-                        <div class="text-left">
 
-                            <h3 class="text-xl font-bold text-white mb-1">
+                        <div class="text-left min-w-0">
+
+                            <h3 class="text-base sm:text-xl
+                                       font-bold text-white
+                                       mb-1">
+
                                 Выбрать жанр
+
                             </h3>
 
-                            <p class="text-sm text-gray-400">
+
+                            <p class="text-xs sm:text-sm
+                                       text-gray-400
+                                       truncate">
+
                                 Боевики, комедии, триллеры...
+
                             </p>
 
                         </div>
 
                     </div>
 
-                    <i
-                        class="fa-solid fa-chevron-right text-xl text-gray-500 group-hover:text-white transition-colors mr-2">
+
+                    <i class="fa-solid fa-chevron-right
+                               flex-shrink-0
+                               text-base sm:text-xl
+                               text-gray-500
+                               group-hover:text-white
+                               transition-colors">
                     </i>
 
                 </button>
@@ -511,68 +1003,132 @@
             </div>
 
 
+
             <!-- ============================================ -->
-            <!-- ПРАВАЯ ЧАСТЬ                                 -->
+            <!-- СТРИК + ЛИДЕРБОРД                            -->
             <!-- ============================================ -->
 
-            <div class="lg:col-span-4 flex flex-col gap-6 h-full">
+            <div class="lg:col-span-4
+                       flex flex-col
+                       gap-4 sm:gap-6
+                       h-full">
 
 
-                <!-- Стрик -->
-                <div
-                    class="glass-card rounded-3xl p-6 flex flex-col justify-center items-center text-center relative overflow-hidden bg-gradient-to-b from-transparent to-orange-900/10">
+                <!-- СТРИК -->
+                <div class="glass-card
+                           rounded-2xl sm:rounded-3xl
+                           p-5 sm:p-6
+                           flex flex-col
+                           justify-center items-center
+                           text-center
+                           relative overflow-hidden
+                           bg-gradient-to-b
+                           from-transparent
+                           to-orange-900/10">
 
-                    <div class="w-16 h-16 rounded-full bg-orange-500/10 flex items-center justify-center mb-3">
 
-                        <i class="fa-solid fa-fire text-orange-500 text-3xl"></i>
+                    <div class="w-12 h-12 sm:w-16 sm:h-16
+                               rounded-full
+                               bg-orange-500/10
+                               flex items-center justify-center
+                               mb-3">
+
+                        <i class="fa-solid fa-fire text-orange-500 text-2xl sm:text-3xl"></i>
 
                     </div>
 
-                    <h3 class="text-gray-400 text-sm font-bold uppercase tracking-widest mb-1">
+
+                    <h3 class="text-gray-400
+                               text-xs sm:text-sm
+                               font-bold uppercase
+                               tracking-widest
+                               mb-1">
+
                         Серия побед
+
                     </h3>
 
-                    <div class="text-4xl font-black text-white mb-4">
 
-                        <span id="streakDaysBadge"
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-400">
+                    <div class="text-3xl sm:text-4xl font-black text-white mb-4">
+
+                        <span id="streakDaysBadge" class="text-transparent
+                                   bg-clip-text
+                                   bg-gradient-to-r
+                                   from-orange-400
+                                   to-yellow-400">
+
                             0
+
                         </span>
 
                         дней
 
                     </div>
 
-                    <div id="streakDaysGrid" class="flex justify-center gap-1.5 w-full mb-3">
+
+                    <div id="streakDaysGrid" class="flex justify-center
+                               gap-1 sm:gap-1.5
+                               w-full
+                               mb-3
+                               overflow-hidden">
                     </div>
 
+
                     <p id="streakHint" class="text-xs text-gray-500">
+
                         За 7 дней подряд — +50 очков
+
                     </p>
 
                 </div>
 
 
-                <!-- Лидерборд -->
-                <div class="glass-card rounded-3xl flex flex-col overflow-hidden flex-1 min-h-[350px]">
 
-                    <div class="p-5 border-b border-white/5 flex justify-between items-center bg-white/5">
+                <!-- ЛИДЕРБОРД -->
+                <div class="glass-card
+                           rounded-2xl sm:rounded-3xl
+                           flex flex-col
+                           overflow-hidden
+                           flex-1
+                           min-h-[300px] sm:min-h-[350px]">
 
-                        <h2 class="text-base font-bold text-white flex items-center gap-2">
+
+                    <div class="p-4 sm:p-5
+                               border-b border-white/5
+                               flex justify-between items-center
+                               bg-white/5">
+
+
+                        <h2 class="text-sm sm:text-base
+                                   font-bold text-white
+                                   flex items-center gap-2">
 
                             <i class="fa-solid fa-trophy text-yellow-500"></i>
+
                             Топ игроков
 
                         </h2>
 
-                        <a href="/leaderboard"
-                            class="text-xs font-bold text-gray-400 hover:text-white bg-white/10 px-3 py-1.5 rounded-lg transition-colors">
+
+                        <a href="/leaderboard" class="text-xs font-bold
+                                   text-gray-400 hover:text-white
+                                   bg-white/10
+                                   px-3 py-1.5
+                                   rounded-lg
+                                   transition-colors">
+
                             Все
+
                         </a>
 
                     </div>
 
-                    <div id="leaderboardUser" class="p-3 space-y-1.5 overflow-y-auto custom-scrollbar flex-1">
+
+                    <div id="leaderboardUser" class="p-3
+                               space-y-1.5
+                               overflow-y-auto
+                               custom-scrollbar
+                               flex-1">
 
                         <div class="text-center text-gray-500 py-10">
 
@@ -591,18 +1147,30 @@
     </div>
 
 
+
     <!-- ============================================ -->
-    <!-- ФУТЕР АВТОРИЗОВАННОГО                        -->
+    <!-- ФУТЕР ПОЛЬЗОВАТЕЛЯ                           -->
     <!-- ============================================ -->
 
-    <div class="w-full mt-12 py-5 px-6 bg-black/20 border-t border-white/5">
+    <div class="w-full
+               mt-6 sm:mt-12
+               py-4 sm:py-5
+               px-3 sm:px-6
+               bg-black/20
+               border-t border-white/5">
 
-        <div
-            class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 text-xs text-gray-500">
+
+        <div class="max-w-7xl mx-auto
+                   flex flex-col sm:flex-row
+                   items-center justify-center
+                   gap-3 sm:gap-5
+                   text-[10px] sm:text-xs
+                   text-gray-500">
 
 
-            <!-- Ссылки -->
-            <div class="flex items-center justify-center gap-4 flex-wrap">
+            <div class="flex items-center justify-center
+                       gap-x-4 gap-y-2
+                       flex-wrap">
 
                 <span>© 2026 МУВИХАНТЕР</span>
 
@@ -628,27 +1196,41 @@
             <div class="hidden sm:block w-px h-5 bg-white/10"></div>
 
 
-            <!-- Контакты -->
             <div class="flex items-center gap-2">
 
                 <span class="mr-1">
                     Связаться со мной
                 </span>
 
-                <!-- VK -->
+
                 <a href="https://vk.ru/myhicursed" target="_blank" rel="noopener noreferrer" title="ВКонтакте"
-                    aria-label="ВКонтакте"
-                    class="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-gray-500 hover:text-white hover:bg-[#0077FF]/20 hover:border-[#0077FF]/30 hover:shadow-[0_0_15px_rgba(0,119,255,0.25)] transition-all duration-300">
+                    aria-label="ВКонтакте" class="w-8 h-8
+                           rounded-lg
+                           bg-white/5
+                           border border-white/5
+                           flex items-center justify-center
+                           text-gray-500
+                           hover:text-white
+                           hover:bg-[#0077FF]/20
+                           hover:border-[#0077FF]/30
+                           transition-all duration-300">
 
                     <i class="fa-brands fa-vk text-sm"></i>
 
                 </a>
 
 
-                <!-- Telegram -->
                 <a href="https://t.me/myhicursed" target="_blank" rel="noopener noreferrer" title="Telegram"
-                    aria-label="Telegram"
-                    class="w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-gray-500 hover:text-white hover:bg-[#229ED9]/20 hover:border-[#229ED9]/30 hover:shadow-[0_0_15px_rgba(34,158,217,0.25)] transition-all duration-300">
+                    aria-label="Telegram" class="w-8 h-8
+                           rounded-lg
+                           bg-white/5
+                           border border-white/5
+                           flex items-center justify-center
+                           text-gray-500
+                           hover:text-white
+                           hover:bg-[#229ED9]/20
+                           hover:border-[#229ED9]/30
+                           transition-all duration-300">
 
                     <i class="fa-brands fa-telegram text-sm"></i>
 
@@ -660,9 +1242,10 @@
             <div class="hidden sm:block w-px h-5 bg-white/10"></div>
 
 
-            <!-- Эффекты -->
-            <button id="toggleFxBtnUser" type="button"
-                class="toggle-fx-btn hover:text-white transition flex items-center gap-1.5">
+            <button id="toggleFxBtnUser" type="button" class="toggle-fx-btn
+                       hover:text-white
+                       transition
+                       flex items-center gap-1.5">
 
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
 
@@ -680,35 +1263,75 @@
 
 
 
+
+
 <!-- ============================================ -->
 <!-- МОДАЛКА ЖАНРОВ                                -->
 <!-- ============================================ -->
 
-<div id="genresModal"
-    class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+<div id="genresModal" class="hidden
+           fixed inset-0
+           z-[999]
+           bg-black/80
+           backdrop-blur-sm
+           px-3 sm:px-4
+           pt-20 sm:pt-24
+           pb-4
+           overflow-y-auto">
 
-    <div class="relative w-full max-w-3xl bg-dark-800 rounded-2xl shadow-2xl border border-dark-600 p-6 md:p-8">
 
-        <button onclick="closeGenresModal()"
-            class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-dark-700 hover:bg-dark-600 transition text-gray-400 hover:text-white">
+    <div class="relative
+               w-full max-w-3xl
+               mx-auto
+               max-h-[calc(100dvh-6rem)]
+               overflow-y-auto
+               bg-[#111116]
+               rounded-2xl
+               shadow-2xl
+               border border-white/10
+               p-4 sm:p-6 md:p-8">
 
-            <i class="fa-solid fa-xmark text-xl"></i>
+
+        <!-- ЗАКРЫТЬ -->
+        <button type="button" onclick="closeGenresModal()" class="absolute
+                   top-3 right-3 sm:top-4 sm:right-4
+                   z-10
+                   w-9 h-9 sm:w-10 sm:h-10
+                   flex items-center justify-center
+                   rounded-full
+                   bg-white/5 hover:bg-white/10
+                   transition
+                   text-gray-400 hover:text-white">
+
+            <i class="fa-solid fa-xmark text-lg sm:text-xl"></i>
 
         </button>
 
-        <div class="text-center mb-8">
 
-            <h2 class="text-3xl font-black mb-2 text-white">
+        <!-- ЗАГОЛОВОК -->
+        <div class="text-center mb-5 sm:mb-8 px-10">
+
+            <h2 class="text-2xl sm:text-3xl
+                       font-black
+                       mb-2
+                       text-white">
+
                 Выбери жанр
+
             </h2>
 
-            <p class="text-gray-400 text-sm">
+
+            <p class="text-gray-400 text-xs sm:text-sm">
+
                 Играй только в фильмы любимой категории
+
             </p>
 
         </div>
 
-        <div id="genresModalGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+        <!-- ЖАНРЫ -->
+        <div id="genresModalGrid" class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
 
             <div class="text-center text-gray-500 col-span-full py-6">
 
@@ -727,5 +1350,5 @@
 
 
 {% block scripts %}
-<script src="/static/js/index.js?v=13"></script>
+<script src="/static/js/index.js?v=14"></script>
 {% endblock %}
