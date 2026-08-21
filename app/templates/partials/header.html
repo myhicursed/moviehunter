@@ -1,102 +1,167 @@
-<header
-    class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[#050507]/95 via-[#050507]/80 to-transparent backdrop-blur-sm">
-    <nav class="container mx-auto px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2">
+<header class="fixed top-0 left-0 right-0 z-50
+           bg-gradient-to-b from-[#050507]/95 via-[#050507]/85 to-transparent
+           backdrop-blur-md">
 
-        <!-- ЛОГОТИП -->
-        <a href="/" class="flex items-center min-w-0 flex-shrink group">
-            <span
-                class="text-xl min-[360px]:text-2xl sm:text-3xl font-black tracking-tighter text-brand logo-glow whitespace-nowrap">
+    <nav class="container mx-auto
+               px-3 sm:px-6
+               h-16 sm:h-[72px]
+               flex items-center justify-between
+               gap-2">
+
+        <!-- ============================================ -->
+        <!-- ЛОГОТИП                                      -->
+        <!-- ============================================ -->
+
+        <a href="/" class="flex items-center
+                   min-w-0
+                   flex-shrink
+                   group">
+
+            <span class="text-[19px] min-[360px]:text-xl sm:text-3xl
+                       font-black
+                       tracking-tighter
+                       text-brand
+                       logo-glow
+                       whitespace-nowrap">
+
                 МУВИ<span class="text-white">ХАНТЕР</span>
+
             </span>
+
         </a>
 
 
-        <!-- ПРАВАЯ ЧАСТЬ -->
-        <div class="flex items-center justify-end gap-1.5 sm:gap-2 md:gap-3 min-w-0 flex-shrink">
+        <!-- ============================================ -->
+        <!-- ПРАВАЯ ЧАСТЬ                                 -->
+        <!-- ============================================ -->
+
+        <div class="flex items-center justify-end
+                   gap-1.5 sm:gap-2
+                   flex-shrink-0">
 
 
             <!-- TELEGRAM -->
-            <a id="tgLink" href="https://t.me/moviehunterquiz" target="_blank" rel="noopener noreferrer" class="hidden flex-shrink-0 items-center justify-center gap-2
-                       h-9 w-9 sm:h-10 sm:w-auto sm:px-4
-                       bg-blue-500/10 hover:bg-blue-500/20
-                       border border-blue-500/30 hover:border-blue-500/60
-                       transition-all duration-300 rounded-lg
-                       font-bold text-sm
-                       shadow-[0_0_15px_rgba(59,130,246,0.15)]
-                       hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]
-                       backdrop-blur-md" title="Наш Telegram-канал" aria-label="Наш Telegram-канал">
+            <a id="tgLink" href="https://t.me/moviehunterquiz" target="_blank" rel="noopener noreferrer"
+                title="Наш Telegram-канал" aria-label="Наш Telegram-канал" class="hidden
+                       flex-shrink-0
+                       items-center justify-center
+                       gap-2
+                       w-8 h-8
+                       sm:w-auto sm:h-10 sm:px-4
+                       rounded-lg
+                       bg-blue-500/10
+                       hover:bg-blue-500/20
+                       border border-blue-500/30
+                       hover:border-blue-500/60
+                       transition-all duration-300">
 
-                <i class="fa-brands fa-telegram text-blue-500"></i>
+                <i class="fa-brands fa-telegram text-blue-400 text-sm sm:text-base"></i>
 
-                <span class="hidden sm:inline text-white">
+                <span class="hidden sm:inline
+                           text-white
+                           text-sm font-bold">
+
                     Мы в TG
+
                 </span>
+
             </a>
 
 
-            <!-- ПОДДЕРЖАТЬ -->
-            <a href="/support" class="inline-flex flex-shrink-0 items-center justify-center gap-2
-                       h-9 w-9 sm:h-10 sm:w-auto sm:px-4
-                       bg-brand/10 hover:bg-brand/20
-                       border border-brand/30 hover:border-brand/60
-                       transition-all duration-300 rounded-lg
-                       font-bold text-sm
-                       shadow-[0_0_15px_rgba(229,9,20,0.15)]
-                       hover:shadow-[0_0_20px_rgba(229,9,20,0.3)]
-                       backdrop-blur-md" title="Поддержать проект" aria-label="Поддержать проект">
+            <!-- ============================================ -->
+            <!-- ПОДДЕРЖАТЬ                                   -->
+            <!-- На телефоне скрываем                         -->
+            <!-- ============================================ -->
+
+            <a href="/support" class="hidden sm:inline-flex
+                       flex-shrink-0
+                       items-center justify-center
+                       gap-2
+                       h-10 px-4
+                       rounded-lg
+                       bg-brand/10
+                       hover:bg-brand/20
+                       border border-brand/30
+                       hover:border-brand/60
+                       transition-all duration-300
+                       font-bold text-sm" title="Поддержать проект">
 
                 <i class="fa-solid fa-heart text-brand"></i>
 
-                <span class="hidden sm:inline text-white">
+                <span class="text-white">
                     Поддержать
                 </span>
+
             </a>
 
 
-            <!-- ВОЙТИ -->
-            <button id="loginBtn" type="button" class="hidden flex-shrink-0
+            <!-- ============================================ -->
+            <!-- ВОЙТИ                                        -->
+            <!-- ============================================ -->
+
+            <button id="loginBtn" type="button" class="hidden
+                       flex-shrink-0
                        h-9 sm:h-10
                        px-3 sm:px-5
-                       bg-brand hover:bg-brand-dark
-                       transition rounded-lg
+                       bg-brand
+                       hover:bg-brand-dark
+                       transition
+                       rounded-lg
                        font-semibold
                        text-xs sm:text-sm
                        whitespace-nowrap">
 
                 Войти
+
             </button>
 
 
-            <!-- ПРОФИЛЬ -->
-            <a id="profileLink" href="/profile" class="hidden items-center
-                       min-w-0 max-w-[105px] min-[390px]:max-w-[135px] sm:max-w-[220px]
-                       gap-1.5 sm:gap-2
+            <!-- ============================================ -->
+            <!-- ПРОФИЛЬ                                      -->
+            <!-- MOBILE: только аватар                        -->
+            <!-- DESKTOP: аватар + ник                        -->
+            <!-- ============================================ -->
+
+            <a id="profileLink" href="/profile" title="Мой профиль" class="hidden
+                       flex-shrink-0
+                       items-center
+                       gap-2
                        glass-card
-                       px-1.5 sm:px-3
-                       py-1 sm:py-1.5
+                       p-1
+                       sm:px-3 sm:py-1.5
                        rounded-xl
+                       border border-white/10
+                       hover:border-brand/30
                        hover:bg-white/10
                        transition-all duration-300
-                       border border-white/10
-                       hover:border-white/20
                        group">
 
-                <img id="userAvatar" src="/static/avatars/default.png" alt="Аватар" class="w-7 h-7 sm:w-8 sm:h-8
-                           flex-shrink-0 rounded-full
-                           border border-brand object-cover">
 
-                <span id="userName" class="min-w-0 truncate
-                           font-bold text-[11px] sm:text-sm
+                <img id="userAvatar" src="/static/avatars/default.png" alt="Аватар" class="w-8 h-8
+                           rounded-lg sm:rounded-full
+                           border border-brand/70
+                           object-cover
+                           flex-shrink-0">
+
+
+                <!-- Ник показываем только от 640px -->
+                <span id="userName" class="hidden sm:block
+                           max-w-[130px]
+                           truncate
+                           font-bold
+                           text-sm
                            text-white
                            group-hover:text-brand
                            transition-colors">
                 </span>
 
+
                 <i class="hidden sm:block
                            fa-solid fa-chevron-right
-                           text-[10px] text-gray-500
+                           text-[10px]
+                           text-gray-500
                            group-hover:text-brand
-                           transition-colors flex-shrink-0">
+                           transition-colors">
                 </i>
 
             </a>
@@ -104,4 +169,5 @@
         </div>
 
     </nav>
+
 </header>
