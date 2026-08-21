@@ -267,13 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeBtn.addEventListener('click', closeAuthModal);
     }
 
-    // Клик по фону модалки — закрыть
     const modal = document.getElementById('authModal');
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeAuthModal();
-        });
-    }
 
     // Переключение вход/регистрация
     const switchBtn = document.getElementById('authSwitchBtn');
@@ -289,7 +283,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Escape закрывает модалку
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        if (
+            e.key === 'Escape' &&
+            modal &&
+            !modal.classList.contains('hidden')
+        ) {
             closeAuthModal();
         }
     });
