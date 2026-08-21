@@ -154,3 +154,11 @@ async def sitemap():
     xml_content += "</urlset>"
 
     return Response(content=xml_content, media_type="application/xml")
+
+
+@router.get("/leaderboard", response_class=HTMLResponse)
+async def leaderboard_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="leaderboard.html",
+    )

@@ -61,6 +61,7 @@ async function apiRequest(url, options = {}) {
 
 function fillUserData(user) {
     const userAvatar = document.getElementById('userAvatar');
+    const dashboardAvatar = document.getElementById('dashboardAvatar'); // 🆕
     const userName = document.getElementById('userName');
     const welcomeName = document.getElementById('welcomeName');
 
@@ -68,12 +69,18 @@ function fillUserData(user) {
         userAvatar.src = `/static/avatars/${user.avatar}.png`;
         userAvatar.onerror = () => { userAvatar.src = '/static/avatars/default.png'; };
     }
+    if (dashboardAvatar) { // 🆕
+        dashboardAvatar.src = `/static/avatars/${user.avatar}.png`;
+        dashboardAvatar.onerror = () => { dashboardAvatar.src = '/static/avatars/default.png'; };
+    }
     if (userName) {
         userName.textContent = user.username;
     }
     if (welcomeName) {
         welcomeName.textContent = user.username;
     }
+
+    // Если на странице есть стрик-блок — перерисовать
     if (typeof renderStreak === 'function') {
         renderStreak();
     }
