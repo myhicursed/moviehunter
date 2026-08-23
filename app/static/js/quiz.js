@@ -23,16 +23,35 @@ const state = {
 // ЭКРАНЫ
 // ============================================
 
+// ============================================
+// ЭКРАНЫ
+// ============================================
+
 function showScreen(id) {
     if (id !== 'gameScreen') {
         stopVideo();
     }
 
-    ['loadingScreen', 'errorScreen', 'gameScreen', 'resultScreen', 'reloadScreen'].forEach(s => {
+    [
+        'startScreen',
+        'loadingScreen',
+        'errorScreen',
+        'gameScreen',
+        'resultScreen',
+        'reloadScreen'
+    ].forEach(s => {
         const el = document.getElementById(s);
-        if (el) el.classList.add('hidden');
+
+        if (el) {
+            el.classList.add('hidden');
+        }
     });
-    document.getElementById(id).classList.remove('hidden');
+
+    const target = document.getElementById(id);
+
+    if (target) {
+        target.classList.remove('hidden');
+    }
 }
 
 function showError(message) {
@@ -154,13 +173,18 @@ function showQuestion() {
     <span>Осталось: <span id="timerSeconds" class="font-black text-brand">10</span> сек</span>
 `;
 
-    // Видео
+    // ============================================
+    // ВИДЕО
+    // ============================================
+
     const video =
         document.getElementById('videoPlayer');
 
     const playOverlay =
         document.getElementById('videoPlayOverlay');
 
+
+    video.pause();
 
     video.src =
         `/media/movies/${q.filename}`;
@@ -178,29 +202,33 @@ function showQuestion() {
 
 
     /*
-     * Пытаемся запустить явно.
-     *
-     * Chrome/Android/Desktop обычно разрешит.
-     * Safari/iPhone со звуком может вернуть
-     * NotAllowedError.
+     * После клика "Начать квиз" Safari/iPhone
+     * должен разрешить воспроизведение со звуком.
      */
     video.play()
         .then(() => {
-            playOverlay.classList.add('hidden');
-            playOverlay.classList.remove('flex');
+
+            if (playOverlay) {
+                playOverlay.classList.add('hidden');
+                playOverlay.classList.remove('flex');
+            }
+
         })
         .catch((error) => {
+
             console.log(
                 'Autoplay заблокирован браузером:',
                 error
             );
 
             /*
-             * Показываем собственную кнопку вместо
-             * стандартной кнопки Safari.
+             * Если браузер всё равно отказал,
+             * показываем ручной запуск поверх видео.
              */
-            playOverlay.classList.remove('hidden');
-            playOverlay.classList.add('flex');
+            if (playOverlay) {
+                playOverlay.classList.remove('hidden');
+                playOverlay.classList.add('flex');
+            }
         });
 
     const container = document.getElementById('optionsContainer');
@@ -744,63 +772,152 @@ function stopVideo() {
 // ИНИЦИАЛИЗАЦИЯ
 // ============================================
 
+// ============================================
+// ИНИЦИАЛИЗАЦИЯ
+// ============================================
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ============================================
+    // ПЕРВЫЙ ЗАПУСК / ОБНОВЛЕНИЕ
+    // ============================================
+
     const isReload = checkIfPageReloaded();
+
+    if (isReload) {
+        // После F5 оставляем существующий экран
+        // "Страница была обновлена".
+        showScreen('reloadScreen');
+    } else {
+        // При обычном переходе показываем экран
+        // "Готов к игре?".
+        showScreen('startScreen');
+    }
+
+
+    // ============================================
+    // НАЧАТЬ КВИЗ
+    // ============================================
+
+    const startQuizBtn =
+        document.getElementById('startQuizBtn');
+
+    if (startQuizBtn) {
+        startQuizBtn.addEventListener('click', () => {
+            loadQuiz();
+        });
+    }
+
+
+    // ============================================
+    // НАЧАТЬ ЗАНОВО ПОСЛЕ F5
+    // ============================================
+
+    const reloadBtn =
+        document.getElementById('reloadStartBtn');
+
+    if (reloadBtn) {
+        reloadBtn.addEventListener('click', () => {
+            loadQuiz();
+        });
+    }
+
+
+    // ============================================
+    // FALLBACK: БРАУЗЕР ЗАПРЕТИЛ VIDEO.PLAY()
+    // ============================================
+
     const videoPlayOverlay =
         document.getElementById('videoPlayOverlay');
 
     if (videoPlayOverlay) {
-        videoPlayOverlay.addEventListener(
+        videoPlayOverlay.addEventListener('click', async () => {
+
+            const video =
+                document.getElementById('videoPlayer');
+
+            if (!video) return;
+
+            try {
+                await video.play();
+
+                videoPlayOverlay.classList.add('hidden');
+                videoPlayOverlay.classList.remove('flex');
+
+            } catch (error) {
+                console.error(
+                    'Не удалось запустить видео:',
+                    error
+                );
+            }
+        });
+    }
+
+
+    // ============================================
+    // ЗАЩИТА ВИДЕО
+    // ============================================
+
+    const video =
+        document.getElementById('videoPlayer');
+
+    if (video) {
+        video.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+    }
+
+
+    // ============================================
+    // ДАЛЬШЕ
+    // ============================================
+
+    const nextButton =
+        document.getElementById('nextButton');
+
+    if (nextButton) {
+        nextButton.addEventListener(
             'click',
-            async () => {
+            nextQuestion
+        );
+    }
 
-                const video =
-                    document.getElementById('videoPlayer');
 
-                try {
-                    await video.play();
+    // ============================================
+    // ИГРАТЬ СНОВА
+    // ============================================
 
-                    videoPlayOverlay.classList.add(
-                        'hidden'
-                    );
+    const playAgainBtn =
+        document.getElementById('playAgainBtn');
 
-                    videoPlayOverlay.classList.remove(
-                        'flex'
-                    );
+    if (playAgainBtn) {
+        playAgainBtn.addEventListener(
+            'click',
+            loadQuiz
+        );
+    }
 
-                } catch (error) {
-                    console.error(
-                        'Не удалось запустить видео:',
-                        error
-                    );
-                }
+
+    // ============================================
+    // ГОСТЬ → РЕГИСТРАЦИЯ
+    // ============================================
+
+    const guestLoginBtn =
+        document.getElementById('guestLoginBtn');
+
+    if (guestLoginBtn) {
+        guestLoginBtn.addEventListener(
+            'click',
+            () => {
+                openAuthModal('register');
             }
         );
     }
 
-    if (isReload) {
-        // Показываем экран "Начать заново"
-        showScreen('reloadScreen');
-    } else {
-        // Обычная загрузка → сразу квиз
-        loadQuiz();
-    }
 
-    // Кнопка "Начать заново" на экране перезагрузки
-    const reloadBtn = document.getElementById('reloadStartBtn');
-    if (reloadBtn) {
-        reloadBtn.addEventListener('click', loadQuiz);
-    }
-
-    const video = document.getElementById('videoPlayer');
-    if (video) {
-        video.addEventListener('contextmenu', e => e.preventDefault());
-    }
-    document.getElementById('nextButton').addEventListener('click', nextQuestion);
-    document.getElementById('playAgainBtn').addEventListener('click', loadQuiz);
-    document.getElementById('guestLoginBtn').addEventListener('click', () => {
-        openAuthModal('register');
-    });
+    // ============================================
+    // ХОЧУ ПОСМОТРЕТЬ
+    // ============================================
 
     const libraryButton =
         document.getElementById('libraryButton');

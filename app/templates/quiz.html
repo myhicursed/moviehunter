@@ -9,6 +9,86 @@ endblock %}
 <div class="pt-24 pb-20 min-h-screen">
     <div class="container mx-auto px-4 max-w-4xl">
 
+        <!-- ============================================ -->
+        <!-- ЭКРАН: СТАРТ КВИЗА                          -->
+        <!-- ============================================ -->
+
+        <div id="startScreen" class="hidden text-center py-12 sm:py-20">
+
+            <div class="w-20 h-20
+               mx-auto mb-5
+               rounded-2xl
+               bg-purple-500/15
+               border border-purple-500/20
+               flex items-center justify-center
+               shadow-[0_0_35px_rgba(147,51,234,0.15)]">
+
+                <i class="fa-solid fa-dice text-purple-400 text-4xl"></i>
+
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-black mb-3">
+                Готов к игре?
+            </h1>
+
+            <p class="text-gray-400
+               text-sm sm:text-base
+               max-w-md mx-auto
+               mb-3">
+
+                Смотри короткий отрывок и выбери правильный фильм.
+
+            </p>
+
+            <div class="flex items-center justify-center
+               gap-3
+               text-xs text-gray-500
+               mb-8">
+
+                <span class="flex items-center gap-1.5">
+
+                    <i class="fa-solid fa-film text-purple-400"></i>
+
+                    10 фильмов
+
+                </span>
+
+                <span class="w-1 h-1 rounded-full bg-gray-700"></span>
+
+                <span class="flex items-center gap-1.5">
+
+                    <i class="fa-solid fa-clock text-purple-400"></i>
+
+                    10 секунд
+
+                </span>
+
+            </div>
+
+            <button id="startQuizBtn" type="button" class="inline-flex
+               items-center justify-center
+               gap-2
+               px-8 py-4
+               rounded-xl
+               bg-brand
+               hover:bg-brand-dark
+               text-white
+               font-black
+               text-base sm:text-lg
+               shadow-[0_0_25px_rgba(229,9,20,0.25)]
+               transition-all">
+
+                <i class="fa-solid fa-play"></i>
+
+                Начать квиз
+
+            </button>
+
+            <p class="text-[10px] sm:text-xs text-gray-600 mt-4">
+                Видео запустится со звуком
+            </p>
+
+        </div>
         <!-- ЭКРАН 1: Загрузка -->
         <div id="loadingScreen" class="text-center py-20">
             <i class="fa-solid fa-spinner fa-spin text-5xl text-brand mb-4"></i>
@@ -250,5 +330,5 @@ endblock %}
 
 
 {% block scripts %}
-<script src="/static/js/quiz.js?v=4"></script>
+<script src="/static/js/quiz.js?v=5"></script>
 {% endblock %}

@@ -26,13 +26,30 @@ const LETTERS_TIME_LIMIT = 30;
 // ============================================
 
 function showScreen(id) {
-    if (id !== 'gameScreen') stopVideo();
+    if (id !== 'gameScreen') {
+        stopVideo();
+    }
 
-    ['loadingScreen', 'errorScreen', 'gameScreen', 'resultScreen', 'reloadScreen'].forEach(s => {
+    [
+        'startScreen',
+        'loadingScreen',
+        'errorScreen',
+        'gameScreen',
+        'resultScreen',
+        'reloadScreen'
+    ].forEach(s => {
         const el = document.getElementById(s);
-        if (el) el.classList.add('hidden');
+
+        if (el) {
+            el.classList.add('hidden');
+        }
     });
-    document.getElementById(id).classList.remove('hidden');
+
+    const target = document.getElementById(id);
+
+    if (target) {
+        target.classList.remove('hidden');
+    }
 }
 
 function showError(message) {
@@ -129,22 +146,78 @@ function showQuestion() {
         <span>Осталось: <span id="lettersTimerSeconds" class="font-black text-brand">30</span> сек</span>
     `;
 
-    // Видео
-    const video = document.getElementById('videoPlayer');
-    video.src = `/media/movies/${q.filename}`;
+    // ============================================
+    // ВИДЕО
+    // ============================================
+
+    const video =
+        document.getElementById('videoPlayer');
+
+    const playOverlay =
+        document.getElementById('videoPlayOverlay');
+
+
+    video.pause();
+
+    video.src =
+        `/media/movies/${q.filename}`;
+
     video.load();
 
-    video.onpause = () => {
-        if (!video.ended && !state.answered) {
-            video.play().catch(() => { });
-        }
-    };
 
     video.onended = () => {
+
         state.videoWatched = true;
+
         enableLetters();
+
         startLettersTimer();
     };
+
+
+    /*
+     * Пытаемся запустить видео.
+     *
+     * После клика "Начать квиз" Safari должен
+     * разрешить воспроизведение со звуком.
+     */
+    video.play()
+        .then(() => {
+
+            if (playOverlay) {
+                playOverlay.classList.add(
+                    'hidden'
+                );
+
+                playOverlay.classList.remove(
+                    'flex'
+                );
+            }
+
+        })
+        .catch((error) => {
+
+            console.log(
+                'Autoplay заблокирован браузером:',
+                error
+            );
+
+
+            /*
+             * На случай особо строгого браузера
+             * показываем ручной запуск.
+             */
+            if (playOverlay) {
+                playOverlay.classList.remove(
+                    'hidden'
+                );
+
+                playOverlay.classList.add(
+                    'flex'
+                );
+            }
+
+        });
 
     // Инициализация слотов, пула и локов
     state.answerSlots = new Array(q.answer_length).fill(null);
@@ -659,10 +732,38 @@ function showResult() {
 // ============================================
 
 function stopVideo() {
-    const video = document.getElementById('videoPlayer');
+    const video =
+        document.getElementById(
+            'videoPlayer'
+        );
+
     if (video) {
         video.pause();
-        video.src = '';
+
+        video.onended = null;
+        video.onpause = null;
+
+        video.removeAttribute(
+            'src'
+        );
+
+        video.load();
+    }
+
+
+    const overlay =
+        document.getElementById(
+            'videoPlayOverlay'
+        );
+
+    if (overlay) {
+        overlay.classList.add(
+            'hidden'
+        );
+
+        overlay.classList.remove(
+            'flex'
+        );
     }
 }
 
@@ -794,36 +895,147 @@ function checkIfPageReloaded() {
 // ИНИЦИАЛИЗАЦИЯ
 // ============================================
 
+// ============================================
+// ИНИЦИАЛИЗАЦИЯ
+// ============================================
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Проверка обновления страницы
+
+    // ============================================
+    // ПЕРВЫЙ ЗАПУСК / ОБНОВЛЕНИЕ СТРАНИЦЫ
+    // ============================================
+
     const isReload = checkIfPageReloaded();
 
     if (isReload) {
+        // После F5 показываем старое предупреждение
         showScreen('reloadScreen');
     } else {
-        loadQuiz();
+        // При обычном входе сначала просим пользователя
+        // нажать "Начать квиз".
+        // Этот клик разрешает видео со звуком на iPhone.
+        showScreen('startScreen');
     }
 
-    // Кнопка "Начать заново"
+
+    // ============================================
+    // КНОПКА "НАЧАТЬ КВИЗ"
+    // ============================================
+
+    const startQuizBtn = document.getElementById('startQuizBtn');
+
+    if (startQuizBtn) {
+        startQuizBtn.addEventListener('click', () => {
+            loadQuiz();
+        });
+    }
+
+
+    // ============================================
+    // КНОПКА "НАЧАТЬ ЗАНОВО" ПОСЛЕ F5
+    // ============================================
+
     const reloadBtn = document.getElementById('reloadStartBtn');
+
     if (reloadBtn) {
-        reloadBtn.addEventListener('click', loadQuiz);
+        reloadBtn.addEventListener('click', () => {
+            loadQuiz();
+        });
     }
 
-    // Защита от правого клика на видео
-    const video = document.getElementById('lettersVideoPlayer');
+
+    // ============================================
+    // FALLBACK ДЛЯ ВИДЕО
+    // ============================================
+
+    const videoPlayOverlay =
+        document.getElementById('videoPlayOverlay');
+
+    if (videoPlayOverlay) {
+        videoPlayOverlay.addEventListener('click', async () => {
+
+            const video =
+                document.getElementById('videoPlayer');
+
+            if (!video) return;
+
+            try {
+                await video.play();
+
+                videoPlayOverlay.classList.add('hidden');
+                videoPlayOverlay.classList.remove('flex');
+
+            } catch (error) {
+                console.error(
+                    'Не удалось запустить видео:',
+                    error
+                );
+            }
+        });
+    }
+
+
+    // ============================================
+    // ЗАЩИТА ВИДЕО
+    // ============================================
+
+    // ВАЖНО:
+    // раньше тут был ошибочный ID "lettersVideoPlayer".
+    // В HTML видео называется "videoPlayer".
+    const video = document.getElementById('videoPlayer');
+
     if (video) {
-        video.addEventListener('contextmenu', e => e.preventDefault());
+        video.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
     }
 
-    document.getElementById('checkBtn').addEventListener('click', checkAnswer);
-    document.getElementById('clearBtn').addEventListener('click', clearAnswer);
-    document.getElementById('hintBtn').addEventListener('click', useHint);
-    document.getElementById('shuffleBtn').addEventListener('click', shuffleLetters);
-    document.getElementById('surrenderBtn').addEventListener('click', surrender);
-    document.getElementById('nextButton').addEventListener('click', nextQuestion);
-    document.getElementById('playAgainBtn').addEventListener('click', loadQuiz);
-    document.getElementById('guestLoginBtn').addEventListener('click', () => {
-        openAuthModal('register');
-    });
+
+    // ============================================
+    // ИГРОВЫЕ КНОПКИ
+    // ============================================
+
+    const checkBtn = document.getElementById('checkBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const hintBtn = document.getElementById('hintBtn');
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    const surrenderBtn = document.getElementById('surrenderBtn');
+    const nextButton = document.getElementById('nextButton');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    const guestLoginBtn = document.getElementById('guestLoginBtn');
+
+
+    if (checkBtn) {
+        checkBtn.addEventListener('click', checkAnswer);
+    }
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', clearAnswer);
+    }
+
+    if (hintBtn) {
+        hintBtn.addEventListener('click', useHint);
+    }
+
+    if (shuffleBtn) {
+        shuffleBtn.addEventListener('click', shuffleLetters);
+    }
+
+    if (surrenderBtn) {
+        surrenderBtn.addEventListener('click', surrender);
+    }
+
+    if (nextButton) {
+        nextButton.addEventListener('click', nextQuestion);
+    }
+
+    if (playAgainBtn) {
+        playAgainBtn.addEventListener('click', loadQuiz);
+    }
+
+    if (guestLoginBtn) {
+        guestLoginBtn.addEventListener('click', () => {
+            openAuthModal('register');
+        });
+    }
 });
