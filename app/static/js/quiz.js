@@ -155,21 +155,53 @@ function showQuestion() {
 `;
 
     // Видео
-    const video = document.getElementById('videoPlayer');
-    video.src = `/media/movies/${q.filename}`;
+    const video =
+        document.getElementById('videoPlayer');
+
+    const playOverlay =
+        document.getElementById('videoPlayOverlay');
+
+
+    video.src =
+        `/media/movies/${q.filename}`;
+
     video.load();
 
-    video.onpause = () => {
-        if (!video.ended && !state.answered) {
-            video.play().catch(() => { });
-        }
-    };
 
     video.onended = () => {
         state.videoWatched = true;
+
         unlockOptions();
+
         startTimer();
     };
+
+
+    /*
+     * Пытаемся запустить явно.
+     *
+     * Chrome/Android/Desktop обычно разрешит.
+     * Safari/iPhone со звуком может вернуть
+     * NotAllowedError.
+     */
+    video.play()
+        .then(() => {
+            playOverlay.classList.add('hidden');
+            playOverlay.classList.remove('flex');
+        })
+        .catch((error) => {
+            console.log(
+                'Autoplay заблокирован браузером:',
+                error
+            );
+
+            /*
+             * Показываем собственную кнопку вместо
+             * стандартной кнопки Safari.
+             */
+            playOverlay.classList.remove('hidden');
+            playOverlay.classList.add('flex');
+        });
 
     const container = document.getElementById('optionsContainer');
     container.innerHTML = q.options.map(option => `
@@ -714,6 +746,37 @@ function stopVideo() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const isReload = checkIfPageReloaded();
+    const videoPlayOverlay =
+        document.getElementById('videoPlayOverlay');
+
+    if (videoPlayOverlay) {
+        videoPlayOverlay.addEventListener(
+            'click',
+            async () => {
+
+                const video =
+                    document.getElementById('videoPlayer');
+
+                try {
+                    await video.play();
+
+                    videoPlayOverlay.classList.add(
+                        'hidden'
+                    );
+
+                    videoPlayOverlay.classList.remove(
+                        'flex'
+                    );
+
+                } catch (error) {
+                    console.error(
+                        'Не удалось запустить видео:',
+                        error
+                    );
+                }
+            }
+        );
+    }
 
     if (isReload) {
         // Показываем экран "Начать заново"
