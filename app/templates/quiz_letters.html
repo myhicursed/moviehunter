@@ -1,87 +1,109 @@
 {% extends "base.html" %}
 
 {% block title %}Угадай по буквам — Киноквиз | МУВИХАНТЕР{% endblock %}
-{% block description %}Собери название фильма из перемешанных букв. Сложный режим с двойными очками!{% endblock %}
+
+{% block description %}
+Собери название фильма из перемешанных букв. Сложный режим с двойными очками!
+{% endblock %}
+
 
 {% block content %}
 
-<div class="pt-24 pb-20 min-h-screen">
-    <div class="container mx-auto px-4 max-w-4xl">
+<div class="quiz-focus-page
+           quiz-letters-page
+           pt-2 md:pt-24
+           pb-6 md:pb-20
+           min-h-[100dvh]">
+
+    <div class="container mx-auto px-3 sm:px-4 max-w-4xl">
+
+
         <!-- ============================================ -->
-        <!-- ЭКРАН: СТАРТ КВИЗА                          -->
+        <!-- СТАРТ                                       -->
         <!-- ============================================ -->
 
         <div id="startScreen" class="hidden text-center py-12 sm:py-20">
 
             <div class="w-20 h-20
-               mx-auto mb-5
-               rounded-2xl
-               bg-orange-500/15
-               border border-orange-500/20
-               flex items-center justify-center
-               shadow-[0_0_35px_rgba(249,115,22,0.15)]">
+                       mx-auto mb-5
+                       rounded-2xl
+                       bg-orange-500/15
+                       border border-orange-500/20
+                       flex items-center justify-center
+                       shadow-[0_0_35px_rgba(249,115,22,0.15)]">
 
                 <i class="fa-solid fa-spell-check text-orange-400 text-4xl"></i>
 
             </div>
 
-            <h1 class="text-3xl sm:text-4xl
-               font-black
-               mb-3">
 
+            <h1 class="text-3xl sm:text-4xl font-black mb-3">
                 Готов к игре?
-
             </h1>
 
+
             <p class="text-gray-400
-               text-sm sm:text-base
-               max-w-md
-               mx-auto
-               mb-3">
+                       text-sm sm:text-base
+                       max-w-md
+                       mx-auto
+                       mb-3">
 
                 Смотри отрывок и собери точное название фильма
                 из перемешанных букв.
 
             </p>
 
+
             <div class="flex items-center justify-center
-               gap-3
-               text-xs text-gray-500
-               mb-8">
+                       gap-3
+                       text-xs text-gray-500
+                       mb-8">
 
                 <span class="flex items-center gap-1.5">
+
                     <i class="fa-solid fa-film text-orange-400"></i>
+
                     10 фильмов
+
                 </span>
 
                 <span class="w-1 h-1 rounded-full bg-gray-700"></span>
 
                 <span class="flex items-center gap-1.5">
+
                     <i class="fa-solid fa-clock text-orange-400"></i>
+
                     30 секунд
+
                 </span>
 
                 <span class="w-1 h-1 rounded-full bg-gray-700"></span>
 
                 <span class="flex items-center gap-1.5">
-                    <span class="text-orange-400 font-black">x2</span>
+
+                    <span class="text-orange-400 font-black">
+                        x2
+                    </span>
+
                     очки
+
                 </span>
 
             </div>
 
+
             <button id="startQuizBtn" type="button" class="inline-flex
-               items-center justify-center
-               gap-2
-               px-8 py-4
-               rounded-xl
-               bg-orange-600
-               hover:bg-orange-500
-               text-white
-               font-black
-               text-base sm:text-lg
-               shadow-[0_0_25px_rgba(249,115,22,0.25)]
-               transition-all">
+                       items-center justify-center
+                       gap-2
+                       px-8 py-4
+                       rounded-xl
+                       bg-orange-600
+                       hover:bg-orange-500
+                       text-white
+                       font-black
+                       text-base sm:text-lg
+                       shadow-[0_0_25px_rgba(249,115,22,0.25)]
+                       transition-all">
 
                 <i class="fa-solid fa-play"></i>
 
@@ -89,147 +111,370 @@
 
             </button>
 
+
             <p class="text-[10px] sm:text-xs text-gray-600 mt-4">
                 Видео запустится со звуком
             </p>
 
         </div>
 
-        <!-- Загрузка -->
+
+
+        <!-- ============================================ -->
+        <!-- ЗАГРУЗКА                                    -->
+        <!-- ============================================ -->
+
         <div id="loadingScreen" class="text-center py-20">
+
             <i class="fa-solid fa-spinner fa-spin text-5xl text-brand mb-4"></i>
-            <p class="text-xl text-gray-400">Готовим квиз...</p>
-        </div>
 
-        <!-- Ошибка -->
-        <div id="errorScreen" class="hidden text-center py-20">
-            <div class="text-6xl mb-4">😢</div>
-            <h2 class="text-2xl font-bold mb-2">Что-то пошло не так</h2>
-            <p id="errorMessage" class="text-gray-400 mb-6"></p>
-            <a href="/"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-semibold">
-                <i class="fa-solid fa-home"></i>
-                На главную
-            </a>
-        </div>
-
-        <!-- ЭКРАН: Страница обновлена -->
-        <div id="reloadScreen" class="hidden text-center py-20">
-            <div class="text-6xl mb-4">🔄</div>
-            <h2 class="text-2xl md:text-3xl font-bold mb-3">Страница была обновлена</h2>
-            <p class="text-gray-400 mb-8 max-w-md mx-auto">
-                Твой прогресс сброшен. Хочешь начать квиз заново?
+            <p class="text-xl text-gray-400">
+                Готовим квиз...
             </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <button id="reloadStartBtn"
-                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-bold shadow-lg shadow-brand/30">
-                    <i class="fa-solid fa-play"></i>
-                    Начать заново
-                </button>
-                <a href="/"
-                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-bold border border-dark-600">
-                    <i class="fa-solid fa-home"></i>
-                    На главную
-                </a>
-            </div>
+
         </div>
 
-        <!-- Игра -->
+
+
+        <!-- ============================================ -->
+        <!-- ОШИБКА                                      -->
+        <!-- ============================================ -->
+
+        <div id="errorScreen" class="hidden text-center py-20">
+
+            <div class="text-6xl mb-4">
+                😢
+            </div>
+
+            <h2 class="text-2xl font-bold mb-2">
+                Что-то пошло не так
+            </h2>
+
+            <p id="errorMessage" class="text-gray-400 mb-6"></p>
+
+            <a href="/" class="inline-flex items-center gap-2
+                       px-6 py-3
+                       bg-brand hover:bg-brand-dark
+                       transition
+                       rounded-lg
+                       font-semibold">
+
+                <i class="fa-solid fa-home"></i>
+
+                На главную
+
+            </a>
+
+        </div>
+
+
+
+        <!-- ============================================ -->
+        <!-- RELOAD                                      -->
+        <!-- ============================================ -->
+
+        <div id="reloadScreen" class="hidden text-center py-20">
+
+            <div class="text-6xl mb-4">
+                🔄
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-bold mb-3">
+                Страница была обновлена
+            </h2>
+
+            <p class="text-gray-400 mb-8 max-w-md mx-auto">
+
+                Твой прогресс сброшен.
+                Хочешь начать квиз заново?
+
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+
+                <button id="reloadStartBtn" type="button" class="inline-flex items-center justify-center gap-2
+                           px-6 py-3
+                           bg-brand hover:bg-brand-dark
+                           transition
+                           rounded-lg
+                           font-bold
+                           shadow-lg shadow-brand/30">
+
+                    <i class="fa-solid fa-play"></i>
+
+                    Начать заново
+
+                </button>
+
+
+                <a href="/" class="inline-flex items-center justify-center gap-2
+                           px-6 py-3
+                           bg-dark-700 hover:bg-dark-600
+                           transition
+                           rounded-lg
+                           font-bold
+                           border border-dark-600">
+
+                    <i class="fa-solid fa-home"></i>
+
+                    На главную
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ============================================ -->
+        <!-- ИГРА                                        -->
+        <!-- ============================================ -->
+
         <div id="gameScreen" class="hidden">
-            <!-- Прогресс + счёт -->
-            <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
-                <div class="text-gray-400">
-                    Вопрос <span id="currentQuestion" class="text-white font-bold">1</span> из
-                    <span id="totalQuestions" class="text-white font-bold">10</span>
+
+
+            <!-- ============================================ -->
+            <!-- ВОПРОС + ПОПЫТКИ + ОЧКИ                   -->
+            <!-- ============================================ -->
+
+            <div class="flex items-center
+                       justify-between
+                       gap-2
+                       mb-2 md:mb-6">
+
+
+                <div class="text-gray-400
+                           text-xs md:text-base
+                           whitespace-nowrap">
+
+                    Вопрос
+
+                    <span id="currentQuestion" class="text-white font-bold">
+
+                        1
+
+                    </span>
+
+                    /
+
+                    <span id="totalQuestions" class="text-white font-bold">
+
+                        10
+
+                    </span>
+
                 </div>
 
-                <div class="flex items-center gap-3 flex-wrap">
-                    <!-- Счётчик попыток -->
-                    <div class="flex items-center gap-2 px-4 py-2 bg-dark-800 rounded-lg border border-dark-600">
+
+                <div class="flex items-center
+                           justify-end
+                           gap-1.5 md:gap-3
+                           min-w-0">
+
+
+                    <!-- Попытки -->
+                    <div class="flex items-center gap-1
+                               px-2 py-1.5
+                               md:px-4 md:py-2
+                               bg-dark-800
+                               rounded-lg
+                               border border-dark-600
+                               text-xs md:text-base">
+
                         <i class="fa-solid fa-heart text-red-500"></i>
+
                         <span class="font-bold">
-                            <span id="attemptsUsed">0</span>/<span id="attemptsMax">3</span>
+
+                            <span id="attemptsUsed">
+                                0
+                            </span>
+
+                            /
+
+                            <span id="attemptsMax">
+                                3
+                            </span>
+
                         </span>
+
                     </div>
+
 
                     <!-- Очки -->
-                    <div class="flex items-center gap-2 px-4 py-2 bg-dark-800 rounded-lg border border-dark-600">
+                    <div class="flex items-center gap-1
+                               px-2 py-1.5
+                               md:px-4 md:py-2
+                               bg-dark-800
+                               rounded-lg
+                               border border-dark-600
+                               text-xs md:text-base">
+
                         <i class="fa-solid fa-star text-yellow-400"></i>
-                        <span id="currentScore" class="font-bold">0</span>
+
+                        <span id="currentScore" class="font-bold">
+
+                            0
+
+                        </span>
+
                     </div>
 
+
                     <!-- Подсказка -->
-                    <button id="hintBtn"
-                        class="px-3 py-2 bg-yellow-600 hover:bg-yellow-700 transition rounded-lg text-sm font-bold"
-                        title="Открыть букву за 2 очка">
-                        <i class="fa-solid fa-lightbulb"></i> Подсказка (-2)
+                    <button id="hintBtn" type="button" class="px-2 py-1.5
+                               md:px-3 md:py-2
+                               bg-yellow-600
+                               hover:bg-yellow-700
+                               transition
+                               rounded-lg
+                               text-[10px] md:text-sm
+                               font-bold
+                               whitespace-nowrap" title="Открыть букву за 2 очка">
+
+                        <i class="fa-solid fa-lightbulb"></i>
+
+                        <span class="hidden min-[390px]:inline">
+                            -2
+                        </span>
+
                     </button>
+
                 </div>
+
             </div>
 
-            <!-- Прогресс-бар -->
-            <div class="w-full bg-dark-700 rounded-full h-2 mb-6 overflow-hidden">
-                <div id="progressBar"
-                    class="bg-gradient-to-r from-brand to-brand-dark h-full transition-all duration-500"
-                    style="width: 0%"></div>
-            </div>
 
-            <!-- Сложность -->
-            <div class="mb-4">
-                <span id="difficultyBadge"
-                    class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase"></span>
-            </div>
 
-            <!-- Статус: "смотри" или таймер -->
-            <div id="lettersQuestionStatus" class="mb-4 text-center">
-                <div id="lettersWatchingStatus"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500 rounded-lg">
-                    <i class="fa-solid fa-eye"></i>
-                    <span class="font-semibold">Смотри внимательно...</span>
-                </div>
-                <div id="lettersTimerStatus"
-                    class="hidden inline-flex items-center gap-2 px-4 py-2 bg-brand/20 border border-brand rounded-lg">
-                    <i class="fa-solid fa-clock"></i>
-                    <span>Осталось: <span id="lettersTimerSeconds" class="font-black text-brand">30</span> сек</span>
-                </div>
-            </div>
-
-            <!-- Видео -->
             <!-- ============================================ -->
-            <!-- ВИДЕО                                        -->
+            <!-- ПРОГРЕСС                                    -->
             <!-- ============================================ -->
 
-            <div class="relative
-           bg-black
-           rounded-xl
-           overflow-hidden
-           mb-6
-           shadow-2xl">
+            <div class="w-full
+                       bg-dark-700
+                       rounded-full
+                       h-1.5 md:h-2
+                       mb-2 md:mb-6
+                       overflow-hidden">
+
+                <div id="progressBar" class="bg-gradient-to-r
+                           from-brand to-brand-dark
+                           h-full
+                           transition-all duration-500" style="width: 0%">
+                </div>
+
+            </div>
+
+
+
+            <!-- ============================================ -->
+            <!-- СЛОЖНОСТЬ + СТАТУС                         -->
+            <!-- ============================================ -->
+
+            <div class="flex items-center
+                       justify-between
+                       gap-2
+                       mb-2 md:mb-4">
+
+
+                <span id="difficultyBadge" class="inline-block
+                           px-2 py-1 md:px-3
+                           rounded-full
+                           text-[9px] md:text-xs
+                           font-bold uppercase">
+                </span>
+
+
+                <div id="lettersQuestionStatus" class="text-right">
+
+
+                    <div id="lettersWatchingStatus" class="inline-flex items-center
+                               gap-1.5
+                               px-2.5 py-1.5
+                               md:px-4 md:py-2
+                               bg-blue-500/20
+                               border border-blue-500
+                               rounded-lg
+                               text-[10px] md:text-sm">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        <span class="font-semibold">
+                            Смотри внимательно...
+                        </span>
+
+                    </div>
+
+
+                    <div id="lettersTimerStatus" class="hidden
+                               inline-flex items-center
+                               gap-1.5
+                               px-2.5 py-1.5
+                               md:px-4 md:py-2
+                               bg-brand/20
+                               border border-brand
+                               rounded-lg
+                               text-[10px] md:text-sm">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        <span>
+
+                            Осталось:
+
+                            <span id="lettersTimerSeconds" class="font-black text-brand">
+
+                                30
+
+                            </span>
+
+                            сек
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ============================================ -->
+            <!-- ВИДЕО                                       -->
+            <!-- ============================================ -->
+
+            <div class="quiz-video
+                       relative
+                       bg-black
+                       rounded-xl
+                       overflow-hidden
+                       mb-2 md:mb-6
+                       shadow-2xl">
 
                 <video id="videoPlayer" class="w-full
-               aspect-video
-               pointer-events-none
-               bg-black" playsinline webkit-playsinline preload="auto" disablepictureinpicture
+                           aspect-video
+                           pointer-events-none
+                           bg-black" playsinline webkit-playsinline preload="auto" disablepictureinpicture
                     controlslist="nodownload nofullscreen noremoteplayback">
                 </video>
 
 
-                <!-- Fallback, если браузер всё же запретил воспроизведение -->
                 <button id="videoPlayOverlay" type="button" class="hidden
-               absolute inset-0
-               z-20
-               items-center justify-center
-               bg-black/80
-               backdrop-blur-sm">
+                           absolute inset-0
+                           z-20
+                           items-center justify-center
+                           bg-black/80
+                           backdrop-blur-sm">
 
                     <div class="text-center px-4">
 
-                        <div class="w-16 h-16
-                       mx-auto mb-3
-                       rounded-full
-                       bg-orange-600
-                       flex items-center justify-center
-                       shadow-[0_0_30px_rgba(249,115,22,0.4)]">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16
+                                   mx-auto mb-3
+                                   rounded-full
+                                   bg-orange-600
+                                   flex items-center justify-center
+                                   shadow-[0_0_30px_rgba(249,115,22,0.4)]">
 
                             <i class="fa-solid fa-play text-xl text-white ml-1"></i>
 
@@ -249,96 +494,500 @@
 
             </div>
 
-            <!-- Квадраты для букв (ответ) -->
-            <div class="mb-6">
-                <div id="answerSlots" class="flex flex-col gap-2 md:gap-3 items-center"></div>
+
+
+            <!-- ============================================ -->
+            <!-- СЛОТЫ ОТВЕТА                               -->
+            <!-- ============================================ -->
+
+            <div class="mb-2 md:mb-6">
+
+                <div id="answerSlots" class="flex flex-col
+                           gap-1.5 md:gap-3
+                           items-center">
+                </div>
+
             </div>
 
-            <!-- Перемешанные буквы -->
-            <div class="mb-6">
-                <div id="lettersPool" class="flex flex-wrap justify-center gap-2"></div>
+
+
+            <!-- ============================================ -->
+            <!-- БУКВЫ                                       -->
+            <!-- ============================================ -->
+
+            <div class="mb-2 md:mb-6">
+
+                <div id="lettersPool" class="flex flex-wrap
+                           justify-center
+                           gap-1.5 md:gap-2">
+                </div>
+
             </div>
 
-            <!-- Сообщение о результате -->
-            <div id="resultMessage" class="hidden text-center mb-4">
-                <p class="text-2xl font-black" id="resultMessageText"></p>
+
+
+            <!-- ============================================ -->
+            <!-- РЕЗУЛЬТАТ ОТВЕТА                           -->
+            <!-- ============================================ -->
+
+            <div id="resultMessage" class="hidden
+                       text-center
+                       mb-2 md:mb-4">
+
+                <p id="resultMessageText" class="text-lg md:text-2xl font-black">
+                </p>
+
             </div>
 
-            <!-- Кнопки действий -->
-            <div class="flex gap-3 justify-center flex-wrap mb-4">
-                <button id="shuffleBtn"
-                    class="px-4 py-3 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-semibold text-sm border border-dark-600">
-                    <i class="fa-solid fa-shuffle"></i> Перемешать
+
+
+            <!-- ============================================ -->
+            <!-- КНОПКИ                                      -->
+            <!-- ============================================ -->
+
+            <div class="grid grid-cols-4
+                       gap-1.5
+                       md:flex
+                       md:gap-3
+                       md:justify-center
+                       mb-2 md:mb-4">
+
+
+                <button id="shuffleBtn" type="button" class="px-1.5 md:px-4
+                           py-2 md:py-3
+                           bg-dark-700
+                           hover:bg-dark-600
+                           transition
+                           rounded-lg
+                           font-semibold
+                           text-[10px] md:text-sm
+                           border border-dark-600" title="Перемешать">
+
+                    <i class="fa-solid fa-shuffle"></i>
+
+                    <span class="hidden md:inline">
+                        Перемешать
+                    </span>
+
                 </button>
-                <button id="clearBtn"
-                    class="px-4 py-3 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-semibold text-sm border border-dark-600">
-                    <i class="fa-solid fa-eraser"></i> Очистить
+
+
+                <button id="clearBtn" type="button" class="px-1.5 md:px-4
+                           py-2 md:py-3
+                           bg-dark-700
+                           hover:bg-dark-600
+                           transition
+                           rounded-lg
+                           font-semibold
+                           text-[10px] md:text-sm
+                           border border-dark-600" title="Очистить">
+
+                    <i class="fa-solid fa-eraser"></i>
+
+                    <span class="hidden md:inline">
+                        Очистить
+                    </span>
+
                 </button>
-                <button id="surrenderBtn"
-                    class="px-4 py-3 bg-dark-700 hover:bg-red-900 transition rounded-lg font-semibold text-sm border border-dark-600 hover:border-red-500">
-                    <i class="fa-solid fa-flag"></i> Сдаться
+
+
+                <button id="surrenderBtn" type="button" class="px-1.5 md:px-4
+                           py-2 md:py-3
+                           bg-dark-700
+                           hover:bg-red-900
+                           transition
+                           rounded-lg
+                           font-semibold
+                           text-[10px] md:text-sm
+                           border border-dark-600
+                           hover:border-red-500" title="Сдаться">
+
+                    <i class="fa-solid fa-flag"></i>
+
+                    <span class="hidden md:inline">
+                        Сдаться
+                    </span>
+
                 </button>
-                <button id="checkBtn"
-                    class="px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-bold shadow-lg shadow-brand/30 disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled>
-                    <i class="fa-solid fa-check"></i> Проверить
+
+
+                <button id="checkBtn" type="button" class="px-1.5 md:px-6
+                           py-2 md:py-3
+                           bg-brand
+                           hover:bg-brand-dark
+                           transition
+                           rounded-lg
+                           font-bold
+                           text-[10px] md:text-sm
+                           shadow-lg shadow-brand/30
+                           disabled:opacity-50
+                           disabled:cursor-not-allowed" title="Проверить" disabled>
+
+                    <i class="fa-solid fa-check"></i>
+
+                    <span class="hidden md:inline">
+                        Проверить
+                    </span>
+
                 </button>
+
             </div>
 
-            <!-- Кнопка "Далее" -->
-            <div id="nextButtonContainer" class="hidden mt-6 text-center">
-                <button id="nextButton"
-                    class="inline-flex items-center gap-2 px-8 py-4 bg-brand hover:bg-brand-dark transition rounded-lg font-bold text-lg shadow-lg shadow-brand/30">
-                    Дальше <i class="fa-solid fa-arrow-right"></i>
+
+
+            <!-- ============================================ -->
+            <!-- ДАЛЬШЕ                                      -->
+            <!-- ============================================ -->
+
+            <div id="nextButtonContainer" class="hidden
+                       mt-2 md:mt-6
+                       text-center">
+
+                <button id="nextButton" type="button" class="inline-flex
+                           items-center justify-center
+                           gap-2
+                           px-6 md:px-8
+                           py-2.5 md:py-4
+                           bg-brand
+                           hover:bg-brand-dark
+                           transition
+                           rounded-lg
+                           font-bold
+                           text-sm md:text-lg
+                           shadow-lg shadow-brand/30">
+
+                    Дальше
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
                 </button>
+
             </div>
+
         </div>
 
-        <!-- Результат -->
-        <div id="resultScreen" class="hidden text-center py-10">
-            <div id="resultEmoji" class="text-8xl mb-4"></div>
-            <h2 class="text-4xl font-black mb-2">
+
+
+        <!-- ============================================ -->
+        <!-- РЕЗУЛЬТАТ                                   -->
+        <!-- ============================================ -->
+
+        <div id="resultScreen" class="hidden
+                   text-center
+                   py-6 sm:py-10">
+
+
+            <div id="resultEmoji" class="text-6xl sm:text-8xl mb-3 sm:mb-4">
+            </div>
+
+
+            <h2 class="text-3xl sm:text-4xl
+                       font-black
+                       mb-2">
+
                 <span id="resultTitle"></span>
+
             </h2>
-            <p class="text-gray-400 mb-8" id="resultSubtitle"></p>
 
-            <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mb-8">
-                <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
-                    <div class="text-3xl font-black text-brand mb-1" id="resultCorrect">0</div>
-                    <div class="text-sm text-gray-400">Правильных</div>
+
+            <p id="resultSubtitle" class="text-gray-400
+                       text-sm sm:text-base
+                       mb-6 sm:mb-8">
+            </p>
+
+
+
+            <!-- Статистика -->
+            <div class="grid grid-cols-3
+                       gap-2 sm:gap-4
+                       max-w-2xl
+                       mx-auto
+                       mb-6 sm:mb-8">
+
+
+                <div class="bg-dark-800
+                           rounded-xl
+                           p-3 sm:p-6
+                           border border-dark-600">
+
+                    <div id="resultCorrect" class="text-2xl sm:text-3xl
+                               font-black
+                               text-brand
+                               mb-1">
+
+                        0
+
+                    </div>
+
+                    <div class="text-[10px] sm:text-sm text-gray-400">
+                        Правильных
+                    </div>
+
                 </div>
-                <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
-                    <div class="text-3xl font-black text-white mb-1" id="resultTotal">0</div>
-                    <div class="text-sm text-gray-400">Всего</div>
+
+
+                <div class="bg-dark-800
+                           rounded-xl
+                           p-3 sm:p-6
+                           border border-dark-600">
+
+                    <div id="resultTotal" class="text-2xl sm:text-3xl
+                               font-black
+                               text-white
+                               mb-1">
+
+                        0
+
+                    </div>
+
+                    <div class="text-[10px] sm:text-sm text-gray-400">
+                        Всего
+                    </div>
+
                 </div>
-                <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
-                    <div class="text-3xl font-black text-yellow-400 mb-1" id="resultPoints">0</div>
-                    <div class="text-sm text-gray-400">Очков</div>
+
+
+                <div class="bg-dark-800
+                           rounded-xl
+                           p-3 sm:p-6
+                           border border-dark-600">
+
+                    <div id="resultPoints" class="text-2xl sm:text-3xl
+                               font-black
+                               text-yellow-400
+                               mb-1">
+
+                        0
+
+                    </div>
+
+                    <div class="text-[10px] sm:text-sm text-gray-400">
+                        Очков
+                    </div>
+
                 </div>
+
             </div>
 
-            <div id="guestMessage"
-                class="hidden max-w-md mx-auto mb-6 p-4 bg-brand/10 border border-brand/30 rounded-xl text-sm text-gray-300">
+
+
+            <!-- Гость -->
+            <div id="guestMessage" class="hidden
+                       max-w-md mx-auto
+                       mb-6
+                       p-4
+                       bg-brand/10
+                       border border-brand/30
+                       rounded-xl
+                       text-sm text-gray-300">
+
                 💡 Хочешь сохранять результаты и попасть в топ игроков?
-                <button id="guestLoginBtn" class="text-brand hover:underline font-semibold ml-1">
+
+                <button id="guestLoginBtn" type="button" class="text-brand
+                           hover:underline
+                           font-semibold
+                           ml-1">
+
                     Зарегистрируйся!
+
                 </button>
+
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <button id="playAgainBtn"
-                    class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand hover:bg-brand-dark transition rounded-lg font-bold shadow-lg">
-                    <i class="fa-solid fa-rotate-right"></i> Играть снова
+
+
+            <!-- Кнопки -->
+            <div class="flex flex-col sm:flex-row
+                       gap-3
+                       justify-center">
+
+                <button id="playAgainBtn" type="button" class="inline-flex
+                           items-center justify-center
+                           gap-2
+                           px-8 py-3 sm:py-4
+                           bg-brand
+                           hover:bg-brand-dark
+                           transition
+                           rounded-lg
+                           font-bold
+                           shadow-lg">
+
+                    <i class="fa-solid fa-rotate-right"></i>
+
+                    Играть снова
+
                 </button>
-                <a href="/"
-                    class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-bold border border-dark-600">
-                    <i class="fa-solid fa-home"></i> На главную
+
+
+                <a href="/" class="inline-flex
+                           items-center justify-center
+                           gap-2
+                           px-8 py-3 sm:py-4
+                           bg-dark-700
+                           hover:bg-dark-600
+                           transition
+                           rounded-lg
+                           font-bold
+                           border border-dark-600">
+
+                    <i class="fa-solid fa-home"></i>
+
+                    На главную
+
                 </a>
+
             </div>
+
+
+
+            <!-- ============================================ -->
+            <!-- ПОДДЕРЖКА                                   -->
+            <!-- ============================================ -->
+
+            <div class="max-w-md
+                       mx-auto
+                       mt-8
+                       pt-6
+                       border-t border-white/10">
+
+                <p class="text-sm text-gray-400 mb-3">
+
+                    Понравился МУВИХАНТЕР?
+
+                    <span class="text-white font-semibold">
+                        Поддержи разработчика
+                    </span>
+
+                </p>
+
+
+                <a href="/support" class="inline-flex
+                           items-center justify-center
+                           gap-2
+                           px-5 py-2.5
+                           rounded-xl
+                           bg-brand/10
+                           hover:bg-brand/20
+                           border border-brand/30
+                           hover:border-brand/60
+                           text-sm
+                           font-bold
+                           text-white
+                           transition">
+
+                    <i class="fa-solid fa-heart text-brand"></i>
+
+                    Поддержать
+
+                </a>
+
+            </div>
+
         </div>
 
     </div>
+
 </div>
+
+
+
+<!-- ============================================ -->
+<!-- МОБИЛЬНЫЙ РЕЖИМ ФОКУСА                      -->
+<!-- ============================================ -->
+
+<style>
+    @media (max-width: 767px) {
+
+        /*
+         * Убираем глобальную шапку только
+         * на мобильной странице квиза.
+         */
+        body>header {
+            display: none !important;
+        }
+
+
+        /*
+         * Буквы из пула.
+         */
+        .quiz-letters-page #lettersPool .letter-btn {
+            width: 2rem !important;
+
+            height: 2.25rem !important;
+
+            font-size: 0.8rem !important;
+
+            border-radius: 0.45rem !important;
+        }
+
+
+        /*
+         * Слоты названия.
+         */
+        .quiz-letters-page #answerSlots .slot-btn {
+            max-width: 2rem !important;
+
+            max-height: 2.35rem !important;
+
+            font-size: 0.8rem !important;
+        }
+
+
+        .quiz-letters-page #resultMessageText {
+            font-size: 1rem !important;
+        }
+
+    }
+
+
+    /*
+     * Низкие телефоны.
+     */
+    @media (max-width: 767px) and (max-height: 740px) {
+
+        .quiz-focus-page {
+            padding-top: 0.25rem !important;
+        }
+
+
+        .quiz-focus-page .quiz-video video {
+            max-height: 155px;
+
+            object-fit: contain;
+        }
+
+
+        .quiz-letters-page #lettersPool .letter-btn {
+            width: 1.85rem !important;
+
+            height: 2rem !important;
+
+            font-size: 0.72rem !important;
+        }
+
+
+        .quiz-letters-page #answerSlots .slot-btn {
+            max-width: 1.85rem !important;
+
+            max-height: 2rem !important;
+
+            font-size: 0.72rem !important;
+        }
+
+    }
+
+
+    /*
+     * Совсем низкие телефоны.
+     */
+    @media (max-width: 767px) and (max-height: 650px) {
+
+        .quiz-focus-page .quiz-video video {
+            max-height: 125px;
+        }
+
+    }
+</style>
 
 {% endblock %}
 

@@ -1,49 +1,57 @@
 {% extends "base.html" %}
 
 {% block title %}Квиз — Угадай фильм | МУВИХАНТЕР{% endblock %}
-{% block description %}Проверь свои знания кино! Смотри 10-секундные отрывки и угадывай фильмы из 4 вариантов.{%
-endblock %}
+
+{% block description %}
+Проверь свои знания кино! Смотри 10-секундные отрывки и угадывай фильмы из 4 вариантов.
+{% endblock %}
+
 
 {% block content %}
 
-<div class="pt-24 pb-20 min-h-screen">
-    <div class="container mx-auto px-4 max-w-4xl">
+<div class="quiz-focus-page pt-2 md:pt-24 pb-6 md:pb-20 min-h-[100dvh]">
+
+    <div class="container mx-auto px-3 sm:px-4 max-w-4xl">
+
 
         <!-- ============================================ -->
-        <!-- ЭКРАН: СТАРТ КВИЗА                          -->
+        <!-- СТАРТ                                       -->
         <!-- ============================================ -->
 
         <div id="startScreen" class="hidden text-center py-12 sm:py-20">
 
             <div class="w-20 h-20
-               mx-auto mb-5
-               rounded-2xl
-               bg-purple-500/15
-               border border-purple-500/20
-               flex items-center justify-center
-               shadow-[0_0_35px_rgba(147,51,234,0.15)]">
+                       mx-auto mb-5
+                       rounded-2xl
+                       bg-purple-500/15
+                       border border-purple-500/20
+                       flex items-center justify-center
+                       shadow-[0_0_35px_rgba(147,51,234,0.15)]">
 
                 <i class="fa-solid fa-dice text-purple-400 text-4xl"></i>
 
             </div>
 
+
             <h1 class="text-3xl sm:text-4xl font-black mb-3">
                 Готов к игре?
             </h1>
 
+
             <p class="text-gray-400
-               text-sm sm:text-base
-               max-w-md mx-auto
-               mb-3">
+                       text-sm sm:text-base
+                       max-w-md mx-auto
+                       mb-3">
 
                 Смотри короткий отрывок и выбери правильный фильм.
 
             </p>
 
+
             <div class="flex items-center justify-center
-               gap-3
-               text-xs text-gray-500
-               mb-8">
+                       gap-3
+                       text-xs text-gray-500
+                       mb-8">
 
                 <span class="flex items-center gap-1.5">
 
@@ -65,18 +73,19 @@ endblock %}
 
             </div>
 
+
             <button id="startQuizBtn" type="button" class="inline-flex
-               items-center justify-center
-               gap-2
-               px-8 py-4
-               rounded-xl
-               bg-brand
-               hover:bg-brand-dark
-               text-white
-               font-black
-               text-base sm:text-lg
-               shadow-[0_0_25px_rgba(229,9,20,0.25)]
-               transition-all">
+                       items-center justify-center
+                       gap-2
+                       px-8 py-4
+                       rounded-xl
+                       bg-brand
+                       hover:bg-brand-dark
+                       text-white
+                       font-black
+                       text-base sm:text-lg
+                       shadow-[0_0_25px_rgba(229,9,20,0.25)]
+                       transition-all">
 
                 <i class="fa-solid fa-play"></i>
 
@@ -84,115 +93,316 @@ endblock %}
 
             </button>
 
+
             <p class="text-[10px] sm:text-xs text-gray-600 mt-4">
                 Видео запустится со звуком
             </p>
 
         </div>
-        <!-- ЭКРАН 1: Загрузка -->
+
+
+
+        <!-- ============================================ -->
+        <!-- ЗАГРУЗКА                                    -->
+        <!-- ============================================ -->
+
         <div id="loadingScreen" class="text-center py-20">
+
             <i class="fa-solid fa-spinner fa-spin text-5xl text-brand mb-4"></i>
-            <p class="text-xl text-gray-400">Готовим квиз...</p>
-        </div>
 
-        <!-- ЭКРАН 2: Ошибка -->
-        <div id="errorScreen" class="hidden text-center py-20">
-            <div class="text-6xl mb-4">😢</div>
-            <h2 class="text-2xl font-bold mb-2">Что-то пошло не так</h2>
-            <p id="errorMessage" class="text-gray-400 mb-6"></p>
-            <a href="/"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-semibold">
-                <i class="fa-solid fa-home"></i>
-                На главную
-            </a>
-        </div>
-
-        <!-- ЭКРАН: Страница обновлена -->
-        <div id="reloadScreen" class="hidden text-center py-20">
-            <div class="text-6xl mb-4">🔄</div>
-            <h2 class="text-2xl md:text-3xl font-bold mb-3">Страница была обновлена</h2>
-            <p class="text-gray-400 mb-8 max-w-md mx-auto">
-                Твой прогресс сброшен. Хочешь начать квиз заново?
+            <p class="text-xl text-gray-400">
+                Готовим квиз...
             </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <button id="reloadStartBtn"
-                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-bold shadow-lg shadow-brand/30">
-                    <i class="fa-solid fa-play"></i>
-                    Начать заново
-                </button>
-                <a href="/"
-                    class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-bold border border-dark-600">
-                    <i class="fa-solid fa-home"></i>
-                    На главную
-                </a>
-            </div>
+
         </div>
 
-        <!-- ЭКРАН 3: Игра -->
+
+
+        <!-- ============================================ -->
+        <!-- ОШИБКА                                      -->
+        <!-- ============================================ -->
+
+        <div id="errorScreen" class="hidden text-center py-20">
+
+            <div class="text-6xl mb-4">
+                😢
+            </div>
+
+            <h2 class="text-2xl font-bold mb-2">
+                Что-то пошло не так
+            </h2>
+
+            <p id="errorMessage" class="text-gray-400 mb-6"></p>
+
+            <a href="/" class="inline-flex items-center gap-2
+                       px-6 py-3
+                       bg-brand hover:bg-brand-dark
+                       transition
+                       rounded-lg
+                       font-semibold">
+
+                <i class="fa-solid fa-home"></i>
+
+                На главную
+
+            </a>
+
+        </div>
+
+
+
+        <!-- ============================================ -->
+        <!-- СТРАНИЦА БЫЛА ОБНОВЛЕНА                    -->
+        <!-- ============================================ -->
+
+        <div id="reloadScreen" class="hidden text-center py-20">
+
+            <div class="text-6xl mb-4">
+                🔄
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-bold mb-3">
+                Страница была обновлена
+            </h2>
+
+            <p class="text-gray-400 mb-8 max-w-md mx-auto">
+
+                Твой прогресс сброшен.
+                Хочешь начать квиз заново?
+
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+
+                <button id="reloadStartBtn" type="button" class="inline-flex items-center justify-center gap-2
+                           px-6 py-3
+                           bg-brand hover:bg-brand-dark
+                           transition
+                           rounded-lg
+                           font-bold
+                           shadow-lg shadow-brand/30">
+
+                    <i class="fa-solid fa-play"></i>
+
+                    Начать заново
+
+                </button>
+
+                <a href="/" class="inline-flex items-center justify-center gap-2
+                           px-6 py-3
+                           bg-dark-700 hover:bg-dark-600
+                           transition
+                           rounded-lg
+                           font-bold
+                           border border-dark-600">
+
+                    <i class="fa-solid fa-home"></i>
+
+                    На главную
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ============================================ -->
+        <!-- ИГРА                                        -->
+        <!-- ============================================ -->
+
         <div id="gameScreen" class="hidden">
 
-            <!-- Прогресс + счёт -->
-            <div class="flex items-center justify-between mb-6">
-                <div class="text-gray-400">
-                    Вопрос <span id="currentQuestion" class="text-white font-bold">1</span> из <span id="totalQuestions"
-                        class="text-white font-bold">10</span>
+
+            <!-- ============================================ -->
+            <!-- ВОПРОС + СЧЁТ                                -->
+            <!-- ============================================ -->
+
+            <div class="flex items-center justify-between mb-2 md:mb-6">
+
+                <div class="text-gray-400 text-xs sm:text-base">
+
+                    Вопрос
+
+                    <span id="currentQuestion" class="text-white font-bold">
+
+                        1
+
+                    </span>
+
+                    из
+
+                    <span id="totalQuestions" class="text-white font-bold">
+
+                        10
+
+                    </span>
+
                 </div>
-                <div class="flex items-center gap-2 px-4 py-2 bg-dark-800 rounded-lg border border-dark-600">
-                    <i class="fa-solid fa-star text-yellow-400"></i>
-                    <span id="currentScore" class="font-bold">0</span>
-                    <span class="text-gray-400 text-sm">очков</span>
+
+
+                <div class="flex items-center gap-1.5
+                           px-2.5 py-1.5
+                           md:px-4 md:py-2
+                           bg-dark-800
+                           rounded-lg
+                           border border-dark-600">
+
+                    <i class="fa-solid fa-star text-yellow-400 text-xs sm:text-base"></i>
+
+                    <span id="currentScore" class="font-bold text-sm sm:text-base">
+
+                        0
+
+                    </span>
+
+                    <span class="text-gray-400 text-[10px] sm:text-sm">
+                        очков
+                    </span>
+
                 </div>
+
             </div>
 
-            <!-- Прогресс-бар -->
-            <div class="w-full bg-dark-700 rounded-full h-2 mb-6 overflow-hidden">
-                <div id="progressBar"
-                    class="bg-gradient-to-r from-brand to-brand-dark h-full transition-all duration-500"
-                    style="width: 0%"></div>
-            </div>
 
-            <!-- Значок сложности -->
-            <div class="mb-4">
-                <span id="difficultyBadge"
-                    class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase"></span>
-            </div>
 
-            <!-- Статус: "смотри видео" или таймер -->
-            <div id="questionStatus" class="mb-4 text-center">
-                <div id="watchingStatus"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500 rounded-lg">
-                    <i class="fa-solid fa-eye"></i>
-                    <span class="font-semibold">Смотри внимательно...</span>
+            <!-- ============================================ -->
+            <!-- ПРОГРЕСС                                    -->
+            <!-- ============================================ -->
+
+            <div class="w-full
+                       bg-dark-700
+                       rounded-full
+                       h-1.5 md:h-2
+                       mb-2 md:mb-6
+                       overflow-hidden">
+
+                <div id="progressBar" class="bg-gradient-to-r
+                           from-brand to-brand-dark
+                           h-full
+                           transition-all duration-500" style="width: 0%">
                 </div>
-                <div id="timerStatus"
-                    class="hidden inline-flex items-center gap-2 px-4 py-2 bg-brand/20 border border-brand rounded-lg">
-                    <i class="fa-solid fa-clock"></i>
-                    <span>Осталось: <span id="timerSeconds" class="font-black text-brand">10</span> сек</span>
-                </div>
+
             </div>
 
-            <!-- Видео -->
-            <div class="relative bg-black rounded-xl overflow-hidden mb-6 shadow-2xl">
 
-                <video id="videoPlayer" class="w-full aspect-video pointer-events-none bg-black" playsinline
-                    webkit-playsinline preload="auto" disablepictureinpicture
+
+            <!-- ============================================ -->
+            <!-- СЛОЖНОСТЬ + СТАТУС                         -->
+            <!-- ============================================ -->
+
+            <div class="flex items-center
+                       justify-between
+                       gap-2
+                       mb-2 md:mb-4">
+
+
+                <!-- Сложность -->
+                <div class="flex-shrink-0">
+
+                    <span id="difficultyBadge" class="inline-block
+                               px-2 py-1 md:px-3
+                               rounded-full
+                               text-[9px] md:text-xs
+                               font-bold uppercase">
+                    </span>
+
+                </div>
+
+
+                <!-- Статус -->
+                <div id="questionStatus" class="text-right">
+
+
+                    <div id="watchingStatus" class="inline-flex items-center
+                               gap-1.5
+                               px-2.5 py-1.5
+                               md:px-4 md:py-2
+                               bg-blue-500/20
+                               border border-blue-500
+                               rounded-lg
+                               text-[10px] md:text-sm">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        <span class="font-semibold">
+                            Смотри внимательно...
+                        </span>
+
+                    </div>
+
+
+                    <div id="timerStatus" class="hidden
+                               inline-flex items-center
+                               gap-1.5
+                               px-2.5 py-1.5
+                               md:px-4 md:py-2
+                               bg-brand/20
+                               border border-brand
+                               rounded-lg
+                               text-[10px] md:text-sm">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        <span>
+
+                            Осталось:
+
+                            <span id="timerSeconds" class="font-black text-brand">
+
+                                10
+
+                            </span>
+
+                            сек
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ============================================ -->
+            <!-- ВИДЕО                                       -->
+            <!-- ============================================ -->
+
+            <div class="quiz-video
+                       relative
+                       bg-black
+                       rounded-xl
+                       overflow-hidden
+                       mb-2 md:mb-6
+                       shadow-2xl">
+
+                <video id="videoPlayer" class="w-full
+                           aspect-video
+                           pointer-events-none
+                           bg-black" playsinline webkit-playsinline preload="auto" disablepictureinpicture
                     controlslist="nodownload nofullscreen noremoteplayback">
                 </video>
 
-                <!-- Показывается только если браузер запретил autoplay -->
-                <button id="videoPlayOverlay" type="button" class="hidden absolute inset-0 z-20
-               items-center justify-center
-               bg-black/80
-               backdrop-blur-sm">
+
+                <!-- Fallback для браузеров, блокирующих autoplay -->
+                <button id="videoPlayOverlay" type="button" class="hidden
+                           absolute inset-0
+                           z-20
+                           items-center justify-center
+                           bg-black/80
+                           backdrop-blur-sm">
 
                     <div class="text-center">
 
-                        <div class="w-16 h-16
-                       mx-auto mb-3
-                       rounded-full
-                       bg-brand
-                       flex items-center justify-center
-                       shadow-[0_0_30px_rgba(229,9,20,0.4)]">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16
+                                   mx-auto mb-3
+                                   rounded-full
+                                   bg-brand
+                                   flex items-center justify-center
+                                   shadow-[0_0_30px_rgba(229,9,20,0.4)]">
 
                             <i class="fa-solid fa-play text-xl text-white ml-1"></i>
 
@@ -203,7 +413,7 @@ endblock %}
                         </div>
 
                         <div class="text-xs text-gray-400 mt-1">
-                            Нажми, чтобы начать
+                            Нажми, чтобы включить видео
                         </div>
 
                     </div>
@@ -212,34 +422,49 @@ endblock %}
 
             </div>
 
-            <!-- Варианты ответа -->
-            <div id="optionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <!-- Варианты вставляются JS'ом -->
+
+
+            <!-- ============================================ -->
+            <!-- ВАРИАНТЫ 2 × 2                              -->
+            <!-- ============================================ -->
+
+            <div id="optionsContainer" class="grid grid-cols-2 gap-2 md:gap-3">
+
+                <!-- Варианты вставляются JS -->
+
             </div>
 
-            <!-- Кнопка "Далее" (появляется после ответа) -->
-            <div id="nextButtonContainer" class="hidden mt-6">
 
-                <div class="flex flex-col sm:flex-row
-               items-stretch sm:items-center
-               justify-center
-               gap-3">
+
+            <!-- ============================================ -->
+            <!-- ДЕЙСТВИЯ ПОСЛЕ ОТВЕТА                      -->
+            <!-- ============================================ -->
+
+            <div id="nextButtonContainer" class="hidden mt-2 md:mt-6">
+
+                <div class="grid grid-cols-2
+                           gap-2
+                           md:flex
+                           md:justify-center
+                           md:gap-3">
+
 
                     <!-- Хочу посмотреть -->
                     <button id="libraryButton" type="button" class="inline-flex
-                   items-center justify-center
-                   gap-2
-                   min-h-[56px]
-                   px-6 py-3
-                   bg-white/5
-                   hover:bg-white/10
-                   border border-white/10
-                   hover:border-brand/40
-                   rounded-xl
-                   font-bold
-                   text-sm
-                   text-gray-200
-                   transition-all duration-300">
+                               items-center justify-center
+                               gap-1.5 md:gap-2
+                               min-h-[44px] md:min-h-[56px]
+                               px-2 md:px-6
+                               py-2 md:py-3
+                               bg-white/5
+                               hover:bg-white/10
+                               border border-white/10
+                               hover:border-brand/40
+                               rounded-xl
+                               font-bold
+                               text-[10px] sm:text-xs md:text-sm
+                               text-gray-200
+                               transition-all duration-300">
 
                         <i id="libraryButtonIcon" class="fa-regular fa-bookmark text-brand">
                         </i>
@@ -253,17 +478,18 @@ endblock %}
 
                     <!-- Далее -->
                     <button id="nextButton" type="button" class="inline-flex
-                   items-center justify-center
-                   gap-2
-                   min-h-[56px]
-                   px-8 py-3
-                   bg-brand
-                   hover:bg-brand-dark
-                   transition
-                   rounded-xl
-                   font-bold
-                   text-base sm:text-lg
-                   shadow-lg shadow-brand/30">
+                               items-center justify-center
+                               gap-1.5 md:gap-2
+                               min-h-[44px] md:min-h-[56px]
+                               px-3 md:px-8
+                               py-2 md:py-3
+                               bg-brand
+                               hover:bg-brand-dark
+                               rounded-xl
+                               font-bold
+                               text-xs md:text-lg
+                               shadow-lg shadow-brand/30
+                               transition">
 
                         Дальше
 
@@ -274,57 +500,316 @@ endblock %}
                 </div>
 
             </div>
+
         </div>
 
-        <!-- ЭКРАН 4: Результаты -->
-        <div id="resultScreen" class="hidden text-center py-10">
-            <div id="resultEmoji" class="text-8xl mb-4"></div>
-            <h2 class="text-4xl font-black mb-2">
+
+
+        <!-- ============================================ -->
+        <!-- РЕЗУЛЬТАТЫ                                  -->
+        <!-- ============================================ -->
+
+        <div id="resultScreen" class="hidden
+                   text-center
+                   py-6 sm:py-10">
+
+
+            <div id="resultEmoji" class="text-6xl sm:text-8xl mb-3 sm:mb-4">
+            </div>
+
+
+            <h2 class="text-3xl sm:text-4xl
+                       font-black
+                       mb-2">
+
                 <span id="resultTitle"></span>
+
             </h2>
-            <p class="text-gray-400 mb-8" id="resultSubtitle"></p>
+
+
+            <p id="resultSubtitle" class="text-gray-400
+                       text-sm sm:text-base
+                       mb-6 sm:mb-8">
+            </p>
+
+
 
             <!-- Статистика -->
-            <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mb-8">
-                <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
-                    <div class="text-3xl font-black text-brand mb-1" id="resultCorrect">0</div>
-                    <div class="text-sm text-gray-400">Правильных</div>
+            <div class="grid grid-cols-3
+                       gap-2 sm:gap-4
+                       max-w-2xl mx-auto
+                       mb-6 sm:mb-8">
+
+
+                <div class="bg-dark-800
+                           rounded-xl
+                           p-3 sm:p-6
+                           border border-dark-600">
+
+                    <div id="resultCorrect" class="text-2xl sm:text-3xl
+                               font-black
+                               text-brand
+                               mb-1">
+
+                        0
+
+                    </div>
+
+                    <div class="text-[10px] sm:text-sm text-gray-400">
+                        Правильных
+                    </div>
+
                 </div>
-                <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
-                    <div class="text-3xl font-black text-white mb-1" id="resultTotal">0</div>
-                    <div class="text-sm text-gray-400">Всего</div>
+
+
+                <div class="bg-dark-800
+                           rounded-xl
+                           p-3 sm:p-6
+                           border border-dark-600">
+
+                    <div id="resultTotal" class="text-2xl sm:text-3xl
+                               font-black
+                               text-white
+                               mb-1">
+
+                        0
+
+                    </div>
+
+                    <div class="text-[10px] sm:text-sm text-gray-400">
+                        Всего
+                    </div>
+
                 </div>
-                <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
-                    <div class="text-3xl font-black text-yellow-400 mb-1" id="resultPoints">0</div>
-                    <div class="text-sm text-gray-400">Очков</div>
+
+
+                <div class="bg-dark-800
+                           rounded-xl
+                           p-3 sm:p-6
+                           border border-dark-600">
+
+                    <div id="resultPoints" class="text-2xl sm:text-3xl
+                               font-black
+                               text-yellow-400
+                               mb-1">
+
+                        0
+
+                    </div>
+
+                    <div class="text-[10px] sm:text-sm text-gray-400">
+                        Очков
+                    </div>
+
                 </div>
+
             </div>
 
-            <!-- Сообщение для гостей -->
-            <div id="guestMessage"
-                class="hidden max-w-md mx-auto mb-6 p-4 bg-brand/10 border border-brand/30 rounded-xl text-sm text-gray-300">
+
+
+            <!-- Гость -->
+            <div id="guestMessage" class="hidden
+                       max-w-md mx-auto
+                       mb-6
+                       p-4
+                       bg-brand/10
+                       border border-brand/30
+                       rounded-xl
+                       text-sm text-gray-300">
+
                 💡 Хочешь сохранять результаты и попасть в топ игроков?
-                <button id="guestLoginBtn" class="text-brand hover:underline font-semibold ml-1">
+
+                <button id="guestLoginBtn" type="button" class="text-brand
+                           hover:underline
+                           font-semibold
+                           ml-1">
+
                     Зарегистрируйся!
+
                 </button>
+
             </div>
+
+
 
             <!-- Кнопки -->
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <button id="playAgainBtn"
-                    class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand hover:bg-brand-dark transition rounded-lg font-bold shadow-lg">
+            <div class="flex flex-col sm:flex-row
+                       gap-3
+                       justify-center">
+
+                <button id="playAgainBtn" type="button" class="inline-flex
+                           items-center justify-center
+                           gap-2
+                           px-8 py-3 sm:py-4
+                           bg-brand
+                           hover:bg-brand-dark
+                           transition
+                           rounded-lg
+                           font-bold
+                           shadow-lg">
+
                     <i class="fa-solid fa-rotate-right"></i>
+
                     Играть снова
+
                 </button>
-                <a href="/"
-                    class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-dark-700 hover:bg-dark-600 transition rounded-lg font-bold border border-dark-600">
+
+
+                <a href="/" class="inline-flex
+                           items-center justify-center
+                           gap-2
+                           px-8 py-3 sm:py-4
+                           bg-dark-700
+                           hover:bg-dark-600
+                           transition
+                           rounded-lg
+                           font-bold
+                           border border-dark-600">
+
                     <i class="fa-solid fa-home"></i>
+
                     На главную
+
                 </a>
+
             </div>
+
+
+
+            <!-- ============================================ -->
+            <!-- ПОДДЕРЖКА                                   -->
+            <!-- ============================================ -->
+
+            <div class="max-w-md
+                       mx-auto
+                       mt-8
+                       pt-6
+                       border-t border-white/10">
+
+                <p class="text-sm text-gray-400 mb-3">
+
+                    Понравился МУВИХАНТЕР?
+
+                    <span class="text-white font-semibold">
+                        Поддержи разработчика
+                    </span>
+
+                </p>
+
+                <a href="/support" class="inline-flex
+                           items-center justify-center
+                           gap-2
+                           px-5 py-2.5
+                           rounded-xl
+                           bg-brand/10
+                           hover:bg-brand/20
+                           border border-brand/30
+                           hover:border-brand/60
+                           text-sm
+                           font-bold
+                           text-white
+                           transition">
+
+                    <i class="fa-solid fa-heart text-brand"></i>
+
+                    Поддержать
+
+                </a>
+
+            </div>
+
         </div>
+
     </div>
+
 </div>
+
+
+
+<!-- ============================================ -->
+<!-- МОБИЛЬНЫЙ РЕЖИМ ФОКУСА                      -->
+<!-- ============================================ -->
+
+<style>
+    @media (max-width: 767px) {
+
+        /*
+         * На телефоне во время квиза полностью
+         * убираем глобальную шапку.
+         */
+        body>header {
+            display: none !important;
+        }
+
+
+        /*
+         * Четыре ответа помещаются в 2x2.
+         */
+        .quiz-focus-page #optionsContainer .option-btn {
+            min-height: 50px !important;
+
+            padding: 0.55rem 0.6rem !important;
+
+            font-size: 0.75rem !important;
+
+            line-height: 1.05rem !important;
+
+            border-radius: 0.65rem !important;
+
+            display: flex;
+
+            align-items: center;
+        }
+
+
+        .quiz-focus-page #optionsContainer .option-btn span {
+            margin-right: 0.2rem !important;
+        }
+
+    }
+
+
+    /*
+     * Низкие телефоны.
+     */
+    @media (max-width: 767px) and (max-height: 740px) {
+
+        .quiz-focus-page {
+            padding-top: 0.25rem !important;
+        }
+
+
+        .quiz-focus-page .quiz-video video {
+            max-height: 180px;
+
+            object-fit: contain;
+        }
+
+
+        .quiz-focus-page #optionsContainer .option-btn {
+            min-height: 44px !important;
+
+            padding: 0.4rem 0.5rem !important;
+
+            font-size: 0.7rem !important;
+
+            line-height: 0.95rem !important;
+        }
+
+    }
+
+
+    /*
+     * Совсем низкие экраны.
+     */
+    @media (max-width: 767px) and (max-height: 650px) {
+
+        .quiz-focus-page .quiz-video video {
+            max-height: 150px;
+        }
+
+    }
+</style>
 
 {% endblock %}
 
