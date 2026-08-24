@@ -2,7 +2,7 @@ from datetime import datetime
 from pathlib import Path
 
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, Response
 from fastapi.templating import Jinja2Templates
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,6 +127,11 @@ async def leaderboard_page(request: Request):
         request=request,
         name="leaderboard.html",
     )
+
+
+@router.get("/googled9c1001d54eddc0e.html", include_in_schema=False)
+async def google_verification():
+    return FileResponse("app/static/googled9c1001d54eddc0e.html")
 
 
 @router.get("/sitemap.xml", response_class=Response)
