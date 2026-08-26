@@ -111,6 +111,25 @@ function renderFilm() {
         filmData.director || 'Не указан';
 
 
+
+    const featuredBadge =
+        document.getElementById(
+            'filmFeaturedBadge'
+        );
+
+    if (
+        featuredBadge &&
+        filmData.is_featured_movie
+    ) {
+        featuredBadge.classList.remove(
+            'hidden'
+        );
+
+        featuredBadge.classList.add(
+            'flex'
+        );
+    }
+
     // ============================================
     // ПОСТЕР
     // ============================================

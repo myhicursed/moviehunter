@@ -1,5 +1,6 @@
 from app.models.daily_quiz import DailyQuiz, DailyQuizAttempt, DailyQuizMovie
 from app.models.donation import Donation
+from app.models.featured_movie import FeaturedMovie
 from app.models.game_answer import GameAnswer
 from app.models.movie import Movie
 from app.models.movie_library import MovieLibrary
@@ -18,4 +19,5 @@ __all__ = [
     "MovieLibrary",
     "MovieReaction",
     "MovieStats",
+    "FeaturedMovie",
 ]

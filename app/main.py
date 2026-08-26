@@ -10,6 +10,7 @@ from app.core.config import settings
 from app.routers import (
     auth,
     donations,
+    featured_movie,
     leaderboard,
     library,
     movies_catalog,
@@ -56,6 +57,7 @@ app.include_router(movies_catalog.router)
 app.include_router(leaderboard.router)
 app.include_router(pages.router)
 app.include_router(donations.router)
+app.include_router(featured_movie.router)
 
 setup_admin(app)
 

@@ -439,6 +439,32 @@
             <!-- ============================================ -->
             <!-- ДЕЙСТВИЯ ПОСЛЕ ОТВЕТА                      -->
             <!-- ============================================ -->
+            <!-- Фильм дня -->
+            <div id="featuredAnswerNotice" class="hidden
+           mt-2
+           mb-2
+           px-3 py-2.5
+           rounded-xl
+           bg-orange-500/10
+           border border-orange-500/30
+           text-center">
+
+                <div class="flex items-center
+               justify-center
+               gap-2
+               text-xs sm:text-sm
+               font-bold
+               text-orange-300">
+
+                    <i class="fa-solid fa-fire text-orange-500"></i>
+
+                    <span id="featuredAnswerText">
+                        Фильм дня · x2 очки
+                    </span>
+
+                </div>
+
+            </div>
 
             <div id="nextButtonContainer" class="hidden mt-2 md:mt-6">
 
@@ -815,5 +841,5 @@
 
 
 {% block scripts %}
-<script src="/static/js/quiz.js?v=5"></script>
+<script src="/static/js/quiz.js?v=6"></script>
 {% endblock %}

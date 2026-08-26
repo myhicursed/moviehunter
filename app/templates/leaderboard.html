@@ -2,78 +2,1044 @@
 
 {% block title %}Топ игроков — МУВИХАНТЕР{% endblock %}
 
+
 {% block content %}
-<div class="pt-24 pb-20 min-h-screen flex flex-col items-center">
-    <div class="container mx-auto px-4 max-w-2xl">
 
-        <!-- Заголовок -->
-        <div class="text-center mb-10">
-            <h1 class="text-4xl md:text-5xl font-black mb-2">
-                Топ <span class="text-brand">игроков</span>
-            </h1>
-            <p class="text-gray-400 text-sm">
-                Лучшие охотники за фильмами
-            </p>
-        </div>
+<div class="leaderboard-page
+           pt-20 sm:pt-24
+           h-[100dvh]
+           overflow-hidden">
 
-        <!-- Список (заполняется через JS) -->
-        <div id="leaderboardFull" class="space-y-3">
-            <div class="text-center text-gray-500 py-10">
-                <i class="fa-solid fa-spinner fa-spin text-3xl"></i>
+    <div class="container mx-auto
+               px-3 sm:px-4
+               max-w-2xl
+               h-full
+               flex flex-col
+               pb-3 sm:pb-5">
+
+
+        <!-- ============================================ -->
+        <!-- HEADER                                       -->
+        <!-- ============================================ -->
+
+        <div class="text-center mb-3 sm:mb-4 flex-shrink-0">
+
+            <div class="inline-flex
+                       items-center gap-2
+                       px-3 py-1
+                       rounded-full
+                       bg-yellow-500/10
+                       border border-yellow-500/20
+                       text-yellow-400
+                       text-[10px] sm:text-xs
+                       font-bold uppercase
+                       tracking-wider
+                       mb-2">
+
+                <i class="fa-solid fa-trophy"></i>
+
+                Рейтинг
+
             </div>
+
+
+            <h1 class="text-2xl sm:text-3xl md:text-4xl
+                       font-black
+                       mb-1">
+
+                Топ
+
+                <span class="text-brand">
+                    игроков
+                </span>
+
+            </h1>
+
+
+            <p class="text-gray-500 text-xs sm:text-sm">
+
+                Лучшие охотники за фильмами
+
+            </p>
+
         </div>
 
-        <div class="text-center mt-8">
-            <a href="/"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 transition rounded-lg font-semibold border border-white/10">
-                <i class="fa-solid fa-arrow-left"></i>
-                Назад
-            </a>
+
+
+        <!-- ============================================ -->
+        <!-- ПЕРИОД                                       -->
+        <!-- ============================================ -->
+
+        <div class="grid grid-cols-2
+                   gap-1
+                   p-1
+                   max-w-sm w-full
+                   mx-auto
+                   bg-white/5
+                   border border-white/10
+                   rounded-xl
+                   mb-2
+                   flex-shrink-0">
+
+            <button id="weekTab" type="button" data-period="week" class="leaderboard-tab
+                       active
+                       px-3 sm:px-4
+                       py-2
+                       rounded-lg
+                       text-xs sm:text-sm
+                       font-bold
+                       transition">
+
+                За неделю
+
+            </button>
+
+
+            <button id="allTab" type="button" data-period="all" class="leaderboard-tab
+                       px-3 sm:px-4
+                       py-2
+                       rounded-lg
+                       text-xs sm:text-sm
+                       font-bold
+                       transition">
+
+                За всё время
+
+            </button>
+
         </div>
+
+
+
+        <!-- ============================================ -->
+        <!-- ТАЙМЕР НЕДЕЛИ                               -->
+        <!-- ============================================ -->
+
+        <div id="weekTimerBlock" class="text-center
+                   text-[10px] sm:text-xs
+                   text-gray-500
+                   mb-2 sm:mb-3
+                   flex-shrink-0">
+
+            До обновления рейтинга:
+
+            <span id="weekTimer" class="text-gray-300 font-semibold">
+
+                —
+
+            </span>
+
+        </div>
+
+
+
+        <!-- ============================================ -->
+        <!-- ОСНОВНАЯ КАРТОЧКА                           -->
+        <!-- ============================================ -->
+
+        <div class="min-h-0
+                   flex-1
+                   flex flex-col
+                   glass-card
+                   rounded-2xl
+                   overflow-hidden">
+
+
+            <!-- Подпись -->
+            <div class="flex items-center
+                       justify-between
+                       gap-3
+                       px-3 sm:px-4
+                       py-2.5
+                       border-b border-white/5
+                       bg-white/[0.02]
+                       flex-shrink-0">
+
+                <span id="leaderboardPeriodTitle" class="text-xs sm:text-sm
+                           font-bold
+                           text-gray-300">
+
+                    Лучшие за неделю
+
+                </span>
+
+
+                <span class="text-[9px] sm:text-[10px]
+                           uppercase
+                           tracking-wider
+                           text-gray-600">
+
+                    TOP 10
+
+                </span>
+
+            </div>
+
+
+            <!-- ============================================ -->
+            <!-- ВНУТРЕННИЙ СКРОЛЛ                           -->
+            <!-- ============================================ -->
+
+            <div id="leaderboardScroll" class="min-h-0
+                       flex-1
+                       overflow-y-auto
+                       custom-scrollbar
+                       p-2 sm:p-3">
+
+                <div id="leaderboardFull" class="space-y-1.5 sm:space-y-2">
+
+                    <div class="text-center
+                               text-gray-500
+                               py-10">
+
+                        <i class="fa-solid
+                                   fa-spinner
+                                   fa-spin
+                                   text-3xl">
+                        </i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ============================================ -->
+            <!-- МОЁ МЕСТО — НЕ СКРОЛЛИТСЯ                  -->
+            <!-- ============================================ -->
+
+            <div id="myPositionSection" class="hidden
+                       flex-shrink-0
+                       px-2 sm:px-3
+                       pt-2
+                       pb-2 sm:pb-3
+                       border-t border-white/10
+                       bg-black/20">
+
+                <div class="flex items-center
+                           justify-between
+                           gap-2
+                           px-1
+                           mb-1.5">
+
+                    <span class="text-[9px] sm:text-[10px]
+                               font-bold
+                               uppercase
+                               tracking-wider
+                               text-gray-500">
+
+                        Твоё место
+
+                    </span>
+
+
+                    <span id="pointsToNext" class="hidden
+                               text-[9px] sm:text-[10px]
+                               text-brand
+                               font-bold">
+                    </span>
+
+                </div>
+
+
+                <div id="myPositionCard"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ============================================ -->
+        <!-- НИЖНЯЯ НАВИГАЦИЯ                            -->
+        <!-- ============================================ -->
+
+        <div class="flex items-center
+                   justify-center
+                   gap-2
+                   pt-2 sm:pt-3
+                   flex-shrink-0">
+
+            <a href="/" class="inline-flex
+                       items-center gap-2
+                       px-4 py-2
+                       bg-white/5
+                       hover:bg-white/10
+                       transition
+                       rounded-lg
+                       font-semibold
+                       text-xs sm:text-sm
+                       border border-white/10">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                На главную
+
+            </a>
+
+        </div>
+
     </div>
+
 </div>
+
+
+
+<style>
+    .leaderboard-tab {
+        color: #6b7280;
+    }
+
+
+    .leaderboard-tab:hover {
+        color: #ffffff;
+    }
+
+
+    .leaderboard-tab.active {
+        background: #e50914;
+
+        color: #ffffff;
+
+        box-shadow:
+            0 0 20px rgba(229, 9, 20, 0.2);
+    }
+
+
+    /*
+     * Скролл списка.
+     */
+    #leaderboardScroll {
+        scrollbar-width: thin;
+
+        scrollbar-color:
+            rgba(255, 255, 255, 0.12) transparent;
+    }
+
+
+    #leaderboardScroll::-webkit-scrollbar {
+        width: 5px;
+    }
+
+
+    #leaderboardScroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+
+    #leaderboardScroll::-webkit-scrollbar-thumb {
+        background:
+            rgba(255, 255, 255, 0.12);
+
+        border-radius:
+            999px;
+    }
+
+
+    #leaderboardScroll::-webkit-scrollbar-thumb:hover {
+        background:
+            rgba(255, 255, 255, 0.2);
+    }
+
+
+    /*
+     * На низких экранах ещё немного
+     * экономим вертикальное пространство.
+     */
+    @media (max-height: 750px) {
+
+        .leaderboard-page {
+            padding-top: 4.75rem !important;
+        }
+
+    }
+
+
+    /*
+     * На телефоне карточки должны быть
+     * чуть плотнее.
+     */
+    @media (max-width: 639px) {
+
+        #leaderboardFull>a,
+        #myPositionCard>a {
+            padding: 0.6rem !important;
+        }
+
+
+        #leaderboardFull img,
+        #myPositionCard img {
+            width: 2.25rem !important;
+            height: 2.25rem !important;
+        }
+
+    }
+</style>
+
 {% endblock %}
 
+
+
 {% block scripts %}
+
 <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-        const container = document.getElementById('leaderboardFull');
+
+    // ============================================
+    // СОСТОЯНИЕ
+    // ============================================
+
+    let leaderboardPeriod = 'week';
+
+    let leaderboardLoading = false;
+
+    let weekTimerInterval = null;
+
+
+    // ============================================
+    // ESCAPE HTML
+    // ============================================
+
+    function escapeLeaderboardHtml(value) {
+
+        const div =
+            document.createElement('div');
+
+        div.textContent =
+            String(value ?? '');
+
+        return div.innerHTML;
+    }
+
+
+    // ============================================
+    // КАРТОЧКА ИГРОКА
+    // ============================================
+
+    function createPlayerCard(player) {
+
+        const medals = {
+            1: '🥇',
+            2: '🥈',
+            3: '🥉',
+        };
+
+
+        const medal =
+            medals[player.position]
+            || `
+                <span
+                    class="text-gray-500
+                           text-xs sm:text-sm
+                           font-black">
+
+                    #${player.position}
+
+                </span>
+            `;
+
+
+        const topClass =
+            player.position <= 3
+
+                ? `
+                    bg-gradient-to-r
+                    from-brand/10
+                    to-transparent
+                    border
+                    border-brand/30
+                  `
+
+                : `
+                    bg-white/[0.025]
+                    border
+                    border-white/5
+                  `;
+
+
+        return `
+            <a
+                href="/profile/${player.user_id}"
+                class="flex
+                       items-center
+                       gap-2.5 sm:gap-3
+                       p-2.5 sm:p-3
+                       rounded-xl
+                       transition
+                       hover:bg-white/5
+                       ${topClass}">
+
+                <div
+                    class="text-lg sm:text-xl
+                           w-8 sm:w-10
+                           text-center
+                           font-black
+                           flex-shrink-0">
+
+                    ${medal}
+
+                </div>
+
+
+                <img
+                    src="/static/avatars/${escapeLeaderboardHtml(player.avatar)}.png"
+                    alt="${escapeLeaderboardHtml(player.username)}"
+                    class="w-9 h-9 sm:w-10 sm:h-10
+                           rounded-full
+                           object-cover
+                           border-2 border-dark-600
+                           flex-shrink-0"
+                    onerror="this.src='/static/avatars/default.png'">
+
+
+                <div class="flex-1 min-w-0">
+
+                    <div
+                        class="font-bold
+                               text-xs sm:text-sm
+                               text-white
+                               truncate">
+
+                        ${escapeLeaderboardHtml(player.username)}
+
+                    </div>
+
+                </div>
+
+
+                <div class="text-right flex-shrink-0">
+
+                    <div
+                        class="text-base sm:text-lg
+                               font-black
+                               text-brand">
+
+                        ${player.total_points}
+
+                    </div>
+
+                    <div
+                        class="text-[8px] sm:text-[9px]
+                               text-gray-600
+                               uppercase
+                               tracking-wider">
+
+                        очков
+
+                    </div>
+
+                </div>
+
+            </a>
+        `;
+    }
+
+
+    // ============================================
+    // ЗАГРУЗИТЬ
+    // ============================================
+
+    async function loadLeaderboard() {
+
+        if (leaderboardLoading) {
+            return;
+        }
+
+
+        leaderboardLoading = true;
+
+
+        const container =
+            document.getElementById(
+                'leaderboardFull'
+            );
+
+
+        container.innerHTML = `
+            <div
+                class="text-center
+                       text-gray-500
+                       py-10">
+
+                <i
+                    class="fa-solid
+                           fa-spinner
+                           fa-spin
+                           text-3xl">
+                </i>
+
+            </div>
+        `;
+
+
         try {
-            const response = await fetch('/api/leaderboard/?limit=50');
-            if (!response.ok) throw new Error('Не удалось загрузить топ');
 
-            const players = await response.json();
+            const response =
+                await apiRequest(
+                    `/api/leaderboard/full?period=${leaderboardPeriod}&limit=10`
+                );
 
-            if (players.length === 0) {
-                container.innerHTML = `<div class="text-center text-gray-500 py-6">Пока никого 🎯</div>`;
-                return;
+
+            if (!response.ok) {
+                throw new Error(
+                    'Не удалось загрузить рейтинг'
+                );
             }
 
-            const medals = ['🥇', '🥈', '🥉'];
 
-            container.innerHTML = players.map((p, i) => {
-                const medal = medals[i] || `<span class="text-gray-500">#${p.position}</span>`;
+            const data =
+                await response.json();
 
-                // Выделяем топ-3 стилистически
-                const bgClass = i < 3 ? 'bg-gradient-to-r from-brand/10 to-transparent border-brand/30' : 'glass-card';
 
-                return `
-                    <a href="/profile/${p.user_id}" class="flex items-center gap-4 p-4 rounded-xl transition hover:-translate-y-1 ${bgClass}">
-                        <div class="text-2xl w-12 text-center font-black">${medal}</div>
-                        <img src="/static/avatars/${p.avatar}.png" alt="${p.username}" class="w-12 h-12 rounded-full object-cover border-2 border-dark-600" onerror="this.src='/static/avatars/default.png'">
-                        <div class="flex-1">
-                            <div class="font-bold text-lg text-white">${p.username}</div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-xl font-black text-brand">${p.total_points}</div>
-                            <div class="text-[10px] text-gray-500 uppercase tracking-wider">очков</div>
-                        </div>
-                    </a>
-                `;
-            }).join('');
-        } catch (err) {
-            container.innerHTML = `<div class="text-center text-red-500 py-6">❌ ${err.message}</div>`;
+            renderLeaderboard(data);
+
+
+        } catch (error) {
+
+            console.error(
+                'Ошибка leaderboard:',
+                error
+            );
+
+
+            container.innerHTML = `
+                <div
+                    class="text-center
+                           text-red-400
+                           py-8">
+
+                    ❌ Не удалось загрузить рейтинг
+
+                </div>
+            `;
+
+        } finally {
+
+            leaderboardLoading =
+                false;
         }
-    });
+    }
+
+
+    // ============================================
+    // ОТРИСОВКА
+    // ============================================
+
+    function renderLeaderboard(data) {
+
+        const container =
+            document.getElementById(
+                'leaderboardFull'
+            );
+
+
+        if (
+            !data.entries ||
+            data.entries.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div
+                    class="text-center
+                           py-10">
+
+                    <div class="text-4xl mb-2">
+                        🎯
+                    </div>
+
+                    <div class="font-bold mb-1">
+                        Пока никого
+                    </div>
+
+                    <div
+                        class="text-xs
+                               text-gray-500">
+
+                        Стань первым!
+
+                    </div>
+
+                </div>
+            `;
+
+        } else {
+
+            container.innerHTML =
+                data.entries
+                    .map(
+                        createPlayerCard
+                    )
+                    .join('');
+        }
+
+
+        renderMyPosition(data);
+
+
+        /*
+         * После обновления возвращаем
+         * внутренний список наверх.
+         */
+        const scroll =
+            document.getElementById(
+                'leaderboardScroll'
+            );
+
+
+        if (scroll) {
+            scroll.scrollTop = 0;
+        }
+    }
+
+
+    // ============================================
+    // МОЁ МЕСТО
+    // ============================================
+
+    function renderMyPosition(data) {
+
+        const section =
+            document.getElementById(
+                'myPositionSection'
+            );
+
+
+        const card =
+            document.getElementById(
+                'myPositionCard'
+            );
+
+
+        const pointsText =
+            document.getElementById(
+                'pointsToNext'
+            );
+
+
+        if (!data.current_user) {
+
+            section.classList.add(
+                'hidden'
+            );
+
+            return;
+        }
+
+
+        const alreadyInTop =
+            data.entries.some(
+                player =>
+                    player.user_id ===
+                    data.current_user.user_id
+            );
+
+
+        if (alreadyInTop) {
+
+            section.classList.add(
+                'hidden'
+            );
+
+            return;
+        }
+
+
+        section.classList.remove(
+            'hidden'
+        );
+
+
+        card.innerHTML =
+            createPlayerCard(
+                data.current_user
+            );
+
+
+        if (data.points_to_next) {
+
+            pointsText.textContent =
+                `До следующего — ${data.points_to_next} очк.`;
+
+
+            pointsText.classList.remove(
+                'hidden'
+            );
+
+        } else {
+
+            pointsText.classList.add(
+                'hidden'
+            );
+        }
+    }
+
+
+    // ============================================
+    // PERIOD
+    // ============================================
+
+    function setPeriod(period) {
+
+        leaderboardPeriod =
+            period;
+
+
+        document
+            .querySelectorAll(
+                '.leaderboard-tab'
+            )
+            .forEach(button => {
+
+                button.classList.toggle(
+                    'active',
+                    button.dataset.period ===
+                    period
+                );
+
+            });
+
+
+        const timerBlock =
+            document.getElementById(
+                'weekTimerBlock'
+            );
+
+
+        const title =
+            document.getElementById(
+                'leaderboardPeriodTitle'
+            );
+
+
+        if (period === 'week') {
+
+            timerBlock.classList.remove(
+                'hidden'
+            );
+
+
+            title.textContent =
+                'Лучшие за неделю';
+
+        } else {
+
+            timerBlock.classList.add(
+                'hidden'
+            );
+
+
+            title.textContent =
+                'Лучшие за всё время';
+        }
+
+
+        loadLeaderboard();
+    }
+
+
+    // ============================================
+    // ТАЙМЕР ДО ПОНЕДЕЛЬНИКА МСК
+    // ============================================
+
+    function updateWeekTimer() {
+
+        const element =
+            document.getElementById(
+                'weekTimer'
+            );
+
+
+        if (!element) {
+            return;
+        }
+
+
+        const parts =
+            new Intl.DateTimeFormat(
+                'en-CA',
+                {
+                    timeZone:
+                        'Europe/Moscow',
+
+                    year:
+                        'numeric',
+
+                    month:
+                        '2-digit',
+
+                    day:
+                        '2-digit',
+
+                    hour:
+                        '2-digit',
+
+                    minute:
+                        '2-digit',
+
+                    second:
+                        '2-digit',
+
+                    hour12:
+                        false,
+                }
+            )
+                .formatToParts(
+                    new Date()
+                );
+
+
+        const values = {};
+
+
+        parts.forEach(part => {
+
+            if (
+                part.type !==
+                'literal'
+            ) {
+
+                values[
+                    part.type
+                ] = Number(
+                    part.value
+                );
+            }
+        });
+
+
+        const moscowNow =
+            new Date(
+                Date.UTC(
+                    values.year,
+                    values.month - 1,
+                    values.day,
+                    values.hour,
+                    values.minute,
+                    values.second
+                )
+            );
+
+
+        let daysUntilMonday =
+            (
+                8
+                - moscowNow.getUTCDay()
+            )
+            % 7;
+
+
+        if (daysUntilMonday === 0) {
+            daysUntilMonday = 7;
+        }
+
+
+        const nextMonday =
+            new Date(
+                Date.UTC(
+                    moscowNow.getUTCFullYear(),
+                    moscowNow.getUTCMonth(),
+                    moscowNow.getUTCDate()
+                    + daysUntilMonday,
+                    0,
+                    0,
+                    0
+                )
+            );
+
+
+        const diff =
+            Math.max(
+                0,
+                nextMonday
+                - moscowNow
+            );
+
+
+        const totalHours =
+            Math.floor(
+                diff / 3600000
+            );
+
+
+        const days =
+            Math.floor(
+                totalHours / 24
+            );
+
+
+        const hours =
+            totalHours % 24;
+
+
+        const minutes =
+            Math.floor(
+                (
+                    diff % 3600000
+                )
+                / 60000
+            );
+
+
+        if (days > 0) {
+
+            element.textContent =
+                `${days} дн. ${hours} ч.`;
+
+        } else {
+
+            element.textContent =
+                `${hours} ч. ${minutes} мин.`;
+        }
+    }
+
+
+    // ============================================
+    // INIT
+    // ============================================
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        () => {
+
+
+            document
+                .querySelectorAll(
+                    '.leaderboard-tab'
+                )
+                .forEach(button => {
+
+                    button.addEventListener(
+                        'click',
+                        () => {
+
+                            setPeriod(
+                                button.dataset.period
+                            );
+
+                        }
+                    );
+
+                });
+
+
+            updateWeekTimer();
+
+
+            weekTimerInterval =
+                setInterval(
+                    updateWeekTimer,
+                    60000
+                );
+
+
+            setPeriod(
+                'week'
+            );
+
+        }
+    );
+
 </script>
+
 {% endblock %}

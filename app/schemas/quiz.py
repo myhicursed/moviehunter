@@ -16,12 +16,20 @@ class QuizAnswer(BaseModel):
 
 class QuizResult(BaseModel):
     correct: bool
+
     correct_answer: str
+
     points: int
+
     letter_matches: list[bool] | None = None
 
     movie_id: int
+
     in_library: bool | None = None
+
+    is_featured_movie: bool = False
+
+    featured_multiplier: int = 1
 
 
 class Genre(BaseModel):

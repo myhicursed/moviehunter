@@ -106,6 +106,16 @@ async function loadQuiz() {
 // ============================================
 
 function showQuestion() {
+    const featuredNotice =
+        document.getElementById(
+            'featuredAnswerNotice'
+        );
+
+    if (featuredNotice) {
+        featuredNotice.classList.add(
+            'hidden'
+        );
+    }
     const q = state.questions[state.currentIndex];
     state.answered = false;
     state.attemptsUsed = 0;
@@ -513,6 +523,7 @@ async function checkAnswer() {
         if (result.correct) {
             // === ПРАВИЛЬНО ===
             state.answered = true;
+            showFeaturedMovieNotice(result);
             clearLettersTimer();   // 🆕 остановить таймер
 
             state.lockedSlots = state.lockedSlots.map(() => true);
@@ -550,6 +561,7 @@ async function checkAnswer() {
             if (state.attemptsUsed >= state.maxAttempts) {
                 // === ПОПЫТКИ ЗАКОНЧИЛИСЬ ===
                 state.answered = true;
+                showFeaturedMovieNotice(result);
                 clearLettersTimer();   // 🆕 остановить таймер
 
                 msgText.textContent = '💔 Ты не угадал';
@@ -651,6 +663,7 @@ async function surrender() {
         });
 
         const result = await response.json();
+        showFeaturedMovieNotice(result);
 
         showCorrectAnswer(result.correct_answer);
 
@@ -687,6 +700,43 @@ function nextQuestion() {
     }
 }
 
+// ============================================
+// ФИЛЬМ ДНЯ
+// ============================================
+
+function showFeaturedMovieNotice(result) {
+    if (!result.is_featured_movie) {
+        return;
+    }
+
+    const notice =
+        document.getElementById(
+            'featuredAnswerNotice'
+        );
+
+    const text =
+        document.getElementById(
+            'featuredAnswerText'
+        );
+
+    if (!notice || !text) {
+        return;
+    }
+
+
+    if (result.correct) {
+        text.textContent =
+            'Фильм дня! Дополнительный x2 🔥';
+    } else {
+        text.textContent =
+            'Это был фильм дня — за него действовал x2';
+    }
+
+
+    notice.classList.remove(
+        'hidden'
+    );
+}
 
 // ============================================
 // РЕЗУЛЬТАТ
@@ -849,6 +899,7 @@ async function lettersTimeExpired() {
 
         if (response.ok) {
             const result = await response.json();
+            showFeaturedMovieNotice(result);
             showCorrectAnswer(result.correct_answer);
         }
     } catch (err) {

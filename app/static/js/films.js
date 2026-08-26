@@ -54,11 +54,16 @@ function createFilmCard(movie) {
             </div>
         `;
 
+
     const reactions =
-        getReactionTotal(movie.reactions);
+        getReactionTotal(
+            movie.reactions
+        );
+
 
     const guessed =
         movie.stats?.guessed_percent;
+
 
     const guessedText =
         guessed === null ||
@@ -66,8 +71,33 @@ function createFilmCard(movie) {
             ? '—'
             : `${Math.round(guessed)}%`;
 
+
     const wantToWatch =
         movie.stats?.want_to_watch || 0;
+
+
+    const featuredBadge =
+        movie.is_featured_movie
+            ? `
+                <div
+                    class="absolute
+                           top-2 left-2
+                           z-10
+                           px-2 py-1
+                           rounded-full
+                           bg-orange-500
+                           text-white
+                           text-[8px] sm:text-[9px]
+                           font-black
+                           uppercase
+                           shadow-[0_0_15px_rgba(249,115,22,0.45)]">
+
+                    🔥 Фильм дня
+
+                </div>
+            `
+            : '';
+
 
     return `
         <a
@@ -77,14 +107,21 @@ function createFilmCard(movie) {
                    rounded-xl
                    overflow-hidden">
 
+            <!-- ВАЖНО:
+                 relative нужен, чтобы бейдж
+                 позиционировался внутри постера -->
             <div
-                class="aspect-[2/3]
+                class="relative
+                       aspect-[2/3]
                        overflow-hidden
                        bg-[#15151b]">
+
+                ${featuredBadge}
 
                 ${poster}
 
             </div>
+
 
             <div class="p-3">
 
@@ -100,61 +137,63 @@ function createFilmCard(movie) {
 
                 </h2>
 
+
                 <div class="mt-2">
 
-    <div
-        class="flex
-               items-center
-               justify-between
-               gap-2">
+                    <div
+                        class="flex
+                               items-center
+                               justify-between
+                               gap-2">
 
-        <span class="text-xs text-gray-500">
-            ${movie.year}
-        </span>
-
-        <span
-            class="text-xs
-                   text-gray-500
-                   flex items-center gap-1">
-
-            ❤️ ${reactions}
-
-        </span>
-
-    </div>
+                        <span class="text-xs text-gray-500">
+                            ${movie.year}
+                        </span>
 
 
-    <div
-        class="flex
-               items-center
-               justify-between
-               gap-2
-               mt-2
-               pt-2
-               border-t border-white/5">
+                        <span
+                            class="text-xs
+                                   text-gray-500
+                                   flex items-center gap-1">
 
-        <span
-            class="text-[10px] sm:text-xs
-                   text-gray-400"
-            title="Процент правильных ответов">
+                            ❤️ ${reactions}
 
-            🎯 ${guessedText}
+                        </span>
 
-        </span>
+                    </div>
 
 
-        <span
-            class="text-[10px] sm:text-xs
-                   text-gray-400"
-            title="Хотят посмотреть">
+                    <div
+                        class="flex
+                               items-center
+                               justify-between
+                               gap-2
+                               mt-2
+                               pt-2
+                               border-t border-white/5">
 
-            🔖 ${wantToWatch}
+                        <span
+                            class="text-[10px] sm:text-xs
+                                   text-gray-400"
+                            title="Процент правильных ответов">
 
-        </span>
+                            🎯 ${guessedText}
 
-    </div>
+                        </span>
 
-</div>
+
+                        <span
+                            class="text-[10px] sm:text-xs
+                                   text-gray-400"
+                            title="Хотят посмотреть">
+
+                            🔖 ${wantToWatch}
+
+                        </span>
+
+                    </div>
+
+                </div>
 
             </div>
 

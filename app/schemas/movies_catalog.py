@@ -25,6 +25,7 @@ class MovieCatalogItem(BaseModel):
     reactions: ReactionCounts
 
     stats: MovieCommunityStats
+    is_featured_movie: bool = False
 
 
 class MovieCatalogResponse(BaseModel):
@@ -48,6 +49,7 @@ class MovieDetail(BaseModel):
 
     user_reaction: str | None = None
     in_library: bool | None = None
+    is_featured_movie: bool = False
 
 
 class ReactionRequest(BaseModel):

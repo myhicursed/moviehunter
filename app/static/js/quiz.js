@@ -141,6 +141,17 @@ function showQuestion() {
     // Останавливаем предыдущий таймер если был
     clearTimer();
 
+    const featuredNotice =
+        document.getElementById(
+            'featuredAnswerNotice'
+        );
+
+    if (featuredNotice) {
+        featuredNotice.classList.add(
+            'hidden'
+        );
+    }
+
     // Прогресс
     document.getElementById('currentQuestion').textContent = state.currentIndex + 1;
     document.getElementById('currentScore').textContent = state.totalPoints;
@@ -259,6 +270,43 @@ function showQuestion() {
     document.getElementById('nextButtonContainer').classList.add('hidden');
 }
 
+// ============================================
+// ФИЛЬМ ДНЯ
+// ============================================
+
+function showFeaturedMovieNotice(result) {
+    if (!result.is_featured_movie) {
+        return;
+    }
+
+    const notice =
+        document.getElementById(
+            'featuredAnswerNotice'
+        );
+
+    const text =
+        document.getElementById(
+            'featuredAnswerText'
+        );
+
+    if (!notice || !text) {
+        return;
+    }
+
+
+    if (result.correct) {
+        text.textContent =
+            'Фильм дня! Получено x2 очков 🔥';
+    } else {
+        text.textContent =
+            'Это был фильм дня — за него можно было получить x2';
+    }
+
+
+    notice.classList.remove(
+        'hidden'
+    );
+}
 
 // ============================================
 // РАЗБЛОКИРОВАТЬ ВАРИАНТЫ
@@ -348,6 +396,7 @@ async function timeExpired() {
 
         if (response.ok) {
             const result = await response.json();
+            showFeaturedMovieNotice(result);
             prepareLibraryButton(
                 result.movie_id,
                 result.in_library
@@ -413,6 +462,7 @@ async function handleAnswer(button, question) {
         }
 
         const result = await response.json();
+        showFeaturedMovieNotice(result);
 
         prepareLibraryButton(
             result.movie_id,

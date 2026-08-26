@@ -26,6 +26,7 @@ from app.models.daily_quiz import (
     DailyQuizMovie,
 )
 from app.models.donation import Donation
+from app.models.featured_movie import FeaturedMovie
 from app.models.movie import Movie
 
 # ============================================
@@ -706,6 +707,56 @@ class DonationAdmin(
 
 
 # ============================================
+# ФИЛЬМ ДНЯ
+# ============================================
+
+
+class FeaturedMovieAdmin(
+    ModelView,
+    model=FeaturedMovie,
+):
+
+    name = "Фильм дня"
+
+    name_plural = "Фильмы дня"
+
+    icon = "fa-solid fa-fire"
+
+    category = "Контент"
+
+    column_list = [
+        FeaturedMovie.id,
+        FeaturedMovie.date,
+        FeaturedMovie.movie,
+        FeaturedMovie.created_at,
+    ]
+
+    column_labels = {
+        FeaturedMovie.id: "ID",
+        FeaturedMovie.date: "Дата",
+        FeaturedMovie.movie: "Фильм",
+        FeaturedMovie.created_at: "Создан",
+    }
+
+    column_sortable_list = [
+        FeaturedMovie.date,
+        FeaturedMovie.created_at,
+    ]
+
+    column_default_sort = [
+        (
+            FeaturedMovie.date,
+            True,
+        ),
+    ]
+
+    form_columns = [
+        FeaturedMovie.date,
+        FeaturedMovie.movie,
+    ]
+
+
+# ============================================
 # ИНИЦИАЛИЗАЦИЯ ADMIN
 # ============================================
 
@@ -729,5 +780,6 @@ def setup_admin(app):
     admin.add_view(DailyQuizAttemptAdmin)
 
     admin.add_view(DonationAdmin)
+    admin.add_view(FeaturedMovieAdmin)
 
     return admin

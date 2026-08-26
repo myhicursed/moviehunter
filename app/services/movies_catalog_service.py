@@ -4,7 +4,12 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.genres import GENRES
+from app.core.timezone import today_moscow
 from app.models.user import User
+from app.repositories.featured_movie_repository import (
+    get_featured_movie_by_date,
+    is_featured_movie,
+)
 from app.repositories.library_repository import (
     count_movie_library,
     count_movie_library_bulk,
@@ -104,6 +109,13 @@ async def get_movies_catalog(
         genre=genre,
     )
 
+    featured = await get_featured_movie_by_date(
+        session,
+        today_moscow(),
+    )
+
+    featured_movie_id = featured.movie_id if featured else None
+
     movie_ids = [movie.id for movie in movies]
 
     reactions_map = await get_reaction_counts_for_movies(
@@ -159,6 +171,7 @@ async def get_movies_catalog(
                     correct=correct,
                     want_to_watch=want_to_watch,
                 ),
+                is_featured_movie=(movie.id == featured_movie_id),
             )
         )
 
@@ -220,6 +233,12 @@ async def get_movie_detail(
             movie_id,
         )
 
+    featured_today = await is_featured_movie(
+        session=session,
+        movie_id=movie.id,
+        target_date=today_moscow(),
+    )
+
     return MovieDetail(
         id=movie.id,
         title=movie.title,
@@ -235,6 +254,7 @@ async def get_movie_detail(
             correct=correct,
             want_to_watch=want_to_watch,
         ),
+        is_featured_movie=featured_today,
     )
 
 

@@ -4,7 +4,11 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.text_utils import clean_title_for_letters
+from app.core.timezone import today_moscow
 from app.models.user import User
+from app.repositories.featured_movie_repository import (
+    is_featured_movie,
+)
 from app.repositories.game_answer_repository import create_game_answer
 from app.repositories.library_repository import is_movie_in_library
 from app.repositories.movie_repository import (
@@ -107,10 +111,39 @@ async def save_answer(
             correct_answer_display = movie.title
 
     # 3. Посчитать очки
-    points = DIFFICULTY_POINTS.get(movie.difficulty, 1) if is_correct else 0
+    # ============================================
+    # ОЧКИ
+    # ============================================
 
-    # Умножитель для режима letters
+    points = (
+        DIFFICULTY_POINTS.get(
+            movie.difficulty,
+            1,
+        )
+        if is_correct
+        else 0
+    )
+
+    # ============================================
+    # LETTERS x2
+    # ============================================
+
     if mode == "letters" and is_correct:
+        points *= 2
+
+    # ============================================
+    # ФИЛЬМ ДНЯ x2
+    # ============================================
+
+    featured_today = await is_featured_movie(
+        session=session,
+        movie_id=movie.id,
+        target_date=today_moscow(),
+    )
+
+    featured_multiplier = 2 if featured_today else 1
+
+    if is_correct and featured_today:
         points *= 2
 
     # 4. Сохранить, если авторизован (но не при timeout)
@@ -154,6 +187,8 @@ async def save_answer(
         letter_matches=letter_matches,
         movie_id=movie.id,
         in_library=in_library,
+        is_featured_movie=featured_today,
+        featured_multiplier=featured_multiplier,
     )
 
 

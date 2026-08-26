@@ -56,5 +56,15 @@ class LeaderboardEntry(BaseModel):
     total_points: int
 
 
+class LeaderboardResponse(BaseModel):
+    period: str
+
+    entries: list[LeaderboardEntry]
+
+    current_user: LeaderboardEntry | None = None
+
+    points_to_next: int | None = None
+
+
 class AvatarUpdate(BaseModel):
     avatar: str
