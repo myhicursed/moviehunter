@@ -40,6 +40,7 @@ class UserStats(BaseModel):
 class UserProfile(BaseModel):
     id: int
     username: str
+    email: str | None = None
     avatar: str
     created_at: datetime
     stats: UserStats
@@ -68,3 +69,21 @@ class LeaderboardResponse(BaseModel):
 
 class AvatarUpdate(BaseModel):
     avatar: str
+
+
+class UserEmailUpdate(BaseModel):
+    email: str
+
+
+class UserPasswordUpdate(BaseModel):
+    old_password: str
+    new_password: str
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str

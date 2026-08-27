@@ -134,6 +134,13 @@ async def google_verification():
     return FileResponse("app/static/googled9c1001d54eddc0e.html")
 
 
+@router.get("/reset-password", response_class=HTMLResponse)
+async def reset_password_page(request: Request, token: str):
+    return templates.TemplateResponse(
+        request=request, name="reset_password.html", context={"token": token}
+    )
+
+
 @router.get("/sitemap.xml", response_class=Response)
 async def sitemap():
     """Карта сайта для поисковиков."""

@@ -1,5 +1,5 @@
 <!-- ============================================ -->
-<!-- МОДАЛКА АВТОРИЗАЦИИ                          -->
+<!-- МОДАЛКА АВТОРИЗАЦИИ И СБРОСА ПАРОЛЯ          -->
 <!-- ============================================ -->
 
 <div id="authModal" class="hidden fixed inset-0 z-[1000]
@@ -15,270 +15,128 @@
                border border-white/10
                overflow-hidden">
 
-
         <!-- КНОПКА ЗАКРЫТЬ -->
         <button id="closeAuthModal" type="button" aria-label="Закрыть" class="absolute
-                   top-4 right-4
-                   z-10
-                   w-10 h-10
-                   flex items-center justify-center
-                   rounded-full
-                   bg-white/5
-                   hover:bg-white/10
-                   text-gray-400
-                   hover:text-white
-                   transition">
-
+                   top-4 right-4 z-10 w-10 h-10 flex items-center justify-center
+                   rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition">
             <i class="fa-solid fa-xmark text-xl"></i>
-
         </button>
-
 
         <div class="p-6 sm:p-8">
 
-
-            <!-- ============================================ -->
-            <!-- ЗАГОЛОВОК                                    -->
-            <!-- ============================================ -->
-
-            <div class="text-center mb-6 px-8">
-
-                <h2 id="authModalTitle" class="text-2xl sm:text-3xl
-                           font-black text-white">
-
-                    Вход
-
-                </h2>
-
-                <p class="text-gray-400 mt-2 text-sm">
-
-                    <span id="authModalSubtitle">
-                        Играй и сохраняй свои результаты
-                    </span>
-
-                </p>
-
+            <!-- ЗАГОЛОВОК -->
+            <div class="text-center mb-6 px-4">
+                <h2 id="authModalTitle" class="text-2xl sm:text-3xl font-black text-white">Вход</h2>
+                <p class="text-gray-400 mt-2 text-sm"><span id="authModalSubtitle">Играй и сохраняй свои
+                        результаты</span></p>
             </div>
 
-
-            <!-- ============================================ -->
-            <!-- ФОРМА                                        -->
-            <!-- ============================================ -->
-
+            <!-- ФОРМА -->
             <form id="authForm" class="space-y-4">
 
+                <!-- ОШИБКА ИЛИ УСПЕХ -->
+                <div id="authMsgBox" class="hidden border px-4 py-3 rounded-lg text-sm text-center font-medium"></div>
 
-                <!-- ОШИБКА -->
-                <div id="authError" class="hidden
-                           bg-red-500/20
-                           border border-red-500/50
-                           text-red-300
-                           px-4 py-3
-                           rounded-lg
-                           text-sm">
-                </div>
-
-
-                <!-- ============================================ -->
-                <!-- НИК                                          -->
-                <!-- ============================================ -->
-
-                <div>
-
-                    <label for="authUsername" class="block
-                               text-sm
-                               text-gray-400
-                               mb-2">
-
-                        Ник
-
-                    </label>
-
-
-                    <input type="text" id="authUsername" name="username" required minlength="3" maxlength="50"
+                <!-- НИК (Для входа/регистрации) -->
+                <div id="authUsernameBlock">
+                    <label for="authUsername" class="block text-sm text-gray-400 mb-2">Никнейм</label>
+                    <input type="text" id="authUsername" name="username" minlength="3" maxlength="50"
                         autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Твой никнейм"
-                        class="auth-input
-                               w-full
-                               px-4 py-3
-                               bg-white/5
-                               border border-white/10
-                               rounded-xl
-                               text-white
-                               placeholder:text-gray-600
-                               focus:border-brand
-                               focus:ring-2
-                               focus:ring-brand/20
-                               focus:outline-none
-                               transition">
-
+                        class="auth-input w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none transition">
                 </div>
 
-
-                <!-- ============================================ -->
-                <!-- ПАРОЛЬ                                       -->
-                <!-- ============================================ -->
-
-                <div>
-
-                    <label for="authPassword" class="block
-                               text-sm
-                               text-gray-400
-                               mb-2">
-
-                        Пароль
-
-                    </label>
-
-
-                    <input type="password" id="authPassword" name="password" required minlength="6" maxlength="72"
-                        autocomplete="current-password" placeholder="Минимум 6 символов" class="auth-input
-                               w-full
-                               px-4 py-3
-                               bg-white/5
-                               border border-white/10
-                               rounded-xl
-                               text-white
-                               placeholder:text-gray-600
-                               focus:border-brand
-                               focus:ring-2
-                               focus:ring-brand/20
-                               focus:outline-none
-                               transition">
-
+                <!-- EMAIL (Для сброса пароля) -->
+                <div id="authEmailBlock" class="hidden">
+                    <label for="authEmail" class="block text-sm text-gray-400 mb-2">Привязанный Email</label>
+                    <input type="email" id="authEmail" name="email" placeholder="example@mail.com"
+                        class="auth-input w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none transition">
                 </div>
 
+                <!-- ПАРОЛЬ -->
+                <div id="authPasswordBlock">
+                    <div class="flex justify-between items-end mb-2">
+                        <label for="authPassword" class="block text-sm text-gray-400">Пароль</label>
+                        <button type="button" id="authForgotBtn"
+                            class="text-xs text-gray-500 hover:text-white transition">
+                            Забыл пароль?
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <input type="password" id="authPassword" name="password" minlength="6" maxlength="72"
+                            autocomplete="current-password" placeholder="Минимум 6 символов"
+                            class="auth-input w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none transition pr-12">
 
-                <!-- ============================================ -->
-                <!-- КНОПКА ВХОДА                                 -->
-                <!-- ============================================ -->
+                        <button type="button"
+                            class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-white transition"
+                            data-target="authPassword">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
 
-                <button type="submit" id="authSubmitBtn" class="w-full
-                           py-3
-                           bg-brand
-                           hover:bg-brand-dark
-                           rounded-xl
-                           font-bold
-                           text-base sm:text-lg
-                           text-white
-                           shadow-lg shadow-brand/20
-                           transition
-                           disabled:opacity-50
-                           disabled:cursor-not-allowed">
+                <!-- ПОДТВЕРЖДЕНИЕ ПАРОЛЯ -->
+                <div id="authConfirmPasswordBlock" class="hidden">
+                    <label for="authConfirmPassword" class="block text-sm text-gray-400 mb-2">Повтори пароль</label>
+                    <div class="relative">
+                        <input type="password" id="authConfirmPassword" name="confirm_password" minlength="6"
+                            maxlength="72" autocomplete="new-password" placeholder="Пароли должны совпадать"
+                            class="auth-input w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none transition pr-12">
 
+                        <button type="button"
+                            class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-white transition"
+                            data-target="authConfirmPassword">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- КНОПКА ОТПРАВКИ -->
+                <button type="submit" id="authSubmitBtn"
+                    class="w-full mt-2 py-3 bg-brand hover:bg-brand-dark rounded-xl font-bold text-base sm:text-lg text-white shadow-lg shadow-brand/20 transition disabled:opacity-50 disabled:cursor-not-allowed">
                     Войти
-
                 </button>
 
             </form>
 
-
-            <!-- ============================================ -->
-            <!-- ПЕРЕКЛЮЧЕНИЕ ВХОД / РЕГИСТРАЦИЯ             -->
-            <!-- ============================================ -->
-
-            <div class="text-center
-                       mt-6
-                       text-sm
-                       text-gray-400">
-
-                <span id="authSwitchText">
-                    Ещё нет аккаунта?
-                </span>
-
-
-                <button type="button" id="authSwitchBtn" class="text-brand
-                           hover:text-red-400
-                           hover:underline
-                           font-semibold
-                           ml-1
-                           transition">
-
+            <!-- ПЕРЕКЛЮЧЕНИЕ РЕЖИМОВ -->
+            <div id="authFooter" class="text-center mt-6 text-sm text-gray-400">
+                <span id="authSwitchText">Ещё нет аккаунта?</span>
+                <button type="button" id="authSwitchBtn"
+                    class="text-brand hover:text-red-400 hover:underline font-semibold ml-1 transition">
                     Зарегистрироваться
-
                 </button>
+            </div>
 
+            <!-- ВОЗВРАТ КО ВХОДУ (только для восстановления пароля) -->
+            <div id="authBackToLogin" class="hidden text-center mt-6 text-sm">
+                <button type="button" id="authBackToLoginBtn"
+                    class="text-gray-400 hover:text-white font-semibold transition flex items-center justify-center gap-2 mx-auto">
+                    <i class="fa-solid fa-arrow-left"></i> Назад ко входу
+                </button>
             </div>
 
         </div>
-
     </div>
-
 </div>
 
-
-<!-- ============================================ -->
-<!-- СТИЛИ ПОЛЕЙ                                  -->
-<!-- ============================================ -->
-
 <style>
-    /*
-     * Обычный ввод
-     */
     .auth-input {
         color: #ffffff !important;
-
         -webkit-text-fill-color: #ffffff !important;
-
         caret-color: #e50914 !important;
     }
 
-
-    /*
-     * Placeholder
-     */
     .auth-input::placeholder {
         color: #4b5563 !important;
-
         -webkit-text-fill-color: #4b5563 !important;
-
         opacity: 1;
     }
 
-
-    /*
-     * Autofill:
-     * Chrome / Chromium / Яндекс Браузер
-     */
-    .auth-input:-webkit-autofill,
-    .auth-input:-webkit-autofill:hover,
-    .auth-input:-webkit-autofill:focus,
-    .auth-input:-webkit-autofill:active {
-
+    .auth-input:-webkit-autofill {
         -webkit-text-fill-color: #ffffff !important;
-
         caret-color: #e50914 !important;
-
-        -webkit-box-shadow:
-            0 0 0 1000px #15151b inset !important;
-
-        box-shadow:
-            0 0 0 1000px #15151b inset !important;
-
-        border-color:
-            rgba(255, 255, 255, 0.1) !important;
-
-        transition:
-            background-color 9999s ease-out 0s;
-    }
-
-
-    /*
-     * Focus
-     */
-    .auth-input:focus {
-        color: #ffffff !important;
-
-        -webkit-text-fill-color: #ffffff !important;
-    }
-
-
-    /*
-     * Выделение текста
-     */
-    .auth-input::selection {
-        background:
-            rgba(229, 9, 20, 0.45);
-
-        color: #ffffff;
+        -webkit-box-shadow: 0 0 0 1000px #15151b inset !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        transition: background-color 9999s ease-out 0s;
     }
 </style>

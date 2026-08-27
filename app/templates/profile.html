@@ -13,629 +13,352 @@
 
     <div class="container mx-auto px-3 sm:px-4 max-w-4xl">
 
+        <!-- КОНФИГ -->
+        <div id="profileConfig" data-user-id="{{ user_id if user_id else '' }}" class="hidden"></div>
 
-        <!-- ============================================ -->
-        <!-- КОНФИГ                                       -->
-        <!-- ============================================ -->
-
-        <div id="profileConfig" data-user-id="{{ user_id if user_id else '' }}" class="hidden">
-        </div>
-
-
-        <!-- ============================================ -->
-        <!-- ЗАГРУЗКА                                     -->
-        <!-- ============================================ -->
-
+        <!-- ЗАГРУЗКА -->
         <div id="profileLoading" class="text-center py-20">
-
             <i class="fa-solid fa-spinner fa-spin text-5xl text-brand mb-4"></i>
-
-            <p class="text-xl text-gray-400">
-                Загружаем профиль...
-            </p>
-
+            <p class="text-xl text-gray-400">Загружаем профиль...</p>
         </div>
 
-
-        <!-- ============================================ -->
-        <!-- ОШИБКА                                       -->
-        <!-- ============================================ -->
-
+        <!-- ОШИБКА -->
         <div id="profileError" class="hidden text-center py-20">
-
-            <div class="text-6xl mb-4">
-                😢
-            </div>
-
-            <h2 class="text-2xl font-bold mb-2">
-                Не удалось загрузить профиль
-            </h2>
-
-            <p id="profileErrorMsg" class="text-gray-400 mb-6">
-            </p>
-
-            <a href="/" class="inline-flex items-center gap-2
-                       px-6 py-3
-                       bg-brand hover:bg-brand-dark
-                       transition rounded-lg
-                       font-semibold">
-
-                <i class="fa-solid fa-home"></i>
-
-                На главную
-
+            <div class="text-6xl mb-4">😢</div>
+            <h2 class="text-2xl font-bold mb-2">Не удалось загрузить профиль</h2>
+            <p id="profileErrorMsg" class="text-gray-400 mb-6"></p>
+            <a href="/"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-lg font-semibold">
+                <i class="fa-solid fa-home"></i> На главную
             </a>
-
         </div>
 
-
-
-        <!-- ============================================ -->
-        <!-- КОНТЕНТ                                      -->
-        <!-- ============================================ -->
-
+        <!-- КОНТЕНТ ПРОФИЛЯ -->
         <div id="profileContent" class="hidden">
 
-
-            <!-- ============================================ -->
-            <!-- ШАПКА ПРОФИЛЯ                                -->
-            <!-- ============================================ -->
-
-            <div class="bg-gradient-to-br
-                       from-dark-800 to-dark-700
-                       rounded-2xl
-                       p-5 sm:p-8
-                       border border-dark-600
-                       mb-6">
-
-
-                <div class="flex flex-col md:flex-row
-                           items-center
-                           gap-4 sm:gap-6">
-
-
-                    <!-- АВАТАР -->
-                    <div class="relative group flex-shrink-0">
-
-                        <img id="profileAvatar" src="/static/avatars/default.png" alt="Аватар" class="w-24 h-24 sm:w-32 sm:h-32
-                                   rounded-full
-                                   border-4 border-brand
-                                   object-cover" onerror="this.src='/static/avatars/default.png'">
-
-
-                        <!-- Только свой профиль -->
-                        <button id="changeAvatarBtn" type="button" class="hidden
-                                   absolute inset-0
-                                   rounded-full
-                                   bg-black/60
-                                   opacity-0
-                                   group-hover:opacity-100
-                                   transition
-                                   items-center justify-center
-                                   text-white" title="Сменить аватар">
-
-                            <i class="fa-solid fa-camera text-2xl"></i>
-
-                        </button>
-
+            <!-- ВАРНИНГ: НЕТ ПОЧТЫ -->
+            <div id="emailWarningBadge"
+                class="hidden mb-4 bg-red-500/10 border border-red-500/30 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-triangle-exclamation text-red-400 text-lg"></i>
                     </div>
-
-
-                    <!-- ИНФО -->
-                    <div class="flex-1 text-center md:text-left min-w-0">
-
-                        <h1 id="profileUsername" class="text-3xl sm:text-4xl
-                                   font-black
-                                   mb-2
-                                   break-words">
-                        </h1>
-
-                        <p class="text-gray-400 text-sm">
-
-                            С нами с
-
-                            <span id="profileCreatedAt"></span>
-
-                        </p>
-
-                    </div>
-
-
-                    <!-- ВЫЙТИ -->
-                    <button id="logoutBtn" type="button" class="hidden
-                               px-5 sm:px-6
-                               py-2.5 sm:py-3
-                               bg-dark-600
-                               hover:bg-red-900
-                               border border-dark-500
-                               hover:border-red-500
-                               transition
-                               rounded-lg
-                               font-semibold
-                               text-sm">
-
-                        <i class="fa-solid fa-right-from-bracket mr-1"></i>
-
-                        Выйти
-
-                    </button>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ============================================ -->
-            <!-- СТАТИСТИКА                                   -->
-            <!-- ============================================ -->
-
-            <h2 class="text-xl sm:text-2xl font-black mb-4">
-
-                📊 Статистика
-
-            </h2>
-
-
-            <div class="grid grid-cols-2 md:grid-cols-4
-                       gap-3 sm:gap-4
-                       mb-8">
-
-
-                <div class="bg-dark-800
-                           rounded-xl
-                           p-4 sm:p-6
-                           border border-dark-600">
-
-                    <div id="statPoints" class="text-2xl sm:text-3xl
-                               font-black
-                               text-brand
-                               mb-1">
-
-                        0
-
-                    </div>
-
-                    <div class="text-xs sm:text-sm text-gray-400">
-                        Очков
-                    </div>
-
-                </div>
-
-
-                <div class="bg-dark-800
-                           rounded-xl
-                           p-4 sm:p-6
-                           border border-dark-600">
-
-                    <div id="statCorrect" class="text-2xl sm:text-3xl
-                               font-black
-                               text-green-400
-                               mb-1">
-
-                        0
-
-                    </div>
-
-                    <div class="text-xs sm:text-sm text-gray-400">
-                        Правильных
-                    </div>
-
-                </div>
-
-
-                <div class="bg-dark-800
-                           rounded-xl
-                           p-4 sm:p-6
-                           border border-dark-600">
-
-                    <div id="statWrong" class="text-2xl sm:text-3xl
-                               font-black
-                               text-red-400
-                               mb-1">
-
-                        0
-
-                    </div>
-
-                    <div class="text-xs sm:text-sm text-gray-400">
-                        Неправильных
-                    </div>
-
-                </div>
-
-
-                <div class="bg-dark-800
-                           rounded-xl
-                           p-4 sm:p-6
-                           border border-dark-600">
-
-                    <div id="statAccuracy" class="text-2xl sm:text-3xl
-                               font-black
-                               text-yellow-400
-                               mb-1">
-
-                        0%
-
-                    </div>
-
-                    <div class="text-xs sm:text-sm text-gray-400">
-                        Точность
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ============================================ -->
-            <!-- ЛЮБИМЫЙ ЖАНР                                -->
-            <!-- ============================================ -->
-
-            <div id="favoriteGenreBlock" class="hidden
-                       bg-gradient-to-r
-                       from-purple-900/30
-                       to-pink-900/30
-                       border border-purple-500/30
-                       rounded-xl
-                       p-5 sm:p-6
-                       mb-8
-                       text-center">
-
-                <div class="text-gray-400 text-sm mb-1">
-                    Любимый жанр
-                </div>
-
-                <div id="favoriteGenre" class="text-2xl sm:text-3xl font-black">
-
-                    —
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ============================================ -->
-            <!-- ФИЛЬМОТЕКА                                   -->
-            <!-- ============================================ -->
-
-            <section id="librarySection" class="mb-8">
-
-
-                <!-- HEADER -->
-                <div class="flex items-end
-                           justify-between
-                           gap-3
-                           mb-4">
-
-
-                    <div class="min-w-0">
-
-                        <h2 class="text-xl sm:text-2xl
-                                   font-black
-                                   flex items-center gap-2">
-
-                            <i class="fa-solid fa-bookmark text-brand"></i>
-
-                            <span id="libraryTitle">
-                                Хочу посмотреть
-                            </span>
-
-                        </h2>
-
-
-                        <p id="librarySubtitle" class="text-xs sm:text-sm
-                                   text-gray-500
-                                   mt-1">
-
-                            Сохранённые фильмы
-
-                        </p>
-
-                    </div>
-
-
-                    <div class="flex-shrink-0
-                               px-3 py-1.5
-                               rounded-full
-                               bg-white/5
-                               border border-white/10
-                               text-[10px] sm:text-xs
-                               font-bold
-                               text-gray-400">
-
-                        <span id="libraryCount">0</span>
-
-                        <span> фильмов</span>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ЗАГРУЗКА -->
-                <div id="libraryLoading" class="text-center
-                           py-8
-                           text-gray-500
-                           bg-dark-800
-                           rounded-2xl
-                           border border-dark-600">
-
-                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
-
                     <div>
-                        Загружаем фильмотеку...
+                        <div class="text-white font-bold text-sm">Аккаунт не привязан к почте</div>
+                        <div class="text-gray-400 text-xs mt-0.5">В случае потери пароля ты не сможешь его восстановить.
+                        </div>
+                    </div>
+                </div>
+                <button onclick="switchProfileTab('settings')"
+                    class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-xl text-xs font-bold transition flex-shrink-0 w-full sm:w-auto">
+                    Привязать
+                </button>
+            </div>
+
+            <!-- ШАПКА ПРОФИЛЯ (СОВРЕМЕННАЯ) -->
+            <div class="relative mb-8">
+                <!-- Декоративное свечение на фоне -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-brand/30 to-purple-600/30 blur-2xl opacity-40 rounded-[3rem] -z-10">
+                </div>
+
+                <div
+                    class="bg-[#111116]/80 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-white/5 shadow-2xl flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
+
+                    <!-- Аватар -->
+                    <div class="relative group flex-shrink-0">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-tr from-brand to-orange-500 rounded-full blur opacity-30 group-hover:opacity-60 transition duration-500">
+                        </div>
+                        <img id="profileAvatar" src="/static/avatars/default.png" alt="Аватар"
+                            class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full border-2 border-white/10 object-cover bg-dark-900"
+                            onerror="this.src='/static/avatars/default.png'">
+
+                        <button id="changeAvatarBtn" type="button"
+                            class="hidden absolute inset-0 rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition items-center justify-center text-white"
+                            title="Сменить аватар">
+                            <i class="fa-solid fa-camera text-2xl"></i>
+                        </button>
                     </div>
 
-                </div>
-
-
-                <!-- ПУСТО -->
-                <div id="libraryEmpty" class="hidden
-                           text-center
-                           py-8
-                           px-4
-                           bg-dark-800
-                           rounded-2xl
-                           border border-dark-600">
-
-                    <div class="text-4xl mb-3">
-                        🎞️
+                    <!-- Инфо -->
+                    <div class="flex-1 text-center sm:text-left min-w-0">
+                        <h1 id="profileUsername"
+                            class="text-3xl sm:text-5xl font-black mb-2 truncate bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-400">
+                        </h1>
+                        <p class="text-brand font-semibold text-sm sm:text-base mb-1">
+                            🔥 Серия побед: <span id="profileStreak">0</span>
+                        </p>
+                        <p class="text-gray-500 text-xs sm:text-sm">
+                            С нами с <span id="profileCreatedAt"></span>
+                        </p>
                     </div>
 
-                    <h3 id="libraryEmptyTitle" class="text-lg font-bold mb-2">
-
-                        Здесь пока пусто
-
-                    </h3>
-
-                    <p id="libraryEmptyText" class="text-sm
-                               text-gray-400
-                               max-w-md
-                               mx-auto">
-
-                        Сохранённые фильмы появятся здесь.
-
-                    </p>
-
-                </div>
-
-
-                <!-- ПЕРВЫЙ РЯД -->
-                <div id="libraryPreviewGrid" class="hidden
-                           grid
-                           grid-cols-2
-                           md:grid-cols-4
-                           gap-3 sm:gap-4">
-                </div>
-
-
-                <!-- ПОКАЗАТЬ ВСЕ -->
-                <div id="libraryShowAllContainer" class="hidden
-                           mt-4
-                           text-center">
-
-                    <button id="libraryShowAllBtn" type="button" class="inline-flex
-                               items-center justify-center
-                               gap-2
-                               px-5 py-2.5
-                               rounded-xl
-                               bg-white/5
-                               hover:bg-white/10
-                               border border-white/10
-                               hover:border-white/20
-                               text-sm
-                               font-bold
-                               text-gray-300
-                               hover:text-white
-                               transition">
-
-                        <span id="libraryShowAllText">
-                            Показать все
-                        </span>
-
-                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-
+                    <!-- Выйти -->
+                    <button id="logoutBtn" type="button"
+                        class="hidden px-5 py-3 bg-white/5 hover:bg-red-500/20 border border-white/5 hover:border-red-500/30 text-gray-300 hover:text-red-400 transition rounded-xl font-semibold text-sm flex-shrink-0">
+                        <i class="fa-solid fa-right-from-bracket sm:mr-1"></i>
+                        <span class="hidden sm:inline">Выйти</span>
                     </button>
+                </div>
+            </div>
 
+            <!-- ТАБЫ (Навигация профиля) -->
+            <div id="profileTabs"
+                class="hidden flex gap-2 overflow-x-auto custom-scrollbar mb-6 bg-white/[0.02] p-1.5 rounded-2xl border border-white/5">
+                <button data-tab="overview"
+                    class="profile-tab active flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition">
+                    <i class="fa-solid fa-chart-simple mr-1.5"></i> Обзор
+                </button>
+                <button data-tab="settings" id="settingsTabBtn"
+                    class="profile-tab hidden flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition">
+                    <i class="fa-solid fa-gear mr-1.5"></i> Настройки
+                </button>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- ВКЛАДКА: ОБЗОР                             -->
+            <!-- ========================================== -->
+            <div id="tab-overview" class="tab-content block">
+
+                <!-- Статистика (Мягкие карточки) -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8">
+                    <div
+                        class="bg-white/[0.02] hover:bg-white/[0.04] transition rounded-2xl p-5 border border-white/5 text-center">
+                        <div id="statPoints" class="text-2xl sm:text-3xl font-black text-brand mb-1">0</div>
+                        <div class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider font-bold">Очков</div>
+                    </div>
+                    <div
+                        class="bg-white/[0.02] hover:bg-white/[0.04] transition rounded-2xl p-5 border border-white/5 text-center">
+                        <div id="statCorrect" class="text-2xl sm:text-3xl font-black text-green-400 mb-1">0</div>
+                        <div class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider font-bold">Правильных
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white/[0.02] hover:bg-white/[0.04] transition rounded-2xl p-5 border border-white/5 text-center">
+                        <div id="statWrong" class="text-2xl sm:text-3xl font-black text-red-400 mb-1">0</div>
+                        <div class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider font-bold">Ошибок
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white/[0.02] hover:bg-white/[0.04] transition rounded-2xl p-5 border border-white/5 text-center">
+                        <div id="statAccuracy" class="text-2xl sm:text-3xl font-black text-yellow-400 mb-1">0%</div>
+                        <div class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider font-bold">Точность
+                        </div>
+                    </div>
                 </div>
 
-            </section>
-
-
-
-            <!-- ============================================ -->
-            <!-- НЕТ СТАТИСТИКИ                               -->
-            <!-- ============================================ -->
-
-            <div id="noStatsBlock" class="hidden
-                       text-center
-                       py-10
-                       bg-dark-800
-                       rounded-xl
-                       border border-dark-600">
-
-                <div class="text-6xl mb-4">
-                    🎬
+                <!-- Любимый жанр -->
+                <div id="favoriteGenreBlock"
+                    class="hidden bg-gradient-to-r from-purple-500/10 to-transparent border border-purple-500/20 rounded-2xl p-6 mb-8 flex items-center justify-between">
+                    <div>
+                        <div class="text-gray-400 text-xs mb-1 uppercase tracking-wider font-bold">Любимый жанр</div>
+                        <div id="favoriteGenre" class="text-2xl sm:text-3xl font-black text-white">—</div>
+                    </div>
+                    <i class="fa-solid fa-masks-theater text-4xl text-purple-500/30"></i>
                 </div>
 
-                <p class="text-xl text-gray-400 mb-4">
-                    Ещё не играл ни одного квиза
-                </p>
+                <!-- Фильмотека (Сохраняем старый блок, но вписываем в новый дизайн) -->
+                <section id="librarySection" class="mb-8">
+                    <!-- Заголовок фильмотеки -->
+                    <div class="flex items-end justify-between gap-3 mb-4">
+                        <div class="min-w-0">
+                            <h2 class="text-xl sm:text-2xl font-black flex items-center gap-2">
+                                <i class="fa-solid fa-bookmark text-brand"></i>
+                                <span id="libraryTitle">Хочу посмотреть</span>
+                            </h2>
+                            <p id="librarySubtitle" class="text-xs sm:text-sm text-gray-500 mt-1">Сохранённые фильмы</p>
+                        </div>
+                        <div
+                            class="flex-shrink-0 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] sm:text-xs font-bold text-gray-400">
+                            <span id="libraryCount">0</span><span> фильмов</span>
+                        </div>
+                    </div>
 
-                <a href="/quiz" class="inline-flex
-                           items-center gap-2
-                           px-6 py-3
-                           bg-brand
-                           hover:bg-brand-dark
-                           transition
-                           rounded-lg
-                           font-semibold">
+                    <!-- Элементы фильмотеки -->
+                    <div id="libraryLoading"
+                        class="text-center py-8 text-gray-500 bg-white/[0.02] rounded-2xl border border-white/5">
+                        <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
+                        <div>Загружаем фильмотеку...</div>
+                    </div>
 
-                    <i class="fa-solid fa-play"></i>
+                    <div id="libraryEmpty"
+                        class="hidden text-center py-8 px-4 bg-white/[0.02] rounded-2xl border border-white/5">
+                        <div class="text-4xl mb-3">🎞️</div>
+                        <h3 id="libraryEmptyTitle" class="text-lg font-bold mb-2">Здесь пока пусто</h3>
+                        <p id="libraryEmptyText" class="text-sm text-gray-400 max-w-md mx-auto">Сохранённые фильмы
+                            появятся здесь.</p>
+                    </div>
 
-                    Начать играть
+                    <div id="libraryPreviewGrid" class="hidden grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"></div>
 
-                </a>
+                    <div id="libraryShowAllContainer" class="hidden mt-4 text-center">
+                        <button id="libraryShowAllBtn" type="button"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-bold text-gray-300 hover:text-white transition">
+                            <span id="libraryShowAllText">Показать все</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </button>
+                    </div>
+                </section>
 
+                <!-- Нет статистики -->
+                <div id="noStatsBlock"
+                    class="hidden text-center py-12 bg-white/[0.02] rounded-2xl border border-white/5">
+                    <div class="text-5xl mb-4">🎬</div>
+                    <p class="text-lg text-gray-400 mb-5">Ещё не сыграно ни одного квиза</p>
+                    <a href="/quiz"
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark transition rounded-xl font-bold">
+                        <i class="fa-solid fa-play"></i> Начать играть
+                    </a>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- ВКЛАДКА: НАСТРОЙКИ (Только владельцу)      -->
+            <!-- ========================================== -->
+            <div id="tab-settings" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    <!-- Привязка Email -->
+                    <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-6 sm:p-8">
+                        <h3 class="text-xl font-black mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-envelope text-gray-400"></i> Email
+                        </h3>
+                        <p class="text-xs text-gray-500 mb-6">Используется только для восстановления пароля.</p>
+
+                        <form id="settingsEmailForm" class="space-y-4">
+                            <input type="email" id="settingsEmail" required placeholder="example@mail.com"
+                                class="auth-input w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:border-brand focus:outline-none transition">
+                            <button type="submit" id="settingsEmailBtn"
+                                class="w-full py-3 bg-white/10 hover:bg-white/20 transition rounded-xl font-bold text-sm">
+                                Сохранить Email
+                            </button>
+                            <div id="settingsEmailMsg"
+                                class="hidden text-xs text-center font-bold px-3 py-2 rounded-lg"></div>
+                        </form>
+                    </div>
+
+                    <!-- Смена пароля -->
+                    <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-6 sm:p-8">
+                        <h3 class="text-xl font-black mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-lock text-gray-400"></i> Пароль
+                        </h3>
+                        <p class="text-xs text-gray-500 mb-6">Регулярно меняй пароль для безопасности.</p>
+
+                        <form id="settingsPasswordForm" class="space-y-3">
+                            <div class="relative">
+                                <input type="password" id="settingsOldPassword" required placeholder="Текущий пароль"
+                                    class="auth-input w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:border-brand focus:outline-none transition pr-10">
+                                <button type="button"
+                                    class="toggle-pwd-btn absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"
+                                    data-target="settingsOldPassword"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+
+                            <div class="relative">
+                                <input type="password" id="settingsNewPassword" required minlength="6"
+                                    placeholder="Новый пароль"
+                                    class="auth-input w-full px-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:border-brand focus:outline-none transition pr-10">
+                                <button type="button"
+                                    class="toggle-pwd-btn absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"
+                                    data-target="settingsNewPassword"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+
+                            <button type="submit" id="settingsPasswordBtn"
+                                class="w-full mt-2 py-3 bg-brand hover:bg-brand-dark transition rounded-xl font-bold text-sm shadow-lg shadow-brand/20">
+                                Обновить пароль
+                            </button>
+                            <div id="settingsPasswordMsg"
+                                class="hidden text-xs text-center font-bold px-3 py-2 rounded-lg mt-2"></div>
+                        </form>
+                    </div>
+
+                </div>
             </div>
 
         </div>
-
     </div>
-
 </div>
 
-
-
-
-
 <!-- ============================================ -->
-<!-- МОДАЛКА ФИЛЬМОТЕКИ                           -->
+<!-- МОДАЛКИ (Аватар, Библиотека остаются старыми)-->
 <!-- ============================================ -->
+{% include "partials/profile_modals.html" ignore missing %}
+<!-- Код модалок скопируй сюда из старого файла (или оставь как было, я свернул чтобы код влез) -->
 
-<div id="libraryModal" class="hidden
-           fixed
-           left-0 right-0 bottom-0
-           top-16 sm:top-[72px]
-           z-40
-           bg-black/85
-           backdrop-blur-sm
-           p-3 sm:p-6
-           overflow-hidden">
-
-    <!-- HEADER -->
-    <div class="flex items-center
-                   justify-between
-                   gap-4
-                   p-4 sm:p-6
-                   border-b border-white/10">
-
-
-        <div class="min-w-0">
-
-            <h2 class="text-xl sm:text-2xl
-                           font-black
-                           flex items-center gap-2">
-
-                <i class="fa-solid fa-bookmark text-brand"></i>
-
-                Фильмотека
-
-            </h2>
-
-            <p class="text-xs sm:text-sm
-                           text-gray-500
-                           mt-1">
-
-                <span id="libraryModalCount">0</span>
-                фильмов
-
-            </p>
-
+<!-- Вставь сюда МОДАЛКА БИБЛИОТЕКИ и МОДАЛКА АВАТАРА из прошлого файла. -->
+<!-- Я не стал их дублировать, чтобы ответ не оборвался. Они не меняются по дизайну. -->
+<div id="libraryModal"
+    class="hidden fixed left-0 right-0 bottom-0 top-16 sm:top-[72px] z-40 bg-black/85 backdrop-blur-sm p-3 sm:p-6 overflow-hidden">
+    <div
+        class="w-full max-w-5xl h-full mx-auto bg-[#111116] border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <div class="flex items-center justify-between gap-4 p-4 sm:p-6 border-b border-white/10">
+            <div class="min-w-0">
+                <h2 class="text-xl sm:text-2xl font-black flex items-center gap-2"><i
+                        class="fa-solid fa-bookmark text-brand"></i> Фильмотека</h2>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1"><span id="libraryModalCount">0</span> фильмов</p>
+            </div>
+            <button id="closeLibraryModal" type="button"
+                class="w-10 h-10 flex-shrink-0 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition"><i
+                    class="fa-solid fa-xmark text-xl"></i></button>
         </div>
-
-
-        <button id="closeLibraryModal" type="button" aria-label="Закрыть" class="w-10 h-10
-                       flex-shrink-0
-                       rounded-xl
-                       bg-white/5
-                       hover:bg-white/10
-                       flex items-center justify-center
-                       text-gray-400
-                       hover:text-white
-                       transition">
-
-            <i class="fa-solid fa-xmark text-xl"></i>
-
-        </button>
-
-    </div>
-
-    <!-- СКРОЛЛ -->
-    <div id="libraryModalScroll" class="flex-1
-                   overflow-y-auto
-                   p-4 sm:p-6
-                   custom-scrollbar">
-
-
-        <div id="libraryModalGrid" class="grid
-                       grid-cols-2
-                       sm:grid-cols-3
-                       md:grid-cols-4
-                       lg:grid-cols-5
-                       gap-3 sm:gap-4">
+        <div id="libraryModalScroll" class="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar">
+            <div id="libraryModalGrid"
+                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"></div>
         </div>
-
     </div>
-
 </div>
 
-</div>
-
-
-
-
-
-<!-- ============================================ -->
-<!-- МОДАЛКА АВАТАРА                              -->
-<!-- ============================================ -->
-
-<div id="avatarModal" class="hidden
-           fixed inset-0
-           z-[1000]
-           flex items-center justify-center
-           bg-black/80
-           backdrop-blur-sm
-           p-4">
-
-
-    <div class="relative
-               w-full max-w-lg
-               bg-dark-800
-               rounded-2xl
-               shadow-2xl
-               border border-dark-600
-               p-6 sm:p-8">
-
-
-        <button id="closeAvatarModal" type="button" class="absolute
-                   top-4 right-4
-                   w-10 h-10
-                   flex items-center justify-center
-                   rounded-full
-                   hover:bg-dark-700
-                   transition
-                   text-gray-400
-                   hover:text-white">
-
-            <i class="fa-solid fa-xmark text-xl"></i>
-
-        </button>
-
-
-        <h2 class="text-2xl
-                   font-black
-                   mb-6
-                   text-center">
-
-            Выбери аватар
-
-        </h2>
-
-
-        <div id="avatarsGrid" class="grid grid-cols-3 gap-4">
-        </div>
-
+<div id="avatarModal"
+    class="hidden fixed inset-0 z-[1000] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="relative w-full max-w-lg bg-dark-800 rounded-2xl shadow-2xl border border-dark-600 p-6 sm:p-8">
+        <button id="closeAvatarModal" type="button"
+            class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full hover:bg-dark-700 transition text-gray-400 hover:text-white"><i
+                class="fa-solid fa-xmark text-xl"></i></button>
+        <h2 class="text-2xl font-black mb-6 text-center">Выбери аватар</h2>
+        <div id="avatarsGrid" class="grid grid-cols-3 gap-4"></div>
     </div>
-
 </div>
+
+<!-- Стили полей ввода -->
+<style>
+    .auth-input {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        caret-color: #e50914 !important;
+    }
+
+    .auth-input::placeholder {
+        color: #4b5563 !important;
+        -webkit-text-fill-color: #4b5563 !important;
+        opacity: 1;
+    }
+
+    .auth-input:-webkit-autofill {
+        -webkit-text-fill-color: #ffffff !important;
+        caret-color: #e50914 !important;
+        -webkit-box-shadow: 0 0 0 1000px #0a0a0f inset !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        transition: background-color 9999s ease-out 0s;
+    }
+
+    /* Табы */
+    .profile-tab {
+        color: #9ca3af;
+    }
+
+    .profile-tab:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .profile-tab.active {
+        background: #e50914;
+        color: #ffffff;
+    }
+</style>
 
 {% endblock %}
 
-
 {% block scripts %}
-<script src="/static/js/profile.js?v=5"></script>
+<script src="/static/js/profile.js?v=6"></script>
 {% endblock %}
