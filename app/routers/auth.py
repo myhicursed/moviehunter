@@ -52,20 +52,21 @@ async def get_me(current_user: User = Depends(get_current_user)):
 async def forgot_password(
     data: ForgotPasswordRequest, session: AsyncSession = Depends(get_session)
 ):
-    stmt = select(User).where(User.email == data.email)
+    # Приводим email к нижнему регистру
+    clean_email = data.email.strip().lower()
+
+    stmt = select(User).where(User.email == clean_email)
     user = (await session.execute(stmt)).scalar_one_or_none()
 
     if not user:
-        # В целях безопасности мы не говорим, есть ли такой email в БД
+        # В целях безопасности возвращаем success, даже если почты нет
         return {"status": "success"}
 
-    # Генерируем токен (случайная строка)
     token = secrets.token_urlsafe(32)
     user.reset_token = token
     user.reset_token_expires = now_moscow() + timedelta(hours=1)
     await session.commit()
 
-    # Отправляем письмо
     await send_reset_password_email(user.email, token)
 
     return {"status": "success"}

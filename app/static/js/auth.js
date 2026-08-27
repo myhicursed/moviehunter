@@ -286,7 +286,7 @@ async function handleAuthSubmit(event) {
         }
 
         if (authMode === 'forgot') {
-            const email = document.getElementById('authEmail').value.trim();
+            const email = document.getElementById('authEmail').value.trim().toLowerCase(); // <--- .toLowerCase()
 
             const response = await fetch('/auth/forgot-password', {
                 method: 'POST',

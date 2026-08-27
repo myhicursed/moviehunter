@@ -185,7 +185,7 @@ async function handleEmailUpdate(e) {
     e.preventDefault();
     const btn = document.getElementById('settingsEmailBtn');
     const msg = document.getElementById('settingsEmailMsg');
-    const email = document.getElementById('settingsEmail').value.trim();
+    const email = document.getElementById('settingsEmail').value.trim().toLowerCase(); // <--- .toLowerCase()
 
     btn.disabled = true;
     msg.className = "hidden mt-2 text-xs text-center font-bold px-3 py-2 rounded-lg";

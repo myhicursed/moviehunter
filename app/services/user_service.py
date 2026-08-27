@@ -74,6 +74,9 @@ async def get_user_profile(
 
 
 async def change_email(session: AsyncSession, user_id: int, email: str) -> UserProfile:
+    # Приводим к нижнему регистру и удаляем лишние пробелы
+    email = email.strip().lower()
+
     # Проверяем, не занят ли email другим юзером
     stmt = select(User).where(User.email == email, User.id != user_id)
     existing = await session.execute(stmt)
